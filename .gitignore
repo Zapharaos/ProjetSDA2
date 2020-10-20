@@ -53,3 +53,6 @@ dkms.conf
 
 #visual studio
 .vs/
+
+#macOS
+.DS_Store
