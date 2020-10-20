@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h> // strtok()
 
-#define nb_word_max 64
+#define NB_WORD_MAX 64
 #define SENTENCE_MAX_SIZE 256
 
  /**
@@ -34,23 +34,24 @@ void pas_content(char *message) {
  */
 char** get_sentence(size_t* n) {
     
-    char s[SENTENCE_MAX_SIZE] = "";
-    const char * separators = " ,.?!\n"; // split at this chars
-    
     if(fprintf(stdout, "Votre phrase : ") < 0)
         err_print();
     
+    char s[SENTENCE_MAX_SIZE] = "";
     if(fgets(s, SENTENCE_MAX_SIZE, stdin) == NULL)
         pas_content("fgets sentence");
     
-    char** sentence = (char**) malloc(sizeof(char*) * (*n)); // sizeof(char) = 1
-    char* token = strtok(s, separators);
+    char *save; // to maintain context between successive calls that parse the same string
+    const char * separators = " ,.?!\n"; // split at this chars
+    char* token = strtok_r(s, separators, &save); // POSIX (strtok is not)
+    
+    char** sentence = (char**) malloc(sizeof(char*) * NB_WORD_MAX); // sizeof(char) = 1
     
     do {
         to_lower(token);
-        sentence[(*n)++] = token;
-    } while ((token = strtok(NULL, separators)) != NULL );
-
+        sentence[(*n)++] = token; // each word
+    } while ((token = strtok_r(NULL, separators, &save)) != NULL );
+    
     return sentence;
 }
 
@@ -59,7 +60,7 @@ int main(int argc, char* argv[]) {
     if(argc != 1) {}
     
     size_t n = 0; // number of words
-    char** sentence = get_sentence(&n); // 2D tab with the words
+    char** sentence = get_sentence(&n);
     
     for(size_t i=0; i<n; i++)
         if(fprintf(stdout, "%s\n", sentence[i]) < 0)
