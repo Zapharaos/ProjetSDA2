@@ -35,7 +35,7 @@ char** get_sentence(size_t* n) {
         pas_content("fgets sentence");
     }
     
-    char** sentence;
+    char** sentence = malloc(sizeof(char) * 64);
     char * token = strtok (s, separators);
     do {
         sentence[(*n)++] = token;
@@ -51,10 +51,8 @@ int main(int argc, char* argv[]) {
     size_t n = 0;
     char** sentence = get_sentence(&n);
     
-    printf("%zu", n);
-    
     for(size_t i=0; i<n; i++)
-        printf("%s",sentence[i]);
+        printf("%s\n",sentence[i]);
 
 
     
