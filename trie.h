@@ -5,6 +5,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdlib.h>
 
 typedef struct trie* Trie;
 
@@ -15,9 +16,6 @@ enum lang {
 	DE
 };
 
-/*
- * 
- */
 Trie empty_trie();
 
 void insert_word(Trie trie, const char* word, enum lang lang, size_t index);

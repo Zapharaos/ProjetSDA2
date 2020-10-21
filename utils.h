@@ -2,19 +2,32 @@
 #define _UTILS_H
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h> // strtok_r()
 #include <stddef.h>
 
 #define NB_WORD_MAX 64
 #define SENTENCE_MAX_SIZE 256
 
+/**
+ * \fn      void to_lower(char* entry)
+ * \brief   Transforme une chaine de caractère en minuscule
+ * \param   entry La chaîne de caractère à modifier
+*/
 void to_lower(char* entry);
 
 /**
  * \fn      char** get_sentence(size_t* n)
- * \brief   Retourne un tableau 2D de la phrase
- * \param   *n Le nombre de mots dans la phrase
+ * \brief   Retourne un tableau double pointeur de la phrase
+ * \param   n Le nombre de mots dans la phrase
  */
 char** get_sentence(size_t* n);
 
+/**
+ * \fn      void show_sentence(char** sentence, size_t* n)
+ * \brief   Affiche les mots de la phrase stockée dans le tableau
+ * \param   sentence Le tableau contenant les mots de la phrase
+ * \param   n Le nombre de mots dans la phrase
+*/
+void show_sentence(char** sentence, size_t* n);
 #endif
