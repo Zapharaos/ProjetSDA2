@@ -12,11 +12,6 @@ void to_lower(char* entry)
     }
 }
 
-/**
- * \fn      char** get_sentence(size_t* n)
- * \brief   Retourne un tableau 2D de la phrase
- * \param   *n Le nombre de mots dans la phrase
- */
 char** get_sentence(size_t* n) {
     
     if(fprintf(stdout, "Votre phrase : ") < 0)
@@ -37,5 +32,13 @@ char** get_sentence(size_t* n) {
         sentence[(*n)++] = token; // each word
     } while ((token = strtok_r(NULL, separators, &save)) != NULL );
     
+    show_sentence(sentence, n);
+    
     return sentence;
+}
+
+void show_sentence(char** sentence, size_t* n) {
+    for(size_t i=0; i<(*n); i++)
+        if(fprintf(stdout, "%s\n", sentence[i]) < 0)
+            err_print();
 }

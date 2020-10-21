@@ -9,10 +9,6 @@ int main(int argc, char* argv[]) {
     size_t n = 0; // number of words
     char** sentence = get_sentence(&n);
     
-    for(size_t i=0; i<n; i++)
-        if(fprintf(stdout, "%s\n", sentence[i]) < 0)
-            err_print();
-    
     free(sentence);
     
     return 0;
