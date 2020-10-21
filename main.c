@@ -1,8 +1,6 @@
 #include "errors.c"
 #include "utils.c"
-
-#include <stdio.h>
-#include <stdlib.h>
+#include "trie.c"
 
 int main(int argc, char* argv[]) {
     

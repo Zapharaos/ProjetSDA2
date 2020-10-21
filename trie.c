@@ -1,15 +1,10 @@
 #include "trie.h"
-#include <stdbool.h>
-#include <stdlib.h>
 
 struct trie
 {
 	Trie trie[26];
 	enum lang lang;
 };
-
-// temp
-int main(int argc, char**argv){}
 
 Trie empty_trie()
 {
