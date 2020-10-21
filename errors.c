@@ -1,4 +1,4 @@
-#include "erros.h"
+#include "errors.h"
 
 void err_print() {
     perror("fprintf failed"); //exception use of perror
