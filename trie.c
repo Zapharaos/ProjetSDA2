@@ -27,10 +27,10 @@ void free_trie(Trie trie)
 		free_trie(trie->trie[i]);
 }
 
-void insert_sentence(Trie trie, const char* sentence, enum lang lang, size_t index)
+void insert_word(Trie trie, const char* word, enum lang lang, size_t index)
 {
 
-	const char element = sentence[index];
+	const char element = word[index];
 
 	if (element == '\0')
 		return;
@@ -42,8 +42,8 @@ void insert_sentence(Trie trie, const char* sentence, enum lang lang, size_t ind
 	if(trie->trie[i] == NULL)
 		trie->trie[i] = empty_trie();
 
-	trie->trie[i]->lang = sentence[index + 1] == '\0' ? lang : UNKNOWN;
+	trie->trie[i]->lang = word[index + 1] == '\0' ? lang : UNKNOWN;
 
-	insert_sentence(trie, sentence, lang, index + 1);
+	insert_word(trie, word, lang, index + 1);
 	
 }
