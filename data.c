@@ -1,11 +1,11 @@
-#include "data.h"
+#include "trie.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 struct trie
 {
-	Trie* data;
+	Trie trie[ALPHABET_SIZE];
 	enum lang lang;
 };
 
@@ -22,7 +22,6 @@ Trie empty_trie()
 {
 	Trie trie = malloc(sizeof(Trie));
 	trie->lang = UNKNOWN;
-	trie->data = malloc(sizeof(Trie) * ALPHABET_SIZE);
 	return trie;
 }
 
@@ -32,7 +31,7 @@ void free_trie(Trie trie)
 		return;
 	
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
-		free_trie(trie->data[i]);
+		free_trie(trie->trie[i]);
 }
 
 void display(Trie trie)
@@ -41,8 +40,8 @@ void display(Trie trie)
 
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 	{
-		printf("Trie %ld [%c] lang: %d\n", i, (char)i + 'a', trie->data[i] == NULL ? -1 : trie->data[i]->lang);
-		display(trie->data[i]);
+		printf("Trie %ld [%c] lang: %d\n", i, (char)i + 'a', trie->trie[i] == NULL ? -1 : trie->trie[i]->lang);
+		display(trie->trie[i]);
 	}
 	
 }
@@ -59,11 +58,11 @@ void insert_word(Trie trie, const char* word, enum lang lang, size_t index)
 
 	const size_t i = element - 'a';
 
-	if(trie->data[i] == NULL)
-		trie->data[i] = empty_trie();
+	if(trie->trie[i] == NULL)
+		trie->trie[i] = empty_trie();
 
-	trie->data[i]->lang = word[index + 1] == '\0' ? lang : UNKNOWN;
+	trie->trie[i]->lang = word[index + 1] == '\0' ? lang : UNKNOWN;
 
-	insert_word(trie->data[i], word, lang, index + 1);
+	insert_word(trie, word, lang, index + 1);
 	
 }
