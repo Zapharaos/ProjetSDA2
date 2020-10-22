@@ -1,6 +1,6 @@
-#include "errors.c"
-#include "utils.c"
-#include "trie.c"
+#include "utils/errors.c"
+#include "utils/utils.c"
+#include "data/trie.c"
 
 int main(int argc, char* argv[]) {
     

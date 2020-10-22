@@ -1,17 +1,18 @@
 CC = gcc
 CFLAGS = -Wall -o
 
-DDIR = dist
-ODIR = obj
-BDIR = bin
+dist = dist
+OBJ = obj
+BIN = bin
+SRC = src
 
 main: title main.o
 	@echo "> Compiling : "
-	@mkdir -p $(BDIR)
-	$(CC) $(CFLAGS) $(BDIR)/$@ $(ODIR)/main.o
-%.o: %.c
-	@mkdir -p $(ODIR)
-	$(CC) $(CFLAGS) $(ODIR)/$@ -c $<
+	@mkdir -p $(BIN)
+	$(CC) $(CFLAGS) $(BIN)/lg $(OBJ)/main.o
+%.o: $(SRC)/%.c
+	@mkdir -p $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ)/$@ -c $<
 
 title:
 	@echo '   __   ___   _  _________  _____  _________  ___  _________________________________  _  __'
@@ -21,15 +22,15 @@ title:
 	@echo '                                                                                           '
 
 run: title
-	@bin/./main
+	@bin/./lg
 
 dist: title main.o
-	@mkdir -p $(DDIR)
+	@mkdir -p $(dist)
 	@echo "> Archiving :"
-	tar -czvf $(DDIR)/SDA2_Projet.tar.gz Makefile README.md main.c errors.c erros.h trie.c trie.h utils.c utils.h
+	tar -czvf $(dist)/SDA2_Projet.tar.gz Makefile README.md fetch_dict.sh $(SRC)
 
 clean: title
 	@echo "> Cleaning :"
-	rm -rf $(BDIR)
-	rm -rf $(ODIR)
-	rm -rf $(DDIR)
+	rm -rf $(BIN)
+	rm -rf $(OBJ)
+	rm -rf $(dist)
