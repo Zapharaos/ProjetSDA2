@@ -5,16 +5,18 @@
 #include <stdlib.h>
 
 /**
- * \fn      void err_print()
+ * \fn      void print_perr()
  * \brief   Erreur avec la fonction bibliothèque fprintf
  */
-void err_print();
+void print_perr();
 
  /**
-  * \fn      void pas_content(char *message)
+  * \fn      void print_err(char *message)
   * \brief   Erreur avec une fonction bibliothèque
   * \param   message Le message à afficher
   */
-void pas_content(char *message);
+void print_err(char *message);
+
+void print_msg(char* message);
 
 #endif

@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "errors.h"
 
 void to_lower(char* entry)
 {
@@ -15,11 +16,11 @@ void to_lower(char* entry)
 char** get_sentence(size_t* n) {
     
     if(fprintf(stdout, "Votre phrase : ") < 0)
-        err_print();
+        print_perr();
     
     char s[SENTENCE_MAX_SIZE] = "";
     if(fgets(s, SENTENCE_MAX_SIZE, stdin) == NULL)
-        pas_content("fgets sentence");
+        print_err("fgets sentence");
     
     char *save; // to maintain context between successive calls that parse the same string
     const char * separators = " ,.?!\n"; // split at this chars
@@ -38,9 +39,8 @@ char** get_sentence(size_t* n) {
 }
 
 void show_sentence(char** sentence, size_t* n) {
-    for(size_t i=0; i<(*n); i++)
-        if(fprintf(stdout, "%s\n", sentence[i]) < 0)
-            err_print();
+    for (size_t i = 0; i < (*n); i++)
+        print_msg(sentence[i]);
 }
 
 /**
