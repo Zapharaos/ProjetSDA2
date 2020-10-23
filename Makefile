@@ -1,18 +1,18 @@
 CC = gcc
-CFLAGS = -Wall -o
+CFLAGS = -Wall
 
 dist = dist
 OBJ = obj
 BIN = bin
 SRC = src
 
-main: title main.o
+SRCS := $(shell find . -name '*.c')
+OBJS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SRCS))
+
+$(BIN)/lg: $(OBJS)
 	@echo "> Compiling : "
 	@mkdir -p $(BIN)
-	$(CC) $(CFLAGS) $(BIN)/lg $(OBJ)/main.o
-%.o: $(SRC)/%.c
-	@mkdir -p $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ)/$@ -c $<
+	$(CC) $(CFLAGS) $^ -o $@
 
 title:
 	@echo '   __   ___   _  _________  _____  _________  ___  _________________________________  _  __'

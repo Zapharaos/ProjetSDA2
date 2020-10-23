@@ -57,5 +57,8 @@ dkms.conf
 #macOS
 .DS_Store
 
-# dict file
+# dict files
 dict/
+
+# bin rep
+bin/
