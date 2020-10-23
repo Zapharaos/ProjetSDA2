@@ -5,6 +5,7 @@ dist = dist
 OBJ = obj
 BIN = bin
 SRC = src
+TOOLS = tools
 
 SRCS := $(shell find . -name '*.c')
 OBJS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SRCS))
@@ -27,7 +28,7 @@ run: title
 dist: title main.o
 	@mkdir -p $(dist)
 	@echo "> Archiving :"
-	tar -czvf $(dist)/SDA2_Projet.tar.gz Makefile README.md fetch_dict.sh $(SRC)
+	tar -czvf $(dist)/SDA2_Projet.tar.gz Makefile README.md $(TOOLS) $(SRC)
 
 clean: title
 	@echo "> Cleaning :"

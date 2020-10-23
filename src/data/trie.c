@@ -9,15 +9,6 @@ struct trie
 	enum lang lang;
 };
 
-// temp test
-//int main(int argc, char**argv)
-//{
-//	Trie trie = empty_trie();
-//	insert_word(trie, "bonjour", FR, 0);
-//	display(trie);
-//	free_trie(trie);
-//}
-
 Trie empty_trie()
 {
 	Trie trie = malloc(sizeof(Trie));
