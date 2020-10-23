@@ -1,11 +1,6 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h> // strtok_r()
-#include <stddef.h>
-
 #define NB_WORD_MAX 64
 #define SENTENCE_MAX_SIZE 256
 

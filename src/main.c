@@ -4,7 +4,6 @@
 #include "utils/utils.h"
 #include "data/trie.h"
 
-
 int handle_args(int argc, char* argv[])
 {
 

@@ -1,9 +1,6 @@
 #ifndef _ERRORS_H
 #define _ERRORS_H
 
-#include <stdio.h>
-#include <stdlib.h>
-
 /**
  * \fn      void print_perr()
  * \brief   Erreur avec la fonction bibliothèque fprintf

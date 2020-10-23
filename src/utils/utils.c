@@ -1,5 +1,9 @@
 #include "utils.h"
 #include "errors.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h> // strtok_r()
+#include <stddef.h>
 
 void to_lower(char* entry)
 {

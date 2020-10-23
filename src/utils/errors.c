@@ -1,4 +1,6 @@
 #include "errors.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void print_perr() {
     perror("fprintf failed"); //exception use of perror

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dict_dir='../dict'
+dict_dir='dict'
 
 german_url='https://raw.githubusercontent.com/enz/german-wordlist/master/words'
 english_url='https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt'
