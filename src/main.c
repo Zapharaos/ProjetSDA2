@@ -3,6 +3,7 @@
 #include "utils/errors.h"
 #include "utils/utils.h"
 #include "data/trie.h"
+#include "utils/io.h"
 
 int handle_args(int argc, char* argv[])
 {
@@ -45,13 +46,36 @@ int handle_args(int argc, char* argv[])
 		return 0;
 
     }
-
+    
 	if (strcmp(argv[1], "-trie") == 0)
     {
-	    Trie trie = empty_trie();
-	    insert_word(trie, "bonjour", FR, 0);
-	    display(trie);
-	    free_trie(trie);
+        Trie trie = empty_trie();
+
+        fill_trie(trie, "dict/german-wordlist.txt", DE);
+		fill_trie(trie, "dict/english-wordlist.txt", EN);
+        fill_trie(trie, "dict/french-wordlist.txt", FR);
+		
+		print_msg("");
+
+        printf("Recherche du lang pour poisson: ");
+        print_lang(search_lang(trie, "poisson", 0));
+
+        printf("Recherche du lang pour bouffon: ");
+        print_lang(search_lang(trie, "bouffon", 0));
+
+        printf("Recherche du lang pour pomme: ");
+        print_lang(search_lang(trie, "pomme", 0));
+
+        printf("Recherche du lang pour kartoffel: ");
+        print_lang(search_lang(trie, "kartoffel", 0));
+
+        printf("Recherche du lang pour eat: ");
+        print_lang(search_lang(trie, "eat", 0));
+
+        printf("Recherche du lang pour notebook: ");
+        print_lang(search_lang(trie, "notebook", 0));
+		
+		free_trie(trie);
 		return 1;
     }
 	

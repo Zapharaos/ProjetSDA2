@@ -9,7 +9,9 @@
 
 typedef struct trie* Trie;
 
-enum lang {
+typedef struct lang* Lang;
+
+enum language {
 	UNKNOWN,
 	EN,
 	FR,
@@ -18,10 +20,21 @@ enum lang {
 
 Trie empty_trie();
 
-void insert_word(Trie trie, const char* word, enum lang lang, size_t index);
+void insert_word(Trie trie, const char* word, enum language lang, size_t index);
 
 void free_trie(Trie trie);
 
 void display(Trie trie);
+
+Lang search_lang(Trie trie, const char* word, size_t index);
+
+bool match_lang(Trie trie, const char* word, enum language lang, size_t index);
+
+
+// LANG
+
+Lang empty_lang();
+
+void print_lang(Lang lang);
 
 #endif // !_TRIE_H
