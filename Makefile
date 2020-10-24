@@ -9,7 +9,7 @@ DICT_DIR = dict
 
 # Program
 
-EXECUTABLE_NAME = lg
+EXECUTABLE_NAME = ald
 EXECUTABLE = $(BIN_DIR)/./$(EXECUTABLE_NAME)
 
 # Compiler
@@ -32,21 +32,14 @@ $(BIN_DIR)/$(EXECUTABLE_NAME) : title build_dir $(OBJS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
-
-# Run
-
-help:
-	@$(EXECUTABLE) -help
-trie:
-	@$(EXECUTABLE) -sentence -trie
-dawg:
-	@$(EXECUTABLE) -sentence -dawg
-_trie:
-	@$(EXECUTABLE) -trie
-sentence:
-	@$(EXECUTABLE) -sentence
 	
 # Utils
+
+install: $(BIN_DIR)/$(EXECUTABLE_NAME)
+	mkdir -p ./bin
+	@export PATH=bin:$(PATH)
+	@echo $(PATH)
+	
 
 build_dir:
 	@$(call make-obj)
