@@ -14,7 +14,8 @@ int handle_args(int argc, char* argv[])
     {
 	    print_msg("------------ Language detector help ------------");
 	    print_msg("Get sentence: ./lg -sentence <-trie,-dawg>");
-	    print_msg("Test trie data structure: ./lg -trie");
+        print_msg("Also working: make sentence ; make  trie ; make dawg");
+	    print_msg("Test trie data structure: ./lg -trie (or make _trie)");
 		return 1;
     }
 
@@ -28,18 +29,18 @@ int handle_args(int argc, char* argv[])
 			free(sentence);
 			return 1;
 	    }
-
+        
 	    if (strcmp(argv[2], "-trie") == 0)
-	    {
-	    	//todo:
-			return 0;
-	    }
+        {
+            //todo:
+            return 0;
+        }
 
-		if (strcmp(argv[2], "dawg") == 0)
-	    {
-			//todo:
-			return 0;
-	    }
+        if (strcmp(argv[2], "-dawg") == 0)
+        {
+            //todo:
+            return 0;
+        }
 
 		return 0;
 
@@ -54,7 +55,7 @@ int handle_args(int argc, char* argv[])
 		return 1;
     }
 	
-	print_err("Argument not found: type ./lg -help to display help");
+	print_err("Argument not found: type ./lg -help (or make help) to display help");
 
     return 0;
 }

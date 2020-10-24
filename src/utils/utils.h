@@ -1,6 +1,8 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
+#include <stdio.h>
+
 #define NB_WORD_MAX 64
 #define SENTENCE_MAX_SIZE 256
 

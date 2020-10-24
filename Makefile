@@ -1,12 +1,3 @@
-# Program
-
-EXECUTABLE_NAME = lg
-
-# Compiler
-
-CC = gcc
-CFLAGS = -Wall
-
 # Directories
 
 SRC_DIR = src
@@ -15,6 +6,16 @@ BIN_DIR = bin
 ARCH_DIR = dist
 TOOL_DIR = tools
 DICT_DIR = dict
+
+# Program
+
+EXECUTABLE_NAME = lg
+EXECUTABLE = $(BIN_DIR)/./$(EXECUTABLE_NAME)
+
+# Compiler
+
+CC = gcc
+CFLAGS = -Wall
 
 # Files and folders
 
@@ -32,6 +33,19 @@ $(BIN_DIR)/$(EXECUTABLE_NAME) : title build_dir $(OBJS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Run
+
+help:
+	@$(EXECUTABLE) -help
+trie:
+	@$(EXECUTABLE) -sentence -trie
+dawg:
+	@$(EXECUTABLE) -sentence -dawg
+_trie:
+	@$(EXECUTABLE) -trie
+sentence:
+	@$(EXECUTABLE) -sentence
+	
 # Utils
 
 build_dir:
