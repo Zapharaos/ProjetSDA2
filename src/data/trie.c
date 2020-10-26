@@ -5,19 +5,6 @@
 #include "../utils/utils.h"
 #include "../utils/errors.h"
 
-struct lang
-{
-	bool fr;
-	bool de;
-	bool en;
-};
-
-struct trie
-{
-	Trie* data;
-	Lang lang;
-};
-
 Trie empty_trie()
 {
 	Trie trie = malloc(sizeof(struct trie));
@@ -160,4 +147,17 @@ void insert_word(Trie trie, const char* word, enum language lang, size_t index)
 		
 	insert_word(trie->data[i], word, lang, index + 1);
 	
+}
+
+void count_lang(Trie trie, char** sentence, size_t* n, int count[]) {
+    Lang word;
+    for(size_t i = 0; i<(*n); i++) {
+        word = search_lang(trie, sentence[i], 0);
+        if(word->fr)
+            count[0]++;
+        if(word->de)
+            count[1]++;
+        if(word->en)
+            count[2]++;
+    }
 }

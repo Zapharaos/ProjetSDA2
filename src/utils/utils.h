@@ -36,4 +36,8 @@ void parse_word(char* word);
 
 char* concat(const char* s1, const char* s2);
 
+int max(int lang[]);
+
+void print_result(char result, int count[]);
+
 #endif

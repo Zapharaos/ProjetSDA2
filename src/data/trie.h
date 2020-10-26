@@ -11,6 +11,19 @@ typedef struct trie* Trie;
 
 typedef struct lang* Lang;
 
+struct lang
+{
+    bool fr;
+    bool de;
+    bool en;
+};
+
+struct trie
+{
+    Trie* data;
+    Lang lang;
+};
+
 enum language {
 	UNKNOWN,
 	EN,
@@ -36,5 +49,7 @@ bool match_lang(Trie trie, const char* word, enum language lang, size_t index);
 Lang empty_lang();
 
 void print_lang(Lang lang);
+
+void count_lang(Trie trie, char** sentence, size_t* n, int count[]);
 
 #endif // !_TRIE_H

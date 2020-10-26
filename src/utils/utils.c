@@ -91,3 +91,32 @@ char* concat(const char* s1, const char* s2)
     strcat(result, s2);
     return result;
 }
+
+int max(int * lang) {
+    int k = 0, max = 0;
+
+    for (int i = 0; i < 3; ++i){
+        if (lang[i] > max) {
+            max = lang[i];
+            k = i;
+        }
+    }
+    return k;
+}
+
+void print_result(char result, int count[]){
+    fprintf(stdout,"\nLe langage principal est : %s.\n", &result);
+    fprintf(stdout,"Il y a %d mot(s) en français.\n", count[0]);
+    fprintf(stdout,"Il y a %d mot(s) en allemand.\n", count[1]);
+    fprintf(stdout,"Il y a %d mot(s) en anglais.\n", count[2]);
+}
+
+char* sentence_lang(int count[]) {
+    int i = max(count);
+    if(i == 0)
+        return "français";
+    if(i == 1)
+        return "allemand";
+    return "anglais";
+}
+
