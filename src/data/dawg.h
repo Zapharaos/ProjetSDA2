@@ -5,14 +5,13 @@
 #include <stddef.h>
 
 typedef struct dawg* Dawg;
-typedef struct lang* Lang;
 typedef struct vertex* Vertex;
 
 struct dawg
 {
 	size_t id;
 	Vertex* data;
-    Lang lang;
+	Lang lang;
 };
 
 struct vertex
