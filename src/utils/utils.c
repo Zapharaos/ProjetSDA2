@@ -25,8 +25,8 @@ char** get_sentence(size_t* n) {
     if(fgets(s, SENTENCE_MAX_SIZE, stdin) == NULL)
         print_err("fgets sentence");
     
-    char *save; // to maintain context between successive calls that parse the same string
-    const char * separators = " ,.?!\n"; // split at this chars
+    char* save; // to maintain context between successive calls that parse the same string
+    const char* separators = " ,.?!\n"; // split at this chars
     char* token = strtok_r(s, separators, &save); // POSIX (strtok is not)
     
     char** sentence = (char**) malloc(sizeof(char*) * NB_WORD_MAX); // sizeof(char) = 1
@@ -54,6 +54,7 @@ size_t ascii_to_index(char c) {
     size_t index = (size_t)c;
 
     if (index < 97 || index > 122) {
+        printf("Invalid char: %d\n", c);
         perror("ascii_to_index function can only read lowercase letter a-z.\n");
         exit(EXIT_FAILURE);
     }
@@ -92,7 +93,8 @@ char* concat(const char* s1, const char* s2)
     return result;
 }
 
-int max(int * lang) {
+int max(int* lang)
+{
     int k = 0, max = 0;
 
     for (int i = 0; i < 3; ++i){

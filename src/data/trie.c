@@ -9,12 +9,6 @@ Trie empty_trie()
 {
 	Trie trie = malloc(sizeof(struct trie));
 	trie->lang = 0; // unknown
-	// { bool EN  = false, bool FR = false, bool DE = false }
-	// EN = true, FR = true, DE = false
-	//
-	// notebook
-	// EN=+1
-	// DE=+1
 	trie->data = malloc(sizeof(struct trie) * ALPHABET_SIZE);
 
 	// on initialise le tableau avec des pointeurs nuls
@@ -38,14 +32,6 @@ void free_trie(Trie trie)
 	free(trie);
 }
 
-void print_lang(Lang lang)
-{
-
-	if (fprintf(stdout, "fr: %s | de: %s | en: %s\n", lang->fr ? "yes":"no", lang->de ? "yes" : "no", lang->en ? "yes" : "no") < 0)
-		print_perr();
-
-}
-
 void display(Trie trie)
 {
 	if (trie == NULL) return;
@@ -61,13 +47,18 @@ void display(Trie trie)
 Lang search_lang(Trie trie, const char* word, size_t index)
 {
 
-	//printf("Index: %d | Lang : %d | Character: %c | C+1: %c\n", index, trie == NULL ? -1 : trie->lang, word[index], word[index + 1] == '\0' ? 'Z' : word[index+1]);
+	printf("Index: %d | Lang : %d | Character: %c | C+1: %c\n", index, trie == NULL ? -1 : trie->lang, word[index], word[index + 1] == '\0' ? 'Z' : word[index+1]);
 
 	if (trie == NULL)
 		return 0;
 
 	if (word[index] == '\0')
 		return trie->lang;
+
+	if (word[index] < 97 || word[index] > 122) {
+		printf("Invalid char: %d\n", word[index]);
+		exit(1);
+	}
 	
 	return search_lang(trie->data[ascii_to_index(word[index])], word, index + 1);
 }
@@ -97,19 +88,8 @@ bool match_lang(Trie trie, const char* word, enum language lang, size_t index)
 	
 }
 
-Lang empty_lang()
+void insert_word(Trie trie, const char* word, enum language lang, const size_t index)
 {
-	Lang lang = malloc(sizeof(Lang));
-	lang->fr = false;
-	lang->de = false;
-	lang->en = false;
-	return lang;
-}
-
-
-void insert_word(Trie trie, const char* word, enum language lang, size_t index)
-{
-
 	const char element = word[index];
 
 	if (element == '\0')
@@ -149,10 +129,9 @@ void insert_word(Trie trie, const char* word, enum language lang, size_t index)
 	
 }
 
-void count_lang(Trie trie, char** sentence, size_t* n, int count[]) {
-    Lang word;
-    for(size_t i = 0; i<(*n); i++) {
-        word = search_lang(trie, sentence[i], 0);
+void count_lang(Trie trie, char** sentence, const size_t* n, int count[]) {
+	for(size_t i = 0; i < *n; i++) {
+        Lang word = search_lang(trie, sentence[i], 0);
         if(word->fr)
             count[0]++;
         if(word->de)

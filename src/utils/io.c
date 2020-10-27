@@ -14,9 +14,6 @@
 #include "utils.h"
 
 void fill_trie(Trie trie, char* dict, enum language lang) {
-    // Instantiate either a Trie or a DAWG here
-    // ...
-
     char* line = NULL;
     size_t len = 0;
     ssize_t read;
