@@ -25,4 +25,6 @@ Lang empty_lang();
 
 void print_lang(Lang lang);
 
+void word_lang(Lang lang)
+
 #endif
