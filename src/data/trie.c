@@ -39,7 +39,7 @@ void display_trie(Trie trie)
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 	{
 		//printf("Trie %ld [%c] lang: %d\n", i, (char)i + 'a', trie->data[i] == NULL ? -1 : trie->data[i]->lang);
-		display_trie(trie->data[i]);
+		display(trie->data[i]);
 	}
 	
 }
