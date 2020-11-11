@@ -155,11 +155,11 @@ int max(int* lang)
 char* sentence_lang(int count[]) {
     switch(max(count)) {
         case 0:
-            return "français";
+            return "french";
         case 1:
-            return "allemand";
+            return "german";
         default:
-            return "anglais";
+            return "english";
     }
 }
 

@@ -50,10 +50,10 @@ int handle_args(int argc, char* argv[])
             
             // print : how many words per language + detection result
             char* result = sentence_lang(count);
-            fprintf(stdout,"Il y a %d mot(s) en français.\n", count[0]);
-            fprintf(stdout,"Il y a %d mot(s) en allemand.\n", count[1]);
-            fprintf(stdout,"Il y a %d mot(s) en anglais.\n", count[2]);
-            fprintf(stdout,"\nLe langage principal est : %s.\n", result);
+            fprintf(stdout,"%d word(s) in french.\n", count[0]);
+            fprintf(stdout,"%d word(s) in german.\n", count[1]);
+            fprintf(stdout,"%d word(s) in english.\n", count[2]);
+            fprintf(stdout,"\nMain language is : %s.\n", result);
             
             // free : structure and sentence
             free_trie(trie);

@@ -18,7 +18,7 @@ Trie empty_trie()
 	if(trie->data == NULL)
 		print_err("malloc trie->data empty_trie");
 
-	// on initialise le tableau avec des pointeurs nuls
+	// init : array with null pointer
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 		trie->data[i] = NULL;
 	
@@ -98,7 +98,7 @@ void insert_word_trie(Trie trie, const char* word, enum language lang, const siz
 /**
  * Searchs the language of a word
  */
-Lang search_lang_trie(Trie trie, const char* word, size_t index)
+Lang search_word_trie(Trie trie, const char* word, size_t index)
 {
 	if (trie == NULL)
 		return 0;
@@ -111,7 +111,7 @@ Lang search_lang_trie(Trie trie, const char* word, size_t index)
 		exit(1);
 	}
 	
-	return search_lang_trie(trie->data[ascii_to_index(word[index])], word, index + 1);
+	return search_word_trie(trie->data[ascii_to_index(word[index])], word, index + 1);
 }
 
 /**
@@ -119,7 +119,7 @@ Lang search_lang_trie(Trie trie, const char* word, size_t index)
  */
 void count_lang_trie(Trie trie, char** sentence, const size_t n, int count[]) {
 	for(size_t i = 0; i < n; i++) {
-        Lang word = search_lang_trie(trie, sentence[i], 0);
+        Lang word = search_word_trie(trie, sentence[i], 0);
 		if(word == NULL) continue;
         if(word->fr)
             count[0]++;

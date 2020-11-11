@@ -48,14 +48,14 @@ void display_trie(Trie trie);
 void insert_word_trie(Trie trie, const char* word, enum language lang, size_t index);
 
 /**
- * \fn      search_lang_trie(Trie trie, const char* word, size_t index)
+ * \fn      search_word_trie(Trie trie, const char* word, size_t index)
  * \brief   Searchs the language of a word
  * \param   trie trie where to search
  * \param   word word to search
  * \param   index iterator
  * \return  lang of the word
  */
-Lang search_lang_trie(Trie trie, const char* word, size_t index);
+Lang search_word_trie(Trie trie, const char* word, size_t index);
 
 /**
  * \fn      search_lang_trie(Trie trie, const char* word, size_t index)

@@ -23,7 +23,7 @@ void print_lang(Lang lang)
 void word_lang(Lang lang)
 {
     
-    if (fprintf(stdout, "%s %s %s\n", lang->fr ? "français" : "", lang->de ? "allemand" : "", lang->en ? "anglais" : "") < 0)
+    if (fprintf(stdout, "%s %s %s\n", lang->fr ? "french" : "", lang->de ? "german" : "", lang->en ? "english" : "") < 0)
         print_perr();
 
 }
