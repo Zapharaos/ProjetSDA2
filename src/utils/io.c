@@ -13,23 +13,22 @@
 #include <time.h>
 #include "utils.h"
 
+/**
+ * Creates a structure and stores a dictionnary
+ */
 void fill_trie(Trie trie, char* dict, enum language lang) {
+
     char* line = NULL;
     size_t len = 0;
     ssize_t read;
     FILE* fp;
     clock_t start = clock();
 
-    // open file 
-    fp = fopen(dict, "r"); // read mode
-	
-    if (fp == NULL) {
-        perror("Error while opening the file.\n");
-        exit(EXIT_FAILURE);
-    }
+    // open : file given as paramater (i.e. a dictionnary)
+    if ((fp = fopen(dict, "r")) == NULL)
+        print_err("fopen fill_trie");
 
-
-    // read file
+    // read : file given as paramater (i.e. a dictionnary)
     while ((read = getline(&line, &len, fp)) != -1) {
         // remove newline
         size_t length = strlen(line);
@@ -38,17 +37,23 @@ void fill_trie(Trie trie, char* dict, enum language lang) {
             line[length - 1] = '\0';
         }
 
+        // parsing the word
         parse_word(line);
-        insert_word(trie, line, lang, 0);
-    	
+
+        // insert : word inside the Trie structure given as paramater
+        insert_word_trie(trie, line, lang, 0);
     }
 
-    fclose(fp);
+    // free : line
     free(line);
+    
+    // close : file given as paramater (i.e. a dictionnary)
+    if(fclose(fp) != 0)
+        print_err("fclose fill_trie");
 
+    // print : success + time needed to load it
     if (fprintf(stdout, "Successfully loaded %s into trie in %f s.\n", dict, (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
         print_perr();
-	
 }
 
 void construct_dawg(char* dict) {
@@ -61,12 +66,8 @@ void construct_dawg(char* dict) {
     FILE* fp;
 
     // open file 
-    fp = fopen(dict, "r"); // read mode
-
-    if (fp == NULL) {
-        perror("Error while opening the file.\n");
-        exit(EXIT_FAILURE);
-    }
+    if ((fp = fopen(dict, "r")) == NULL)
+        print_err("fopen construct_dawg");
 
     // read file
     while ((read = getline(&line, &len, fp)) != -1) {
@@ -81,7 +82,8 @@ void construct_dawg(char* dict) {
         // To complete ... 
     }
 
-    fclose(fp);
+    if(fclose(fp) != 0)
+        print_err("fclose construct_dawg");
     free(line);
 
     // return ...;
