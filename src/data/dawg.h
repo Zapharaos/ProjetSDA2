@@ -10,15 +10,15 @@ typedef struct vertex* Vertex;
 struct dawg
 {
 	size_t id;
-	Vertex* data;
+	Vertex* neighbors;
 	Lang lang;
 };
 
 struct vertex
 {
 	char label;
-	Dawg* right_node;
-	Dawg* left_node;
+	Dawg* from;
+	Dawg* to;
 };
 
 Dawg empty_dawg();

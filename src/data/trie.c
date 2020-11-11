@@ -38,7 +38,7 @@ void display(Trie trie)
 
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 	{
-		printf("Trie %ld [%c] lang: %d\n", i, (char)i + 'a', trie->data[i] == NULL ? -1 : trie->data[i]->lang);
+	//	printf("Trie %ld [%c] lang: %d\n", i, (char)i + 'a', trie->data[i] == NULL ? -1 : trie->data[i]->lang);
 		display(trie->data[i]);
 	}
 	
@@ -47,7 +47,7 @@ void display(Trie trie)
 Lang search_lang(Trie trie, const char* word, size_t index)
 {
 
-	printf("Index: %d | Lang : %d | Character: %c | C+1: %c\n", index, trie == NULL ? -1 : trie->lang, word[index], word[index + 1] == '\0' ? 'Z' : word[index+1]);
+	//printf("Index: %d | Lang : %d | Character: %c | C+1: %c\n", index, trie == NULL ? -1 : trie->lang, word[index], word[index + 1] == '\0' ? 'Z' : word[index+1]);
 
 	if (trie == NULL)
 		return 0;
