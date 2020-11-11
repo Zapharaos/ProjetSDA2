@@ -120,6 +120,7 @@ Lang search_lang_trie(Trie trie, const char* word, size_t index)
 void count_lang_trie(Trie trie, char** sentence, const size_t n, int count[]) {
 	for(size_t i = 0; i < n; i++) {
         Lang word = search_lang_trie(trie, sentence[i], 0);
+		if(word == NULL) continue;
         if(word->fr)
             count[0]++;
         if(word->de)

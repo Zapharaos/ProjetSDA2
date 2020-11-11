@@ -17,8 +17,8 @@ struct dawg
 struct vertex
 {
 	char label;
-	Dawg* from;
-	Dawg* to;
+	Dawg from;
+	Dawg to;
 };
 
 Dawg empty_dawg();
@@ -34,6 +34,5 @@ void display(Dawg dawg);
 Lang search_lang(Dawg dawg, const char* word, size_t index);
 
 bool match_lang(Dawg dawg, const char* word, enum language lang, size_t index);
-
 
 #endif // !_DAWG_H

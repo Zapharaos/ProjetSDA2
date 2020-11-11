@@ -1,4 +1,5 @@
 #include "dawg.h"
+#include <stdlib.h>
 
 Dawg empty_dawg()
 {
@@ -24,8 +25,8 @@ void free_dawg(Dawg dawg)
 		if(dawg->neighbors[i] == NULL)
 			continue;
 
-		free_trie(dawg->neighbors[i]->from);
-		free_trie(dawg->neighbors[i]->to);
+		free_dawg(dawg->neighbors[i]->from);
+		free_dawg(dawg->neighbors[i]->to);
 	}
 		
 	if (dawg->lang != NULL)
