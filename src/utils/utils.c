@@ -18,7 +18,7 @@ void to_lower(char* entry)
 
 char** get_sentence(size_t* n) {
     
-    if(fprintf(stdout, "Votre phrase : ") < 0)
+    if(fprintf(stdout, "\nVotre phrase : ") < 0)
         print_perr();
     
     char s[SENTENCE_MAX_SIZE] = "";
@@ -26,23 +26,30 @@ char** get_sentence(size_t* n) {
         print_err("fgets sentence");
     
     char* save; // to maintain context between successive calls that parse the same string
-    const char* separators = " ,.?!\n"; // split at this chars
+    const char* separators = " ,.?!\n"; // split at these chars
     char* token = strtok_r(s, separators, &save); // POSIX (strtok is not)
-    
-    char** sentence = (char**) malloc(sizeof(char*) * NB_WORD_MAX); // sizeof(char) = 1
-    
+
+    char** sentence = malloc(sizeof(char*) * NB_WORD_MAX);
+    for(size_t i=0; i < NB_WORD_MAX; ++i) {
+        sentence[i] = malloc(sizeof(char) * WORD_MAX_SIZE);
+    }
+
     do {
         to_lower(token);
-        sentence[(*n)++] = token; // each word
+        strcpy(sentence[(*n)++], token); // each word
     } while ((token = strtok_r(NULL, separators, &save)) != NULL );
-    
-    show_sentence(sentence, n);
     
     return sentence;
 }
 
-void show_sentence(char** sentence, size_t* n) {
-    for (size_t i = 0; i < (*n); i++)
+void free_sentence(char** sentence) { 
+    for (int i = 0; i < NB_WORD_MAX; i++ )
+        free(sentence[i]);
+    free(sentence);
+}
+
+void show_sentence(char** sentence, size_t n) {
+    for (size_t i = 0; i < (n); i++)
         print_msg(sentence[i]);
 }
 
@@ -106,8 +113,8 @@ int max(int* lang)
     return k;
 }
 
-void print_result(char result, int count[]){
-    fprintf(stdout,"\nLe langage principal est : %s.\n", &result);
+void print_result(char* result, int count[]){
+    fprintf(stdout,"\nLe langage principal est : %s.\n", result);
     fprintf(stdout,"Il y a %d mot(s) en français.\n", count[0]);
     fprintf(stdout,"Il y a %d mot(s) en allemand.\n", count[1]);
     fprintf(stdout,"Il y a %d mot(s) en anglais.\n", count[2]);

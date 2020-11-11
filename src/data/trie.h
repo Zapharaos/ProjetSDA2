@@ -20,12 +20,12 @@ void free_trie(Trie trie);
 
 void display(Trie trie);
 
-Lang search_lang(Trie trie, const char* word, size_t index);
+Lang search_lang_trie(Trie trie, const char* word, size_t index);
 
-bool match_lang(Trie trie, const char* word, enum language lang, size_t index);
+bool match_lang_trie(Trie trie, const char* word, enum language lang, size_t index);
 
 // lang
 
-void count_lang(Trie trie, char** sentence, const size_t* n, int count[]);
+void count_lang_trie(Trie trie, char** sentence, const size_t* n, int count[]);
 
 #endif // !_TRIE_H

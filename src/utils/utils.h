@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #define NB_WORD_MAX 64
+#define WORD_MAX_SIZE 32
 #define SENTENCE_MAX_SIZE 256
 
 /**
@@ -20,13 +21,15 @@ void to_lower(char* entry);
  */
 char** get_sentence(size_t* n);
 
+void free_sentence(char** sentence);
+
 /**
  * \fn      void show_sentence(char** sentence, size_t* n)
  * \brief   Affiche les mots de la phrase stockée dans le tableau
  * \param   sentence Le tableau contenant les mots de la phrase
  * \param   n Le nombre de mots dans la phrase
 */
-void show_sentence(char** sentence, size_t* n);
+void show_sentence(char** sentence, size_t n);
 
 size_t ascii_to_index(char c);
 
@@ -38,6 +41,8 @@ char* concat(const char* s1, const char* s2);
 
 int max(int lang[]);
 
-void print_result(char result, int count[]);
+void print_result(char* result, int count[]);
+
+char* sentence_lang(int count[]);
 
 #endif

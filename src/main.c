@@ -22,14 +22,9 @@ int handle_args(int argc, char* argv[])
 
 	if (strcmp(argv[1], "-sentence") == 0)
     {
-	    size_t n = 0; // number of words
+        size_t n = 0;
 	    char** sentence = get_sentence(&n);
-
-	    if (argc <= 2)
-	    {
-			free(sentence);
-			return 1;
-	    }
+        show_sentence(sentence,n);
         
 	    if (strcmp(argv[2], "-trie") == 0)
         {
@@ -40,58 +35,27 @@ int handle_args(int argc, char* argv[])
             fill_trie(trie, "dict/french-wordlist.txt", FR);
             
             int count[3] = {0,0,0};
-            count_lang(trie, sentence, &n, count);
+            count_lang_trie(trie, sentence, &n, count);
             
             print_result(sentence_lang(count), count);
             
             free_trie(trie);
+            free_sentence(sentence);
             return 1;
         }
 
         if (strcmp(argv[2], "-dawg") == 0)
         {
             //todo:
-            return 0;
+            free_sentence(sentence);
+            return 1;
         }
 
+        free_sentence(sentence);
 		return 0;
-
-    }
-    
-	if (strcmp(argv[1], "-trie") == 0)
-    {
-        Trie trie = empty_trie();
-
-        fill_trie(trie, "dict/german-wordlist.txt", DE);
-		fill_trie(trie, "dict/english-wordlist.txt", EN);
-        fill_trie(trie, "dict/french-wordlist.txt", FR);
-		
-		print_msg("");
-
-        printf("Recherche du lang pour poisson: ");
-        print_lang(search_lang(trie, "poisson", 0));
-
-        printf("Recherche du lang pour bouffon: ");
-        print_lang(search_lang(trie, "bouffon", 0));
-
-        printf("Recherche du lang pour pomme: ");
-        print_lang(search_lang(trie, "pomme", 0));
-
-        printf("Recherche du lang pour kartoffel: ");
-        print_lang(search_lang(trie, "kartoffel", 0));
-
-        printf("Recherche du lang pour eat: ");
-        print_lang(search_lang(trie, "eat", 0));
-
-        printf("Recherche du lang pour notebook: ");
-        print_lang(search_lang(trie, "notebook", 0));
-		
-		free_trie(trie);
-		return 1;
     }
 	
 	print_err("Argument not found: type ./ald -help (or make help) to display help");
-
     return 0;
 }
 
@@ -106,4 +70,37 @@ int main(int argc, char* argv[]) {
 	
     return 1;
 }
-// --help
+
+/*
+if (strcmp(argv[1], "-trie") == 0)
+    {
+        Trie trie = empty_trie();
+
+        fill_trie(trie, "dict/german-wordlist.txt", DE);
+		fill_trie(trie, "dict/english-wordlist.txt", EN);
+        fill_trie(trie, "dict/french-wordlist.txt", FR);
+		
+		print_msg("");
+
+        printf("Recherche du lang pour poisson: ");
+        print_lang(search_lang_trie(trie, "poisson", 0));
+
+        printf("Recherche du lang pour bouffon: ");
+        print_lang(search_lang_trie(trie, "bouffon", 0));
+
+        printf("Recherche du lang pour pomme: ");
+        print_lang(search_lang_trie(trie, "pomme", 0));
+
+        printf("Recherche du lang pour kartoffel: ");
+        //print_lang(search_lang_trie(trie, "kartoffel", 0));
+
+        printf("Recherche du lang pour eat: ");
+        print_lang(search_lang_trie(trie, "eat", 0));
+
+        printf("Recherche du lang pour notebook: ");
+        print_lang(search_lang_trie(trie, "notebook", 0));
+		
+		free_trie(trie);
+		return 1;
+    }
+    */

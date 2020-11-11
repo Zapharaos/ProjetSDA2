@@ -32,22 +32,22 @@ void free_trie(Trie trie)
 	free(trie);
 }
 
-void display(Trie trie)
+void display_trie(Trie trie)
 {
 	if (trie == NULL) return;
 
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 	{
-		printf("Trie %ld [%c] lang: %d\n", i, (char)i + 'a', trie->data[i] == NULL ? -1 : trie->data[i]->lang);
-		display(trie->data[i]);
+		//printf("Trie %ld [%c] lang: %d\n", i, (char)i + 'a', trie->data[i] == NULL ? -1 : trie->data[i]->lang);
+		display_trie(trie->data[i]);
 	}
 	
 }
 
-Lang search_lang(Trie trie, const char* word, size_t index)
+Lang search_lang_trie(Trie trie, const char* word, size_t index)
 {
 
-	printf("Index: %d | Lang : %d | Character: %c | C+1: %c\n", index, trie == NULL ? -1 : trie->lang, word[index], word[index + 1] == '\0' ? 'Z' : word[index+1]);
+	//printf("Index: %d | Lang : %d | Character: %c | C+1: %c\n", index, trie == NULL ? -1 : trie->lang, word[index], word[index + 1] == '\0' ? 'Z' : word[index+1]);
 
 	if (trie == NULL)
 		return 0;
@@ -60,13 +60,13 @@ Lang search_lang(Trie trie, const char* word, size_t index)
 		exit(1);
 	}
 	
-	return search_lang(trie->data[ascii_to_index(word[index])], word, index + 1);
+	return search_lang_trie(trie->data[ascii_to_index(word[index])], word, index + 1);
 }
 
 
-bool match_lang(Trie trie, const char* word, enum language lang, size_t index)
+bool match_lang_trie(Trie trie, const char* word, enum language lang, size_t index)
 {
-	Lang f_lang = search_lang(trie, word, index);
+	Lang f_lang = search_lang_trie(trie, word, index);
 
 	if (f_lang == NULL)
 		return UNKNOWN;
@@ -129,9 +129,9 @@ void insert_word(Trie trie, const char* word, enum language lang, const size_t i
 	
 }
 
-void count_lang(Trie trie, char** sentence, const size_t* n, int count[]) {
+void count_lang_trie(Trie trie, char** sentence, const size_t* n, int count[]) {
 	for(size_t i = 0; i < *n; i++) {
-        Lang word = search_lang(trie, sentence[i], 0);
+        Lang word = search_lang_trie(trie, sentence[i], 0);
         if(word->fr)
             count[0]++;
         if(word->de)
