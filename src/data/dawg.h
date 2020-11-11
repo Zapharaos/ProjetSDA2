@@ -11,14 +11,14 @@ struct dawg
 {
 	size_t id;
 	Vertex* neighbors;
-	Lang lang;
+	bool is_word;
 };
 
 struct vertex
 {
 	char label;
-	Dawg from;
-	Dawg to;
+	Dawg from; // sommet gauche
+	Dawg to; // sommet droit
 };
 
 Dawg empty_dawg();

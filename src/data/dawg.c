@@ -5,7 +5,7 @@ Dawg empty_dawg()
 {
 	Dawg dawg = malloc(sizeof(struct dawg));
 	dawg->id = 0; // unknown
-	dawg->lang = 0;
+	dawg->is_word = false;
 	dawg->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
 
 	// on initialise le tableau avec des pointeurs nuls
@@ -29,9 +29,11 @@ void free_dawg(Dawg dawg)
 		free_dawg(dawg->neighbors[i]->to);
 	}
 		
-	if (dawg->lang != NULL)
-		free(dawg->lang);
-	
 	free(dawg->neighbors);
 	free(dawg);
+}
+
+void insert_word(Dawg dawg, const char* word, enum language lang, size_t index)
+{
+
 }
