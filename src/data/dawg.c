@@ -2,5 +2,5 @@
 
 Dawg empty_dawg()
 {
-	return Dawg();
+	return 0;
 }
