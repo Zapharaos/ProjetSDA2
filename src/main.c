@@ -27,15 +27,10 @@ int handle_args(int argc, char* argv[])
     // if : sentence
 	if (strcmp(argv[1], "-sentence") == 0)
     {
-        // init : sentence entered by user
-        size_t n = 0;
-	    char** sentence = get_sentence(&n);
-        show_sentence(sentence,n);
         
         // if : trie
 	    if (strcmp(argv[2], "-trie") == 0)
         {
-
             // init : new structure Trie
             Trie trie = empty_trie();
 
@@ -43,21 +38,12 @@ int handle_args(int argc, char* argv[])
             fill_trie(trie, "dict/german-wordlist.txt", DE);
             fill_trie(trie, "dict/english-wordlist.txt", EN);
             fill_trie(trie, "dict/french-wordlist.txt", FR);
-            
-            // count : how many words per language in the sentence
-            int count[3] = {0,0,0};
-            count_lang_trie(trie, sentence, n, count);
-            
-            // print : how many words per language + detection result
-            char* result = sentence_lang(count);
-            fprintf(stdout,"%d word(s) in french.\n", count[0]);
-            fprintf(stdout,"%d word(s) in german.\n", count[1]);
-            fprintf(stdout,"%d word(s) in english.\n", count[2]);
-            fprintf(stdout,"\nMain language is : %s.\n", result);
-            
-            // free : structure and sentence
-            free_trie(trie);
-            free_sentence(sentence);
+
+            // start : program
+            start_trie(trie);
+
+            // free : structure
+    	    free_trie(trie);
 
             // return : success
             return 0;
@@ -68,15 +54,9 @@ int handle_args(int argc, char* argv[])
         {
             //todo :
 
-            // free : structure and sentence
-            free_sentence(sentence);
-
             // return success
             return 0;
         }
-
-        // free : sentence
-        free_sentence(sentence);
 
         // return : failed
 		return 1;
@@ -92,8 +72,14 @@ int handle_args(int argc, char* argv[])
 int main(int argc, char* argv[]) {
 
     // if : checking the arguments
-    if(handle_args(argc, argv) == 1)
+    if(handle_args(argc, argv) == 0)
     {
+        if (strcmp(argv[2], "-trie") == 0) {
+            
+        } else if (strcmp(argv[2], "-dawg") == 0) {
+
+        }
+
         // return : program success
         return 0;
     }

@@ -10,7 +10,7 @@
 char** get_sentence(size_t* n) {
     
     // print : sentence to user
-    if(fprintf(stdout, "Votre phrase : ") < 0)
+    if(fprintf(stdout, "\nYour sentence :\n") < 0)
         print_perr();
     
     // get : the sentence of his choice

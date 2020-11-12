@@ -11,6 +11,15 @@
  */
 void fill_trie(Trie trie, char* dict, enum language lang);
 
+/**
+ * \fn      display_trie(Trie trie)
+ * \brief   Search for the most occurred language in a sentence
+ * \param   trie    the structure
+ * \param   sentence the sentence to treat
+ * \param   n    the number of words in the sentence
+ */
+void start_trie(Trie trie);
+
 void construct_dawg(char* dict);
 
 #endif
