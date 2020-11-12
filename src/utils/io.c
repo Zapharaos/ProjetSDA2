@@ -57,7 +57,7 @@ void fill_trie(Trie trie, char* dict, enum language lang) {
 }
 
 /**
- * Search for the most occurred language in a sentence
+ * start the langue detector using the Trie structure
  */
 void start_trie(Trie trie) {
 
