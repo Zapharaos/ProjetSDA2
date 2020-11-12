@@ -11,13 +11,6 @@
  */
 void fill_trie(Trie trie, char* dict, enum language lang);
 
-/**
- * \fn      start_trie(Trie trie)
- * \brief   start the langue detector using the Trie structure
- * \param   trie    the structure
- */
-void start_trie(Trie trie);
-
 void construct_dawg(char* dict);
 
 #endif

@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "trie.h"
 #include "../utils/utils.h"
 #include "../utils/errors.h"
@@ -127,5 +128,48 @@ void count_lang_trie(Trie trie, char** sentence, const size_t n, int count[]) {
             count[1]++;
         if(word->en)
             count[2]++;
+    }
+}
+
+/**
+ * start the langue detector using the Trie structure
+ */
+void start_trie(Trie trie) {
+
+    // init : sentence entered by user
+    size_t n = 0;
+    char** sentence = get_sentence(&n);
+
+    clock_t start = clock(); // clock start
+    
+    // count : how many words per language in the sentence
+    int count[3] = {0,0,0};
+    count_lang_trie(trie, sentence, n, count);
+    
+    // print : how many words per language + detection result
+    char* result = sentence_lang(count);
+    fprintf(stdout,"\n%d word(s) in french.\n", count[0]);
+    fprintf(stdout,"%d word(s) in german.\n", count[1]);
+    fprintf(stdout,"%d word(s) in english.\n", count[2]);
+    fprintf(stdout,"\nMain language is : %s.\n", result);
+    
+    // print : time needed to treat the sentence
+    if (fprintf(stdout, "It took %f seconds to treat this sentence\n", (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
+        print_perr();
+    
+    // free : sentence
+    free_sentence(sentence);
+
+    print_msg("\nType y to restart (anything else will end the programm) :");
+
+    if (getchar() == 'y') {
+
+        // issue : in fgets due to \n character after using getchar
+        int c;
+        while ( (c = getchar()) != EOF && c != '\n') {}
+
+        // start : re starting
+        print_msg("\nStarting again...");
+        start_trie(trie);
     }
 }

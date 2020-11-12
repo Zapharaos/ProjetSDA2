@@ -67,4 +67,11 @@ Lang search_word_trie(Trie trie, const char* word, size_t index);
  */
 void count_lang_trie(Trie trie, char** sentence, const size_t n, int count[]);
 
+/**
+ * \fn      start_trie(Trie trie)
+ * \brief   start the langue detector using the Trie structure
+ * \param   trie    the structure
+ */
+void start_trie(Trie trie);
+
 #endif // !_TRIE_H
