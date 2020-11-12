@@ -71,7 +71,7 @@ void start_trie(Trie trie) {
 	
 	// print : how many words per language + detection result
 	char* result = sentence_lang(count);
-	fprintf(stdout,"%d word(s) in french.\n", count[0]);
+	fprintf(stdout,"\n%d word(s) in french.\n", count[0]);
 	fprintf(stdout,"%d word(s) in german.\n", count[1]);
 	fprintf(stdout,"%d word(s) in english.\n", count[2]);
 	fprintf(stdout,"\nMain language is : %s.\n", result);
@@ -82,6 +82,13 @@ void start_trie(Trie trie) {
     print_msg("\nType y to restart (anything else will end the programm) :");
 
     if (getchar() == 'y') {
+
+        // issue : in fgets due to \n character after using getchar
+        int c;
+        while ( (c = getchar()) != EOF && c != '\n') {}
+
+        // start : re starting
+        print_msg("\nStarting again...");
         start_trie(trie);
     }
 }

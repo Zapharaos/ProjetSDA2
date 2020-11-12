@@ -143,7 +143,7 @@ int max(int* lang)
     for (int i = 0; i < 3; ++i){
         if (lang[i] > max) {
             max = lang[i];
-            k = i;
+            k = i+1;
         }
     }
     return k;
@@ -154,12 +154,14 @@ int max(int* lang)
  */
 char* sentence_lang(int count[]) {
     switch(max(count)) {
-        case 0:
-            return "french";
         case 1:
+            return "french";
+        case 2:
             return "german";
-        default:
+        case 3:
             return "english";
+        default:
+            return "unknown (empty)";
     }
 }
 

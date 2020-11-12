@@ -31,6 +31,9 @@ int handle_args(int argc, char* argv[])
         // if : trie
 	    if (strcmp(argv[2], "-trie") == 0)
         {
+
+            print_msg("\nYou chose : Trie \n");
+
             // init : new structure Trie
             Trie trie = empty_trie();
 
@@ -74,17 +77,9 @@ int main(int argc, char* argv[]) {
     // if : checking the arguments
     if(handle_args(argc, argv) == 0)
     {
-        if (strcmp(argv[2], "-trie") == 0) {
-            
-        } else if (strcmp(argv[2], "-dawg") == 0) {
-
-        }
-
         // return : program success
         return 0;
     }
-
-    // else : 
 
     // return : program failed
     print_err("Options not found: type ./ald -help to display help");
