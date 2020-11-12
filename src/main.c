@@ -34,18 +34,9 @@ int handle_args(int argc, char* argv[])
 
             print_msg("\nYou chose : Trie \n");
 
-            // init : new structure Trie
             Trie trie = empty_trie();
-
-            // loading the dictionnarys inside the Trie structure
-            fill_trie(trie, "dict/german-wordlist.txt", DE);
-            fill_trie(trie, "dict/english-wordlist.txt", EN);
-            fill_trie(trie, "dict/french-wordlist.txt", FR);
-
-            // start : program
+            construct_trie(trie);
             start_trie(trie);
-
-            // free : structure
     	    free_trie(trie);
 
             // return : success

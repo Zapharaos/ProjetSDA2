@@ -50,8 +50,9 @@ void display_trie(Trie trie)
 {
 	if (trie == NULL) return;
 
-	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
+	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
+		printf("[%c] %d\n", (char)i + 'a', trie->data[i] == NULL ? -1 : 0);
 		display_trie(trie->data[i]);
 	}
 }
@@ -131,16 +132,8 @@ void count_lang_trie(Trie trie, char** sentence, const size_t n, int count[]) {
     }
 }
 
-/**
- * start the langue detector using the Trie structure
- */
-void start_trie(Trie trie) {
-
-    // init : sentence entered by user
-    size_t n = 0;
-    char** sentence = get_sentence(&n);
-
-    clock_t start = clock(); // clock start
+void treat_trie(Trie trie, char** sentence, size_t n){
+	clock_t start = clock(); // clock start
     
     // count : how many words per language in the sentence
     int count[3] = {0,0,0};
@@ -156,6 +149,19 @@ void start_trie(Trie trie) {
     // print : time needed to treat the sentence
     if (fprintf(stdout, "It took %f seconds to treat this sentence\n", (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
         print_perr();
+}
+
+/**
+ * start the langue detector using the Trie structure
+ */
+void start_trie(Trie trie) {
+
+    // init : sentence entered by user
+    size_t n = 0;
+    char** sentence = get_sentence(&n);
+
+	// treat : sentence	
+    treat_trie(trie, sentence, n);
     
     // free : sentence
     free_sentence(sentence);

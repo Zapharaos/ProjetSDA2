@@ -11,6 +11,11 @@
  */
 void fill_trie(Trie trie, char* dict, enum language lang);
 
+/**
+ * Loading the dictionnarys inside
+ */
+void construct_trie(Trie trie);
+
 void construct_dawg(char* dict);
 
 #endif

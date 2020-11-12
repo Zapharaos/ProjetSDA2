@@ -56,6 +56,18 @@ void fill_trie(Trie trie, char* dict, enum language lang) {
         print_perr();
 }
 
+/**
+ * Loading the dictionnarys inside
+ */
+void construct_trie(Trie trie) {
+    
+    // loading : dictionnary
+    fill_trie(trie, "dict/german-wordlist.txt", DE);
+    fill_trie(trie, "dict/english-wordlist.txt", EN);
+    fill_trie(trie, "dict/french-wordlist.txt", FR);
+    
+}
+
 void construct_dawg(char* dict) {
     // Instantiate either a Trie or a DAWG here
     // ...
