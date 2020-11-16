@@ -33,7 +33,38 @@ void free_dawg(Dawg dawg)
 	free(dawg);
 }
 
+void minimiser(Dawg dawg, size_t profondeur){
+	/*while(stack_size(dawg->stack) > p){
+		a = stack_pop(dawg->stack);
+		if(hashmap_get(a))
+			hashmap_remove(a);
+		else
+			hashmap_put(a);
+	}*/
+	
+	/* TANT QUE la taille de la pile est supérieure à p
+	FAIRE : Dépiler la pile, l’arête dépilée sera nommée a.
+		Vérifier si un sommet équivalent au sommet droit de l’arête a est déjà présent dans la hashmap.
+    	SI c’est le cas
+    		ALORS : Relier le sommet gauche de l’arête a à ce sommet
+    	SINON
+			Enregistrer ce sommet dans la hashmap. FIN SI
+	FIN TANT QUE */
+}
+
 void insert_word(Dawg dawg, const char* word, enum language lang, size_t index)
 {
+	/* trouver taille n du plus grand préfixe (commun)
+	entre le dernier mot inséré et word */
 
+	/* minimiser jusq'à profondeur n */
+	// minimiser(dawg, n);
+
+	/* ajouter suffixe (non commun) au graphe
+	si (pile vide) : racine
+	else  : sommet droit de dernière arete empilée */
+
+	/* Pour chaque lettre du suffixe ajoutée au graphe, empiler l’arête correspondante.*/
+
+	/* marquer le dernier sommet ajouté comme étant final */
 }

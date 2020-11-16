@@ -23,6 +23,8 @@ struct vertex
 
 Dawg empty_dawg();
 
+void minimiser(Dawg pawg, size_t profondeur);
+
 void insert_word(Dawg dawg, const char* word, enum language lang, size_t index);
 
 void free_dawg(Dawg dawg);

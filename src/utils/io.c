@@ -93,6 +93,9 @@ void construct_dawg(char* dict) {
         // here insert the word in the trie or in the DAWG
         // To complete ... 
     }
+    
+    // minimiser jusq'à profondeur 0
+    // minimiser(dawg, 0);
 
     if(fclose(fp) != 0)
         print_err("fclose construct_dawg");
