@@ -9,9 +9,11 @@ typedef struct vertex* Vertex;
 
 struct dawg
 {
-	size_t id;
+	//size_t id;
+	//bool is_word;
 	Vertex* neighbors;
-	bool is_word;
+	struct hashmap_s *hashmap;
+	struct stack *lifo;
 };
 
 struct vertex

@@ -1,12 +1,18 @@
 #include "dawg.h"
+#include "stack.h"
+#include "hashmap.h"
 #include <stdlib.h>
 
 Dawg empty_dawg()
 {
 	Dawg dawg = malloc(sizeof(struct dawg));
-	dawg->id = 0; // unknown
-	dawg->is_word = false;
+
+	//dawg->id = 0; // unknown
+	//dawg->is_word = false;
+
 	dawg->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
+	dawg->lifo = new_stack(0);
+	hashmap_create(0, dawg->hashmap);
 
 	// on initialise le tableau avec des pointeurs nuls
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
@@ -33,14 +39,14 @@ void free_dawg(Dawg dawg)
 	free(dawg);
 }
 
-void minimiser(Dawg dawg, size_t profondeur){
-	/*while(stack_size(dawg->stack) > p){
-		a = stack_pop(dawg->stack);
-		if(hashmap_get(a))
-			hashmap_remove(a);
+void minimiser(Dawg dawg, size_t p){
+	while(stack_size(dawg->lifo) > p){
+		void* a = stack_pop(dawg->lifo);
+		if(hashmap_get(dawg->hashmap, "jesaispasquoimettre", p))
+			hashmap_remove(dawg->hashmap, "toujourspas", p);
 		else
-			hashmap_put(a);
-	}*/
+			hashmap_put(dawg->hashmap, "encore?mdr", p, a);
+	}
 	
 	/* TANT QUE la taille de la pile est supérieure à p
 	FAIRE : Dépiler la pile, l’arête dépilée sera nommée a.
