@@ -49,10 +49,13 @@ void display_dawg(Dawg dawg);
 
 size_t search_prefix_length(char* word1, char* word2);
 
+void display(Node node);
 // Lang
-
+bool word_exists(Node node, const char* word, size_t index);
+/*
 Lang search_lang(Dawg dawg, const char* word, size_t index);
 
 bool match_lang(Dawg dawg, const char* word, enum language lang, size_t index);
+*/
 
 #endif // !_DAWG_H

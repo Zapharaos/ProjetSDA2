@@ -38,6 +38,7 @@ void free_node(Node root)
 
 		free_node(root->neighbors[i]->from);
 		free_node(root->neighbors[i]->to);
+		free(root->neighbors[i]);
 	}
     
     free(root->neighbors);
@@ -49,7 +50,8 @@ Dawg empty_dawg()
 	Dawg dawg = malloc(sizeof(struct dawg));
 
 	dawg->current_node_index = 0;
-	dawg->last_word = malloc(sizeof(char) * WORD_MAX_SIZE);
+	dawg->last_word = malloc(WORD_MAX_SIZE);
+	dawg->last_word[0] = '\0';
 	dawg->stack = new_stack(1000000); // à voir plus tard
 	hashmap_create(2, &dawg->hashmap);
 	dawg->root = empty_node(dawg);
@@ -62,7 +64,6 @@ void free_dawg(Dawg dawg)
 		return;
 
 	free(dawg->last_word);
-	// + free dawg->stack
 
 	hashmap_destroy(&dawg->hashmap);
 	free_node(dawg->root);
@@ -93,7 +94,7 @@ void minimize(Dawg dawg, size_t p)
 	while(stack_size(dawg->stack) > p)
 	{
 		Vertex a = (Vertex) stack_pop(dawg->stack);
-		char serialized[SERIALIZE_MAX_SIZE];
+		char serialized[SERIALIZE_MAX_SIZE] = "";
 		serialize(a->to, serialized);
 		Node sommet = (Node) hashmap_get(&dawg->hashmap, serialized, p);
 		
@@ -183,4 +184,43 @@ void serialize(Node node, char* result)
 	}
 
 	result[index] = '\0';
+}
+
+bool word_exists(Node node, const char* word, size_t index)
+{
+	printf("a");
+
+	if(node == NULL)
+		{printf("\n");return false;}
+	
+	printf("b");
+
+	if(word[index] == '\0')
+		{printf("\n");return node->is_word;}
+
+	printf("c");
+
+	Vertex v = node->neighbors[ascii_to_index(word[index])];
+	
+	if(v == NULL)
+		{printf("\n");return false;}
+
+	printf("%c => %ld\n", v->label, v->to->id);
+	
+	return word_exists(v->to, word, index+1);
+}
+
+void display(Node node)
+{
+
+	printf("Node id: %ld (%s)\n", node->id, node->is_word ? "Oui" : "Non");
+	
+	for (size_t i = 0; i < ALPHABET_SIZE; i++)
+	{
+		if(node->neighbors[i] == NULL)
+			break;
+		printf("%c : ", node->neighbors[i]->label);
+		display(node->neighbors[i]->to);
+	}
+
 }
