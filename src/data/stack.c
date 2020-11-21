@@ -39,6 +39,7 @@ void stack_push(struct stack *pt, void *x)
 	// check if stack is already full. Then inserting an element would 
 	// lead to stack overflow
 	if (is_stack_full(pt)) {
+		printf("stack_push\n");
 		exit(EXIT_FAILURE);
 	}
 	
@@ -52,13 +53,19 @@ void *stack_peek(struct stack *pt) {
 	if (!is_stack_empty(pt))
 		return pt->items[pt->top];
 	else
-		exit(EXIT_FAILURE);
+		{
+					printf("stack_push\n");
+
+			exit(EXIT_FAILURE);
+		}
 }
 
 // Utility function to pop top element from the stack
 void *stack_pop(struct stack *pt) {
 	// check for stack underflow
 	if (is_stack_empty(pt)) {
+				printf("stack_push\n");
+
 		exit(EXIT_FAILURE);
 	}
 

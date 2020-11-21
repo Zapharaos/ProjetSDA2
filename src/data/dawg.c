@@ -50,7 +50,7 @@ Dawg empty_dawg()
 
 	dawg->current_node_index = 0;
 	dawg->last_word = malloc(sizeof(char) * WORD_MAX_SIZE);
-	//dawg->stack = new_stack(2); // à voir plus tard
+	dawg->stack = new_stack(1000000); // à voir plus tard
 	hashmap_create(2, &dawg->hashmap);
 	dawg->root = empty_node(dawg);
 	
@@ -78,21 +78,42 @@ size_t search_prefix_length(char* word1, char* word2){
     size_t index = 0;
     size_t max = max(strlen(word1), strlen(word2));
 
+	for (size_t i = 0; i < strlen(word1); i++)
+	{
+		/* code */
+		printf("%c ", word1[i] == '\0' ? 'F' : word1[i]);
+	}
+	printf("\nSizeof word1: %ld\n", strlen(word1));
+	
+	for (size_t i = 0; i < strlen(word2); i++)
+	{
+		/* code */
+		printf("%c ", word2[i] == '\0' ? 'F' : word2[i]);
+	}
+	printf("\nSizeof word2: %ld\n", strlen(word2));
+
+	for (index = 0; index < max; index++)
+		if(word1[index] != word2[index])
+			return index;
+	
+	return index;
+/*
     while((index < max) && (word1[index] == word2[index])){
     	index++;
 	}
 
-	return index;
+	return index; */
 }
 
 void minimize(Dawg dawg, size_t p)
 {
-	
+	printf("Minimise a la hautueur: %ld\n", p);
 	while(stack_size(dawg->stack) > p)
 	{
 		Vertex a = (Vertex) stack_pop(dawg->stack);
 		char* serialized = serialize(a->to);
 		Node sommet = (Node) hashmap_get(&dawg->hashmap, serialized, p);
+		printf("while: %s\n", serialized);
 		
 		if(sommet == HASHMAP_NULL)
 		{
@@ -121,15 +142,33 @@ void minimize(Dawg dawg, size_t p)
 	/* marquer le dernier sommet ajouté comme étant final */
 void insert_dawg(Dawg dawg, char* word)
 {
+	printf("Word: %s\n", word);
+	printf("Lastword: %s\n", dawg->last_word == 0 ? "NULL" : dawg->last_word);
 	// Etape 1
 	size_t n = dawg->last_word != 0 ? search_prefix_length(word, dawg->last_word) : 0;
-
+	printf("DAWG N: %ld\n", n);
 	// Etape 2
 	minimize(dawg, n);
-
+	printf("2\n");
 	// Etape 3
-	Node found = stack_size(dawg->stack) > 0 ? dawg->root : ((Vertex)stack_peek(dawg->stack))->to;
-	
+	Node found;
+
+	if(stack_size(dawg->stack) == 0)
+	{
+		printf("avant dawg root\n");
+		found = dawg->root;
+		printf("apres dawg root\n");
+	} else {
+		printf("avant stack_peek\n");
+		Vertex v = ((Vertex)stack_peek(dawg->stack));
+		printf("V: %p\n", v);
+		printf("V->from: %p\n", v->from);
+		printf("V->to: %p\n", v->to);
+		found = v->to;
+		printf("apres stack_peek\n");
+	}
+	//Node found = stack_size(dawg->stack) == 0 ? dawg->root : ;
+	printf("3\n");
 	for (size_t i = n; i < strlen(word); i++)
 	{
 		size_t index = ascii_to_index(word[i]);
