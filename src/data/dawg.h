@@ -12,8 +12,9 @@ typedef struct node* Node;
 typedef struct vertex* Vertex;
 
 struct dawg{
+	size_t node_index;
 	char* last_word;
-	struct stack stack;
+	struct stack *stack;
 	struct hashmap_s hashmap;
 	Node root;
 };

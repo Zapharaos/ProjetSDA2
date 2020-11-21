@@ -1,11 +1,21 @@
 #include "dawg.h"
 #include <stdlib.h>
 
-Node empty_node()
+Vertex empty_vertex(char label, Node from, Node to)
+{
+	Vertex vertex = malloc(sizeof(struct vertex));
+	vertex->label = label;
+	vertex->from = from;
+	vertex->to = to;
+	
+	return vertex;
+}
+
+Node empty_node(Dawg dawg)
 {
 	Node root = malloc(sizeof(struct node));
 
-	root->id = 0; // unknown
+	root->id = dawg->node_index++;
 	root->is_word = false;
 	root->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
 
@@ -38,10 +48,11 @@ Dawg empty_dawg()
 {
 	Dawg dawg = malloc(sizeof(struct dawg));
 
+	dawg->node_index = 0;
 	dawg->last_word = malloc(sizeof(char) * WORD_MAX_SIZE);
 	//dawg->stack = new_stack(2); // à voir plus tard
 	hashmap_create(2, &dawg->hashmap);
-	dawg->root = empty_node();
+	dawg->root = empty_node(dawg);
 	
 	return dawg;
 }
