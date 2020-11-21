@@ -7,13 +7,10 @@ Dawg empty_dawg()
 {
 	Dawg dawg = malloc(sizeof(struct dawg));
 
-	//dawg->id = 0; // unknown
-	//dawg->is_word = false;
-
 	dawg->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
-	dawg->lifo = new_stack(0);
-	hashmap_create(0, dawg->hashmap);
-
+	dawg->stack = new_stack(0); // pas 0 mais capacité qu'on veut
+	hashmap_create(0, dawg->hashmap); // pas 0 mais capacité qu'on veut
+	
 	// on initialise le tableau avec des pointeurs nuls
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 		dawg->neighbors[i] = NULL;
@@ -39,16 +36,7 @@ void free_dawg(Dawg dawg)
 	free(dawg);
 }
 
-void minimiser(Dawg dawg, size_t p){
-	while(stack_size(dawg->lifo) > p){
-		void* a = stack_pop(dawg->lifo);
-		if(hashmap_get(dawg->hashmap, "jesaispasquoimettre", p))
-			hashmap_remove(dawg->hashmap, "toujourspas", p);
-		else
-			hashmap_put(dawg->hashmap, "encore?mdr", p, a);
-	}
-	
-	/* TANT QUE la taille de la pile est supérieure à p
+/* TANT QUE la taille de la pile est supérieure à p
 	FAIRE : Dépiler la pile, l’arête dépilée sera nommée a.
 		Vérifier si un sommet équivalent au sommet droit de l’arête a est déjà présent dans la hashmap.
     	SI c’est le cas
@@ -56,15 +44,21 @@ void minimiser(Dawg dawg, size_t p){
     	SINON
 			Enregistrer ce sommet dans la hashmap. FIN SI
 	FIN TANT QUE */
+void minimiser(Dawg dawg, size_t p){
+	while(stack_size(dawg->stack) > p){
+		void *a = stack_peek(dawg->stack); // changer le type de a ?
+		stack_pop(dawg->stack); 
+		if(HASHMAP_NULL == hashmap_get(dawg->hashmap, "jesaispasquoimettre", p)) // changer key et p ?
+			hashmap_remove(dawg->hashmap, "toujourspas", p); // changer key et p ?
+		else
+			hashmap_put(dawg->hashmap, "encore?mdr", p, a); // changer key et p ?
+	}
 }
 
-void insert_word(Dawg dawg, const char* word, enum language lang, size_t index)
-{
-	/* trouver taille n du plus grand préfixe (commun)
+/* trouver taille n du plus grand préfixe (commun)
 	entre le dernier mot inséré et word */
 
 	/* minimiser jusq'à profondeur n */
-	// minimiser(dawg, n);
 
 	/* ajouter suffixe (non commun) au graphe
 	si (pile vide) : racine
@@ -73,4 +67,7 @@ void insert_word(Dawg dawg, const char* word, enum language lang, size_t index)
 	/* Pour chaque lettre du suffixe ajoutée au graphe, empiler l’arête correspondante.*/
 
 	/* marquer le dernier sommet ajouté comme étant final */
+void insert_dawg(Dawg dawg, const char* word)
+{
+	// minimiser(dawg, n);
 }

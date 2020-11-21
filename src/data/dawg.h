@@ -9,11 +9,9 @@ typedef struct vertex* Vertex;
 
 struct dawg
 {
-	//size_t id;
-	//bool is_word;
 	Vertex* neighbors;
 	struct hashmap_s *hashmap;
-	struct stack *lifo;
+	struct stack *stack;
 };
 
 struct vertex
@@ -27,11 +25,11 @@ Dawg empty_dawg();
 
 void minimiser(Dawg pawg, size_t profondeur);
 
-void insert_word(Dawg dawg, const char* word, enum language lang, size_t index);
+void insert_dawg(Dawg dawg, const char* word);
 
 void free_dawg(Dawg dawg);
 
-void display(Dawg dawg);
+void display_dawg(Dawg dawg);
 
 // Lang
 

@@ -41,7 +41,7 @@ void fill_trie(Trie trie, char* dict, enum language lang) {
         parse_word(line);
 
         // insert : word inside the Trie structure given as paramater
-        insert_word_trie(trie, line, lang, 0);
+        insert_trie(trie, line, lang, 0);
     }
 
     // free : line
@@ -69,19 +69,18 @@ void construct_trie(Trie trie) {
 }
 
 void construct_dawg(char* dict) {
-    // Instantiate either a Trie or a DAWG here
-    // ...
 
     char* line = NULL;
     size_t len = 0;
     ssize_t read;
     FILE* fp;
+    clock_t start = clock();
 
-    // open file 
+    // open : file given as paramater (i.e. a dictionnary)
     if ((fp = fopen(dict, "r")) == NULL)
         print_err("fopen construct_dawg");
 
-    // read file
+    // read : file given as paramater (i.e. a dictionnary)
     while ((read = getline(&line, &len, fp)) != -1) {
         // remove newline
         size_t length = strlen(line);
@@ -90,16 +89,26 @@ void construct_dawg(char* dict) {
             line[length - 1] = '\0';
         }
 
-        // here insert the word in the trie or in the DAWG
+        // parsing the word
+        parse_word(line);
+        
+        // insert : word inside the Dawg structure given as paramater
         // To complete ... 
     }
     
-    // minimiser jusq'à profondeur 0
+    // free : line
+    free(line);
+
+    // minimiser to depth 0
     // minimiser(dawg, 0);
 
+    // close : file given as paramater (i.e. a dictionnary)
     if(fclose(fp) != 0)
         print_err("fclose construct_dawg");
-    free(line);
+
+    // print : success + time needed to load it
+    if (fprintf(stdout, "Successfully loaded %s into dawg in %f s.\n", dict, (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
+        print_perr();
 
     // return ...;
 }
