@@ -7,9 +7,17 @@
 #include <stddef.h>
 
 typedef struct dawg* Dawg;
+typedef struct node* Node;
 typedef struct vertex* Vertex;
 
-struct dawg
+struct dawg{
+	char* last_word;
+	struct stack *stack;
+	struct hashmap_s *hashmap;
+	Node root;
+};
+
+struct node
 {
 	size_t id;
 	bool is_word;
@@ -25,13 +33,15 @@ struct vertex
 
 Dawg empty_dawg();
 
-void minimiser(Dawg dawg, struct stack *stack, struct hashmap_s *hashmap, size_t p);
+void minimiser(Dawg dawg, size_t p);
 
 void insert_dawg(Dawg dawg, const char* word);
 
 void free_dawg(Dawg dawg);
 
 void display_dawg(Dawg dawg);
+
+size_t search_prefix_length(char* word1, char* word2);
 
 // Lang
 
