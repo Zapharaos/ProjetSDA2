@@ -12,10 +12,13 @@
 Trie empty_trie()
 {
 	Trie trie = malloc(sizeof(struct trie));
+
 	if(trie == NULL)
 		print_err("malloc trie empty_trie");
+
 	trie->lang = 0; // unknown
 	trie->data = malloc(sizeof(struct trie) * ALPHABET_SIZE);
+
 	if(trie->data == NULL)
 		print_err("malloc trie->data empty_trie");
 
@@ -39,6 +42,7 @@ void free_trie(Trie trie)
 
 	if (trie->lang != NULL)
 		free(trie->lang);
+		
 	free(trie->data);
 	free(trie);
 }
