@@ -29,6 +29,7 @@ $(BIN_DIR)/$(EXECUTABLE_NAME) : title build_dir $(OBJS)
 	@echo "> Compiling : "
 	@mkdir -p $(BIN_DIR)
 	$(CC) $(OBJS) -o $@
+	@echo "> Tips : type <make list> to check out the list of commands"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -50,6 +51,14 @@ clean:
 	rm -rf $(BIN_DIR)
 	rm -rf $(ARCH_DIR)
 	rm -rf $(DICT_DIR)
+
+list:
+	@echo "> List of commands :"
+	@echo "make -> compiles the program"
+	@echo "make clean -> clears the directory"
+	@echo "make dist -> creates an archive after cleaning the directory"
+	@echo "make dict -> executes a script to create the dictionnary files"
+	@echo "make install -> adds the program's executable to PATH variable"
 
 dict:
 	@./tools/fetch_dict.sh
