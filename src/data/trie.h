@@ -6,9 +6,14 @@
 
 typedef struct trie* Trie;
 
-/**
- * \struct  trie
- * \brief   Creates a dictionnary
+/** \struct trie
+ *  \brief This structure creates a dictionnary
+ */
+/** \var trie::data
+ *  Member 'data' contains the next node
+ */
+/** \var trie::lang
+ *  Member 'lang' contains the node's language
  */
 struct trie
 {

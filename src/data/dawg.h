@@ -13,6 +13,24 @@ typedef struct dawg* Dawg;
 typedef struct node* Node;
 typedef struct vertex* Vertex;
 
+/** \struct dawg
+ *  \brief This structure creates a dictionnary
+ */
+/** \var dawg::current_node_index
+ *  Member 'current_node_index' contains the index of the last node
+ */
+/** \var dawg::last_word
+ *  Member 'last_word' contains the last inserted word
+ */
+/** \var dawg::stack
+ *  Member 'stack' contains a stack structure
+ */
+/** \var dawg::hashmap
+ *  Member 'hashmap' contains a hashmap structure
+ */
+/** \var dawg::root
+ *  Member 'root' contains a node structure
+ */
 struct dawg {
 	size_t current_node_index;
 	char* last_word;
@@ -21,6 +39,18 @@ struct dawg {
 	Node root;
 };
 
+/** \struct node
+ *  \brief This structure creates a node for a dawg structure
+ */
+/** \var node::id
+ *  Member 'id' contains the node's id
+ */
+/** \var node::is_word
+ *  Member 'is_word' contains a boolean (wether it contains a word or not)
+ */
+/** \var node::neighbors
+ *  Member 'neighbors' contains a vertex structure
+ */
 struct node
 {
 	size_t id;
@@ -28,34 +58,108 @@ struct node
 	Vertex* neighbors;
 };
 
+/** \struct vertex
+ *  \brief This structure creates a vertex for a node structure
+ */
+/** \var vertex::label
+ *  Member 'label' contains the vertex's label
+ */
+/** \var vertex::from
+ *  Member 'from' contains the current node
+ */
+/** \var vertex::to
+ *  Member 'to' contains the next node
+ */
 struct vertex
 {
 	char label;
-	Node from; // sommet gauche
-	Node to; // sommet droit
+	Node from;
+	Node to;
 };
 
+/**
+ * \fn      empty_vertex(char label, Node from, Node to)
+ * \brief   Creates an empty vertex structure
+ * \param   label value to set in the structure
+ * \param   from value to set in the structure
+ * \param   to value to set in the structure
+ * \return	an empty vertex structure
+ */
+Vertex empty_vertex(char label, Node from, Node to);
+
+/**
+ * \fn      empty_dawg()
+ * \brief   Creates an empty node structure
+ * \param   dawg dawg to treat
+ * \return	an empty node structure
+ */
+Node empty_node(Dawg dawg);
+
+/**
+ * \fn      empty_dawg()
+ * \brief   Creates an empty dawg structure
+ * \return	an empty dawg structure
+ */
 Dawg empty_dawg();
 
+/**
+ * \fn      free_node(Node root)
+ * \brief   Free a node structure
+ * \param   root node to treat
+ */
+void free_node(Node root);
+
+/**
+ * \fn      free_dawg(Dawg dawg)
+ * \brief   Free a dawg structure
+ * \param   dawg dawg to treat
+ */
+void free_dawg(Dawg dawg);
+
+/**
+ * \fn      search_prefix_length(char* word1, char* word2)
+ * \brief   Gets the size of the biggest common prefix of the words
+ * \param   word1 first word to compare
+ * \param	word2 second word to compare
+ * \return	the size
+ */
+size_t search_prefix_length(char* word1, char* word2);
+
+/**
+ * \fn      minimize(Dawg dawg, size_t p)
+ * \brief   Minimize a dawg structure to a given depth
+ * \param   dawg dawg to treat
+ * \param	p the depth 
+ */
 void minimize(Dawg dawg, size_t p);
+
+/**
+ * \fn      insert_dawg(Dawg dawg, char* word)
+ * \brief   Inserts a word inside a dawg
+ * \param   dawg dawg to treat
+ * \param	word word to insert
+ */
+void insert_dawg(Dawg dawg, char* word);
 
 void serialize(Node node, char* result);
 
-void insert_dawg(Dawg dawg, char* word);
+/**
+ * \fn      display_node(Node node)
+ * \brief   Displays a Node structure inside a dawg
+ * \param   Node node to display
+ */
+void display_node(Node node);
 
-void free_dawg(Dawg dawg);
-
-void display_dawg(Dawg dawg);
-
-size_t search_prefix_length(char* word1, char* word2);
-
-void display(Node node);
 // Lang
-bool word_exists(Node node, const char* word, size_t index);
-/*
-Lang search_lang(Dawg dawg, const char* word, size_t index);
 
-bool match_lang(Dawg dawg, const char* word, enum language lang, size_t index);
-*/
+/**
+ * \fn      word_exists(Node node, const char* word, size_t index)
+ * \brief   Checks if a word exists inside a dawg structure
+ * \param   Node node to treat
+ * \param	word word to search
+ * \param	index index of a char (from word) to treat
+ * \return 	true if the word if found, false if not
+ */
+bool word_exists(Node node, const char* word, size_t index);
 
 #endif // !_DAWG_H
