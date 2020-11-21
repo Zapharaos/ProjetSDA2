@@ -6,6 +6,7 @@
 #define NB_WORD_MAX 64
 #define WORD_MAX_SIZE 32
 #define SENTENCE_MAX_SIZE 256
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
 
 /**
  * \fn      get_sentence(size_t* n)
@@ -82,7 +83,7 @@ char* concat(const char* s1, const char* s2);
  * \param   lang array to treat
  * \return  the biggest value
 */
-int max(int lang[]);
+int array_max(int lang[]);
 
 /**
  * \fn      sentence_lang(int count[])

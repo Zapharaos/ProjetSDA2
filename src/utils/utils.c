@@ -137,7 +137,7 @@ char* concat(const char* s1, const char* s2)
 /**
  * Search the biggest value in an array
  */
-int max(int* lang)
+int array_max(int* lang)
 {
     int k = 0, max = 0;
     for (int i = 0; i < 3; ++i){
@@ -153,7 +153,7 @@ int max(int* lang)
  * Gives the language that has the biggest iterator
  */
 char* sentence_lang(int count[]) {
-    switch(max(count)) {
+    switch(array_max(count)) {
         case 1:
             return "french";
         case 2:

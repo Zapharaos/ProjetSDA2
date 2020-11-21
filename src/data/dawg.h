@@ -1,6 +1,8 @@
 #ifndef _DAWG_H
 #define _DAWG_H
 
+#define SERIALIZE_MAX_SIZE 512 // 1 + 26 * 8 + 26 ; où 8 est la longueur max d'une ID
+
 #include "lang.h"
 #include "stack.h"
 #include "hashmap.h"
@@ -10,7 +12,7 @@ typedef struct dawg* Dawg;
 typedef struct node* Node;
 typedef struct vertex* Vertex;
 
-struct dawg{
+struct dawg {
 	char* last_word;
 	struct stack *stack;
 	struct hashmap_s *hashmap;
@@ -27,13 +29,15 @@ struct node
 struct vertex
 {
 	char label;
-	Dawg from; // sommet gauche
-	Dawg to; // sommet droit
+	Node from; // sommet gauche
+	Node to; // sommet droit
 };
 
 Dawg empty_dawg();
 
-void minimiser(Dawg dawg, size_t p);
+void minimize(Dawg dawg, size_t p);
+
+char* serialize(Node node);
 
 void insert_dawg(Dawg dawg, const char* word);
 
