@@ -3,6 +3,7 @@
 
 #include "lang.h"
 #include "stack.h"
+#include "../utils/utils.h"
 #include "hashmap.h"
 #include <stddef.h>
 
@@ -12,8 +13,8 @@ typedef struct vertex* Vertex;
 
 struct dawg{
 	char* last_word;
-	struct stack *stack;
-	struct hashmap_s *hashmap;
+	struct stack stack;
+	struct hashmap_s hashmap;
 	Node root;
 };
 
@@ -27,8 +28,8 @@ struct node
 struct vertex
 {
 	char label;
-	Dawg from; // sommet gauche
-	Dawg to; // sommet droit
+	Node from; // sommet gauche
+	Node to; // sommet droit
 };
 
 Dawg empty_dawg();
