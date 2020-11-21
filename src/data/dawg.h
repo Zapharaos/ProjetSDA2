@@ -5,6 +5,7 @@
 
 #include "lang.h"
 #include "stack.h"
+#include "../utils/utils.h"
 #include "hashmap.h"
 #include <stddef.h>
 
@@ -13,9 +14,10 @@ typedef struct node* Node;
 typedef struct vertex* Vertex;
 
 struct dawg {
+	size_t current_node_index;
 	char* last_word;
 	struct stack *stack;
-	struct hashmap_s *hashmap;
+	struct hashmap_s hashmap;
 	Node root;
 };
 

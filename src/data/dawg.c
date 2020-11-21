@@ -2,17 +2,58 @@
 #include <stdlib.h>
 #include "utils.h"
 
+Vertex empty_vertex(char label, Node from, Node to)
+{
+	Vertex vertex = malloc(sizeof(struct vertex));
+	vertex->label = label;
+	vertex->from = from;
+	vertex->to = to;
+	
+	return vertex;
+}
+
+Node empty_node(Dawg dawg)
+{
+	Node root = malloc(sizeof(struct node));
+
+	root->id = dawg->current_node_index++;
+	root->is_word = false;
+	root->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
+
+	// on initialise le tableau avec des pointeurs nuls
+	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
+		root->neighbors[i] = NULL;
+
+	return root;
+}
+
+void free_node(Node root)
+{
+	if(root == NULL)
+		return;
+
+	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
+	{
+		if(root->neighbors[i] == NULL)
+			continue;
+
+		free_node(root->neighbors[i]->from);
+		free_node(root->neighbors[i]->to);
+	}
+    
+    free(root->neighbors);
+	free(root);
+}
+
 Dawg empty_dawg()
 {
 	Dawg dawg = malloc(sizeof(struct dawg));
 
-	dawg->root->id = 0; // unknown
-	dawg->root->is_word = false;
-	dawg->root->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
-	
-	// on initialise le tableau avec des pointeurs nuls
-	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
-		dawg->root->neighbors[i] = NULL;
+	dawg->current_node_index = 0;
+	dawg->last_word = malloc(sizeof(char) * WORD_MAX_SIZE);
+	//dawg->stack = new_stack(2); // à voir plus tard
+	hashmap_create(2, &dawg->hashmap);
+	dawg->root = empty_node(dawg);
 	
 	return dawg;
 }
@@ -22,16 +63,11 @@ void free_dawg(Dawg dawg)
 	if (dawg == NULL)
 		return;
 
-	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
-	{
-		if(dawg->root->neighbors[i] == NULL)
-			continue;
+	free(dawg->last_word);
+	// + free dawg->stack
+	hashmap_destroy(&dawg->hashmap);
+	free_node(dawg->root);
 
-		free_dawg(dawg->root->neighbors[i]->from);
-		free_dawg(dawg->root->neighbors[i]->to);
-	}
-		
-	free(dawg->root->neighbors);
 	free(dawg);
 }
 
@@ -57,7 +93,7 @@ void minimize(Dawg dawg, size_t p)
 	{
 		Vertex a = (Vertex) stack_pop(dawg->stack);
 		char* serialized = serialize(a->to);
-		Node sommet = (Node) hashmap_get(dawg->hashmap, serialized, p);
+		Node sommet = (Node) hashmap_get(&dawg->hashmap, serialized, p);
 		
 		if(sommet == HASHMAP_NULL)
 		{
@@ -66,7 +102,7 @@ void minimize(Dawg dawg, size_t p)
 		} 
 		
 		// on insere 
-		hashmap_put(dawg->hashmap, serialized, strlen(serialized), a->to); // changer key et p ?
+		hashmap_put(&dawg->hashmap, serialized, strlen(serialized), a->to); // changer key et p ?
 			
 	}
 
