@@ -53,7 +53,6 @@ Dawg empty_dawg()
 	dawg->stack = new_stack(1000000); // à voir plus tard
 	hashmap_create(2, &dawg->hashmap);
 	dawg->root = empty_node(dawg);
-	
 	return dawg;
 }
 
@@ -64,8 +63,12 @@ void free_dawg(Dawg dawg)
 
 	free(dawg->last_word);
 	// + free dawg->stack
+
 	hashmap_destroy(&dawg->hashmap);
 	free_node(dawg->root);
+
+	free(dawg->stack->items);
+	free(dawg->stack);
 
 	free(dawg);
 }
@@ -78,42 +81,21 @@ size_t search_prefix_length(char* word1, char* word2){
     size_t index = 0;
     size_t max = max(strlen(word1), strlen(word2));
 
-	for (size_t i = 0; i < strlen(word1); i++)
-	{
-		/* code */
-		printf("%c ", word1[i] == '\0' ? 'F' : word1[i]);
-	}
-	printf("\nSizeof word1: %ld\n", strlen(word1));
-	
-	for (size_t i = 0; i < strlen(word2); i++)
-	{
-		/* code */
-		printf("%c ", word2[i] == '\0' ? 'F' : word2[i]);
-	}
-	printf("\nSizeof word2: %ld\n", strlen(word2));
-
-	for (index = 0; index < max; index++)
-		if(word1[index] != word2[index])
-			return index;
-	
-	return index;
-/*
     while((index < max) && (word1[index] == word2[index])){
     	index++;
 	}
 
-	return index; */
+	return index;
 }
 
 void minimize(Dawg dawg, size_t p)
 {
-	printf("Minimise a la hautueur: %ld\n", p);
 	while(stack_size(dawg->stack) > p)
 	{
 		Vertex a = (Vertex) stack_pop(dawg->stack);
-		char* serialized = serialize(a->to);
+		char serialized[SERIALIZE_MAX_SIZE];
+		serialize(a->to, serialized);
 		Node sommet = (Node) hashmap_get(&dawg->hashmap, serialized, p);
-		printf("while: %s\n", serialized);
 		
 		if(sommet == HASHMAP_NULL)
 		{
@@ -128,47 +110,15 @@ void minimize(Dawg dawg, size_t p)
 
 }
 
-/* trouver taille n du plus grand préfixe (commun)
-	entre le dernier mot inséré et word */
-
-	/* minimiser jusq'à profondeur n */
-
-	/* ajouter suffixe (non commun) au graphe
-	si (pile vide) : racine
-	else  : sommet droit de dernière arete empilée */
-
-	/* Pour chaque lettre du suffixe ajoutée au graphe, empiler l’arête correspondante.*/
-
-	/* marquer le dernier sommet ajouté comme étant final */
 void insert_dawg(Dawg dawg, char* word)
 {
-	printf("Word: %s\n", word);
-	printf("Lastword: %s\n", dawg->last_word == 0 ? "NULL" : dawg->last_word);
 	// Etape 1
 	size_t n = dawg->last_word != 0 ? search_prefix_length(word, dawg->last_word) : 0;
-	printf("DAWG N: %ld\n", n);
 	// Etape 2
 	minimize(dawg, n);
-	printf("2\n");
 	// Etape 3
-	Node found;
-
-	if(stack_size(dawg->stack) == 0)
-	{
-		printf("avant dawg root\n");
-		found = dawg->root;
-		printf("apres dawg root\n");
-	} else {
-		printf("avant stack_peek\n");
-		Vertex v = ((Vertex)stack_peek(dawg->stack));
-		printf("V: %p\n", v);
-		printf("V->from: %p\n", v->from);
-		printf("V->to: %p\n", v->to);
-		found = v->to;
-		printf("apres stack_peek\n");
-	}
-	//Node found = stack_size(dawg->stack) == 0 ? dawg->root : ;
-	printf("3\n");
+	Node found = stack_size(dawg->stack) == 0 ? dawg->root : ((Vertex)stack_peek(dawg->stack))->to;
+	
 	for (size_t i = n; i < strlen(word); i++)
 	{
 		size_t index = ascii_to_index(word[i]);
@@ -182,23 +132,32 @@ void insert_dawg(Dawg dawg, char* word)
 			continue;
 		}
 
-		found = found->neighbors[index]->to;
 		stack_push(dawg->stack, found->neighbors[index]);
+		found = found->neighbors[index]->to;
+		
 
 	}
 
 	found->is_word = true;
-	
-	dawg->last_word = word;
+
+	for (size_t i = 0; i < 64; i++)
+	{
+		if(word[i] == '\0')
+		{
+			dawg->last_word[i] = '\0';
+			break;
+		} 
+		/* code */
+		dawg->last_word[i] = word[i];
+	}
 
 }
 
-char* serialize(Node node)
+void serialize(Node node, char* result)
 {
 	if(node == NULL)
-		return 0;
+		return;
 
-	char* result = malloc(SERIALIZE_MAX_SIZE);
 	size_t index = 0;
 	result[index++] = node->is_word ? '1' : '0';
 
@@ -224,6 +183,4 @@ char* serialize(Node node)
 	}
 
 	result[index] = '\0';
-
-	return result;
 }

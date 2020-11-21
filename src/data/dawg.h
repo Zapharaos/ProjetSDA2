@@ -39,7 +39,7 @@ Dawg empty_dawg();
 
 void minimize(Dawg dawg, size_t p);
 
-char* serialize(Node node);
+void serialize(Node node, char* result);
 
 void insert_dawg(Dawg dawg, char* word);
 

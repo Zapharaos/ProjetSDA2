@@ -50,11 +50,11 @@ int handle_args(int argc, char* argv[])
             //todo :
             print_msg("\nYou chose : Dawg \n");
 
-            //Dawg en = construct_dawg("dict/english-wordlist.txt");
-            //Dawg fr = construct_dawg("dict/french-wordlist.txt");
+           // Dawg en = construct_dawg("dict/english-wordlist.txt");
+           // Dawg fr = construct_dawg("dict/french-wordlist.txt");
             Dawg de = construct_dawg("dict/german-wordlist.txt");
-    	    //free_dawg(en);
-            //free_dawg(fr);
+    	   // free_dawg(en);
+           // free_dawg(fr);
             free_dawg(de);
             // return success
             return 0;
