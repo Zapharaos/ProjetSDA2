@@ -1,15 +1,13 @@
 #include "dawg.h"
-#include "stack.h"
-#include "hashmap.h"
 #include <stdlib.h>
 
 Dawg empty_dawg()
 {
 	Dawg dawg = malloc(sizeof(struct dawg));
 
+	dawg->id = 0; // unknown
+	dawg->is_word = false;
 	dawg->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
-	dawg->stack = new_stack(0); // pas 0 mais capacité qu'on veut
-	hashmap_create(0, dawg->hashmap); // pas 0 mais capacité qu'on veut
 	
 	// on initialise le tableau avec des pointeurs nuls
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
@@ -44,14 +42,14 @@ void free_dawg(Dawg dawg)
     	SINON
 			Enregistrer ce sommet dans la hashmap. FIN SI
 	FIN TANT QUE */
-void minimiser(Dawg dawg, size_t p){
-	while(stack_size(dawg->stack) > p){
-		void *a = stack_peek(dawg->stack); // changer le type de a ?
-		stack_pop(dawg->stack); 
-		if(HASHMAP_NULL == hashmap_get(dawg->hashmap, "jesaispasquoimettre", p)) // changer key et p ?
-			hashmap_remove(dawg->hashmap, "toujourspas", p); // changer key et p ?
+void minimiser(Dawg dawg, struct stack *stack, struct hashmap_s *hashmap, size_t p){
+	while(stack_size(stack) > p){
+		void *a = stack_peek(stack); // changer le type de a ?
+		stack_pop(stack); 
+		if(HASHMAP_NULL == hashmap_get(hashmap, "jesaispasquoimettre", p)) // changer key et p ?
+			hashmap_remove(hashmap, "toujourspas", p); // changer key et p ?
 		else
-			hashmap_put(dawg->hashmap, "encore?mdr", p, a); // changer key et p ?
+			hashmap_put(hashmap, "encore?mdr", p, a); // changer key et p ?
 	}
 }
 

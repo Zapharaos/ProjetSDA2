@@ -2,6 +2,8 @@
 #define _DAWG_H
 
 #include "lang.h"
+#include "stack.h"
+#include "hashmap.h"
 #include <stddef.h>
 
 typedef struct dawg* Dawg;
@@ -9,9 +11,9 @@ typedef struct vertex* Vertex;
 
 struct dawg
 {
+	size_t id;
+	bool is_word;
 	Vertex* neighbors;
-	struct hashmap_s *hashmap;
-	struct stack *stack;
 };
 
 struct vertex
@@ -23,7 +25,7 @@ struct vertex
 
 Dawg empty_dawg();
 
-void minimiser(Dawg pawg, size_t profondeur);
+void minimiser(Dawg dawg, struct stack *stack, struct hashmap_s *hashmap, size_t p);
 
 void insert_dawg(Dawg dawg, const char* word);
 
