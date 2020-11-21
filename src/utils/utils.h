@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #define NB_WORD_MAX 64
-#define WORD_MAX_SIZE 32
+#define WORD_MAX_SIZE 64
 #define SENTENCE_MAX_SIZE 256
 #define max(a,b)            (((a) > (b)) ? (a) : (b))
 

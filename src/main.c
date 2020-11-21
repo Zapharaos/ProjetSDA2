@@ -4,6 +4,7 @@
 #include "utils/utils.h"
 #include "data/trie.h"
 #include "utils/io.h"
+#include "data/dawg.h"
 
 int handle_args(int argc, char* argv[])
 {
@@ -47,6 +48,10 @@ int handle_args(int argc, char* argv[])
         if (strcmp(argv[2], "-dawg") == 0)
         {
             //todo :
+            print_msg("\nYou chose : Dawg \n");
+
+            Dawg dawg = construct_dawg("dict/english-wordlist.txt");
+    	    free_dawg(dawg);
 
             // return success
             return 0;

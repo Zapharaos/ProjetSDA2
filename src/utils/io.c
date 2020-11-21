@@ -8,16 +8,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../data/trie.h"
 #include "errors.h"
 #include <time.h>
 #include "utils.h"
+#include "../data/trie.h"
+#include "../data/dawg.h"
 
 /**
  * Creates a structure and stores a dictionnary
  */
-void fill_trie(Trie trie, char* dict, enum language lang) {
-
+void fill_trie(Trie trie, char* dict, enum language lang)
+{
     char* line = NULL;
     size_t len = 0;
     ssize_t read;
@@ -29,7 +30,8 @@ void fill_trie(Trie trie, char* dict, enum language lang) {
         print_err("fopen fill_trie");
 
     // read : file given as paramater (i.e. a dictionnary)
-    while ((read = getline(&line, &len, fp)) != -1) {
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
         // remove newline
         size_t length = strlen(line);
         if ((length > 0) && (line[length - 1] == '\n'))
@@ -59,29 +61,30 @@ void fill_trie(Trie trie, char* dict, enum language lang) {
 /**
  * Loading the dictionnarys inside
  */
-void construct_trie(Trie trie) {
-    
+void construct_trie(Trie trie)
+{
     // loading : dictionnary
     fill_trie(trie, "dict/german-wordlist.txt", DE);
     fill_trie(trie, "dict/english-wordlist.txt", EN);
     fill_trie(trie, "dict/french-wordlist.txt", FR);
-    
 }
 
-void construct_dawg(char* dict) {
-
+Dawg construct_dawg(char* dict)
+{
     char* line = NULL;
     size_t len = 0;
     ssize_t read;
     FILE* fp;
     clock_t start = clock();
+    Dawg dawg = empty_dawg();
 
     // open : file given as paramater (i.e. a dictionnary)
     if ((fp = fopen(dict, "r")) == NULL)
         print_err("fopen construct_dawg");
 
     // read : file given as paramater (i.e. a dictionnary)
-    while ((read = getline(&line, &len, fp)) != -1) {
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
         // remove newline
         size_t length = strlen(line);
         if ((length > 0) && (line[length - 1] == '\n'))
@@ -93,14 +96,15 @@ void construct_dawg(char* dict) {
         parse_word(line);
         
         // insert : word inside the Dawg structure given as paramater
-        // To complete ... 
+        // To complete ...
+        insert_dawg(dawg, line);
     }
     
     // free : line
     free(line);
 
     // minimiser to depth 0
-    // minimiser(dawg, 0);
+    minimize(dawg, 0);
 
     // close : file given as paramater (i.e. a dictionnary)
     if(fclose(fp) != 0)
@@ -111,4 +115,5 @@ void construct_dawg(char* dict) {
         print_perr();
 
     // return ...;
+    return dawg;
 }

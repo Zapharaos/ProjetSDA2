@@ -1,6 +1,7 @@
 #ifndef _IO_H
 #define _IO_H
 #include "../data/trie.h"
+#include "../data/dawg.h"
 
 /**
  * \fn      void fill_trie(Trie trie, char* dict, enum language lang)
@@ -16,6 +17,6 @@ void fill_trie(Trie trie, char* dict, enum language lang);
  */
 void construct_trie(Trie trie);
 
-void construct_dawg(char* dict);
+Dawg construct_dawg(char* dict);
 
 #endif

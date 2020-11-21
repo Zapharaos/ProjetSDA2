@@ -1,6 +1,5 @@
 #include "dawg.h"
 #include <stdlib.h>
-#include "utils.h"
 
 Vertex empty_vertex(char label, Node from, Node to)
 {
@@ -120,7 +119,7 @@ void minimize(Dawg dawg, size_t p)
 	/* Pour chaque lettre du suffixe ajoutée au graphe, empiler l’arête correspondante.*/
 
 	/* marquer le dernier sommet ajouté comme étant final */
-void insert_dawg(Dawg dawg, const char* word)
+void insert_dawg(Dawg dawg, char* word)
 {
 	// Etape 1
 	size_t n = dawg->last_word != 0 ? search_prefix_length(word, dawg->last_word) : 0;
@@ -150,6 +149,8 @@ void insert_dawg(Dawg dawg, const char* word)
 	}
 
 	found->is_word = true;
+	
+	dawg->last_word = word;
 
 }
 
@@ -158,7 +159,7 @@ char* serialize(Node node)
 	if(node == NULL)
 		return 0;
 
-	char result[SERIALIZE_MAX_SIZE];
+	char* result = malloc(SERIALIZE_MAX_SIZE);
 	size_t index = 0;
 	result[index++] = node->is_word ? '1' : '0';
 
