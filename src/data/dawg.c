@@ -137,10 +137,7 @@ void insert_dawg(Dawg dawg, const char* word)
 
 		if(found->neighbors[index] == NULL)
 		{
-			Vertex vertex = malloc(sizeof(struct vertex));
-			vertex->from = found;
-			vertex->to = empty_node(dawg);
-			vertex->label = word[i];
+			Vertex vertex = empty_vertex(word[i], found, empty_node(dawg));
 			found->neighbors[index] = vertex;
 			found = vertex->from;
 			stack_push(dawg->stack, vertex);
