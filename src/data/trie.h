@@ -38,34 +38,34 @@ void free_trie(Trie trie);
 void display_trie(Trie trie);
 
 /**
- * \fn      insert_word_trie(Trie trie, const char* word, enum language lang, size_t index)
+ * \fn      insert_trie(Trie trie, const char* word, enum language lang, size_t index)
  * \brief   Inserts a word inside a Trie structure
  * \param   trie trie where to insert
  * \param   word word to insert
  * \param   lang the language of the word
  * \param   index iterator
  */
-void insert_word_trie(Trie trie, const char* word, enum language lang, size_t index);
+void insert_trie(Trie trie, const char* word, enum language lang, size_t index);
 
 /**
- * \fn      search_word_trie(Trie trie, const char* word, size_t index)
+ * \fn      search_trie(Trie trie, const char* word, size_t index)
  * \brief   Searchs the language of a word
  * \param   trie trie where to search
  * \param   word word to search
  * \param   index iterator
  * \return  lang of the word
  */
-Lang search_word_trie(Trie trie, const char* word, size_t index);
+Lang search_trie(Trie trie, const char* word, size_t index);
 
 /**
- * \fn      search_lang_trie(Trie trie, const char* word, size_t index)
+ * \fn      search_trie(Trie trie, const char* word, size_t index)
  * \brief   Count how many times a language is used inside a sentence
  * \param   trie trie where to search
  * \param   sentence the sentence to treat
  * \param   n the size of the sentence
  * \param   count array storing the iteratos
  */
-void count_lang_trie(Trie trie, char** sentence, const size_t n, int count[]);
+void count_trie(Trie trie, char** sentence, const size_t n, int count[]);
 
 /**
  * \fn      start_trie(Trie trie)

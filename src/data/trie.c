@@ -60,7 +60,7 @@ void display_trie(Trie trie)
 /**
  *  Inserts a word inside a Trie structure
  */
-void insert_word_trie(Trie trie, const char* word, enum language lang, const size_t index)
+void insert_trie(Trie trie, const char* word, enum language lang, const size_t index)
 {
 	const char element = word[index];
 
@@ -94,13 +94,13 @@ void insert_word_trie(Trie trie, const char* word, enum language lang, const siz
 		
 	}
 
-	insert_word_trie(trie->data[i], word, lang, index + 1);
+	insert_trie(trie->data[i], word, lang, index + 1);
 }
 
 /**
  * Searchs the language of a word
  */
-Lang search_word_trie(Trie trie, const char* word, size_t index)
+Lang search_trie(Trie trie, const char* word, size_t index)
 {
 	if (trie == NULL)
 		return 0;
@@ -113,15 +113,15 @@ Lang search_word_trie(Trie trie, const char* word, size_t index)
 		exit(1);
 	}
 	
-	return search_word_trie(trie->data[ascii_to_index(word[index])], word, index + 1);
+	return search_trie(trie->data[ascii_to_index(word[index])], word, index + 1);
 }
 
 /**
  * Count how many times a language is used inside a sentence
  */
-void count_lang_trie(Trie trie, char** sentence, const size_t n, int count[]) {
+void count_trie(Trie trie, char** sentence, const size_t n, int count[]) {
 	for(size_t i = 0; i < n; i++) {
-        Lang word = search_word_trie(trie, sentence[i], 0);
+        Lang word = search_trie(trie, sentence[i], 0);
 		if(word == NULL) continue;
         if(word->fr)
             count[0]++;
@@ -137,7 +137,7 @@ void treat_trie(Trie trie, char** sentence, size_t n){
     
     // count : how many words per language in the sentence
     int count[3] = {0,0,0};
-    count_lang_trie(trie, sentence, n, count);
+    count_trie(trie, sentence, n, count);
     
     // print : how many words per language + detection result
     char* result = sentence_lang(count);
