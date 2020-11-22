@@ -14,13 +14,13 @@ Trie empty_trie()
 	Trie trie = malloc(sizeof(struct trie));
 
 	if(trie == NULL)
-		print_err("malloc trie empty_trie");
+		raler("malloc in empty_trie");
 
 	trie->lang = 0; // unknown
 	trie->data = malloc(sizeof(struct trie) * ALPHABET_SIZE);
 
 	if(trie->data == NULL)
-		print_err("malloc trie->data empty_trie");
+		raler("malloc in empty_trie");
 
 	// init : array with null pointer
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
@@ -56,7 +56,8 @@ void display_trie(Trie trie)
 
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
-		printf("[%c] %d\n", (char)i + 'a', trie->data[i] == NULL ? -1 : 0);
+		if(fprintf(stdout, "[%c] %d\n", (char)i + 'a', trie->data[i] == NULL ? -1 : 0) < 0)
+			raler("fprintf in display_trie");
 		display_trie(trie->data[i]);
 	}
 }
@@ -114,7 +115,8 @@ Lang search_trie(Trie trie, const char* word, size_t index)
 
 	if (word[index] < 97 || word[index] > 122)
 	{
-		printf("Invalid char: %d\n", word[index]);
+		if(fprintf(stdout, "Invalid char: %d\n", word[index]) < 0 )
+			raler("fprintf search_trie");
 		exit(1);
 	}
 	
@@ -154,14 +156,18 @@ void treat_trie(Trie trie, char** sentence, size_t n)
     
     // print : how many words per language + detection result
     char* result = sentence_lang(count);
-    fprintf(stdout,"\n%d word(s) in french.\n", count[0]);
-    fprintf(stdout,"%d word(s) in german.\n", count[1]);
-    fprintf(stdout,"%d word(s) in english.\n", count[2]);
-    fprintf(stdout,"\nMain language is : %s.\n", result);
+    if(fprintf(stdout,"\n%d word(s) in french.\n", count[0]) < 0)
+		raler("fprintf treat_trie");
+    if(fprintf(stdout,"%d word(s) in german.\n", count[1]) < 0)
+		raler("fprintf treat_trie");
+    if(fprintf(stdout,"%d word(s) in english.\n", count[2]) < 0)
+		raler("fprintf treat_trie");
+    if(fprintf(stdout,"\nMain language is : %s.\n", result) < 0)
+		raler("fprintf treat_trie");
     
     // print : time needed to treat the sentence
     if (fprintf(stdout, "It took %f seconds to treat this sentence\n", (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
-        print_perr();
+        raler("fprintf treat_trie");
 }
 
 /**

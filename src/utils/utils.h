@@ -25,11 +25,11 @@ char** get_sentence(size_t* n);
 void show_sentence(char** sentence, size_t n);
 
 /**
- * \fn      initSentence(void)
+ * \fn      init_sentence(void)
  * \brief   Allocates memory to store a sentence
  * \return   Double char array
 */
-char** initSentence(void);
+char** init_sentence(void);
 
 /**
  * \fn      free_sentence(char** sentence)

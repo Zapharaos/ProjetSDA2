@@ -9,6 +9,10 @@ Vertex empty_vertex(char label, Node from, Node to)
 	// allocate memory for the structure
 	Vertex vertex = malloc(sizeof(struct vertex));
 
+	// if : malloc failed
+	if(vertex == NULL)
+		raler("malloc empty_vertex");
+
 	// init elements
 	vertex->label = label;
 	vertex->from = from;
@@ -26,10 +30,18 @@ Node empty_node(Dawg dawg)
 	// allocate memory for the structure
 	Node root = malloc(sizeof(struct node));
 
+	// if : malloc failed
+	if(root == NULL)
+		raler("malloc empty_node");
+
 	// init elements
 	root->id = dawg->current_node_index++;
 	root->is_word = false;
 	root->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
+
+	// if : malloc failed
+	if(root->neighbors == NULL)
+		raler("malloc empty_node");
 
 	// init the tab with null pointers (valgrind issue)
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
@@ -47,9 +59,18 @@ Dawg empty_dawg()
 	// allocate memory for the structure
 	Dawg dawg = malloc(sizeof(struct dawg));
 
+	// if : malloc failed
+	if(dawg == NULL)
+		raler("malloc empty_dawg");
+
 	// init elements
 	dawg->current_node_index = 0;
 	dawg->last_word = malloc(WORD_MAX_SIZE);
+
+	// if : malloc failed
+	if(dawg->last_word == NULL)
+		raler("malloc empty_dawg");
+
 	dawg->last_word[0] = '\0';
 	dawg->stack = new_stack(1000000); // à voir plus tard
 	hashmap_create(2, &dawg->hashmap);
@@ -208,7 +229,7 @@ void insert_dawg(Dawg dawg, char* word)
 	
 	// create last word
 	if(snprintf(dawg->last_word, WORD_MAX_SIZE, "%s%s", word, "\0") < 0)
-        perror("snprintf create last word");
+        raler("snprintf insert_dawg");
 }
 
 void serialize(Node node, char* result)
@@ -229,7 +250,8 @@ void serialize(Node node, char* result)
 		result[index++] = ';';
 				
 		char nb_str[16]; // on suppose que l'uid ne sera jamais plus grand que 16
-		sprintf(nb_str, "%ld", vertex->to->id);
+		if(sprintf(nb_str, "%ld", vertex->to->id) < 0)
+			raler("snprintf serialize");
 
 		for (size_t j = 0; j < 16; j++)
 		{
@@ -249,13 +271,15 @@ void serialize(Node node, char* result)
 void display_node(Node node)
 {
 
-	printf("Node id: %ld (%s)\n", node->id, node->is_word ? "Oui" : "Non");
+	if(fprintf(stdout, "Node id: %ld (%s)\n", node->id, node->is_word ? "Oui" : "Non") < 0)
+		raler("fprintf display_node");
 	
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
 		if(node->neighbors[i] == NULL)
 			break;
-		printf("%c : ", node->neighbors[i]->label);
+		if(fprintf(stdout, "%c : ", node->neighbors[i]->label) < 0)
+			raler("fprintf display_node");
 		display_node(node->neighbors[i]->to);
 	}
 
@@ -322,15 +346,19 @@ void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n)
 	}
 
 	// print : how many words per language + detection result
-    char* result = sentence_lang(count);
-    fprintf(stdout,"\n%d word(s) in french.\n", count[0]);
-    fprintf(stdout,"%d word(s) in german.\n", count[1]);
-    fprintf(stdout,"%d word(s) in english.\n", count[2]);
-    fprintf(stdout,"\nMain language is : %s.\n", result);
+   char* result = sentence_lang(count);
+    if(fprintf(stdout,"\n%d word(s) in french.\n", count[0]) < 0)
+		raler("fprintf treat_trie");
+    if(fprintf(stdout,"%d word(s) in german.\n", count[1]) < 0)
+		raler("fprintf treat_trie");
+    if(fprintf(stdout,"%d word(s) in english.\n", count[2]) < 0)
+		raler("fprintf treat_trie");
+    if(fprintf(stdout,"\nMain language is : %s.\n", result) < 0)
+		raler("fprintf treat_trie");
 
 	// print : time needed to treat the sentence
     if (fprintf(stdout, "It took %f seconds to treat this sentence\n", (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
-        print_perr();
+        raler("fprintf treat_trie");
 }
 
 /**

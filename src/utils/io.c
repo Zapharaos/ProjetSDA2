@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include "errors.h"
 #include <time.h>
 #include "utils.h"
@@ -27,7 +28,10 @@ void fill_trie(Trie trie, char* dict, enum language lang)
 
     // open : file given as paramater (i.e. a dictionnary)
     if ((fp = fopen(dict, "r")) == NULL)
-        print_err("fopen fill_trie");
+        raler("fopen in fill_trie");
+
+    // reset errno var at 0
+    errno = 0;
 
     // read : file given as paramater (i.e. a dictionnary)
     while ((read = getline(&line, &len, fp)) != -1)
@@ -44,18 +48,25 @@ void fill_trie(Trie trie, char* dict, enum language lang)
 
         // insert : word inside the Trie structure given as paramater
         insert_trie(trie, line, lang, 0);
+
+        // reset errno var at 0
+        errno = 0;
     }
+
+    // if : error using getline
+    if(errno != 0)
+        raler("getline in fill_trie");
 
     // free : line
     free(line);
     
     // close : file given as paramater (i.e. a dictionnary)
     if(fclose(fp) != 0)
-        print_err("fclose fill_trie");
+        raler("fclose in fill_trie");
 
     // print : success + time needed to load it
     if (fprintf(stdout, "Successfully loaded %s into trie in %f s.\n", dict, (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
-        print_perr();
+        raler("fprintf in fill_trie");
 }
 
 /**
@@ -83,7 +94,10 @@ Dawg construct_dawg(char* dict)
 
     // open : file given as paramater (i.e. a dictionnary)
     if ((fp = fopen(dict, "r")) == NULL)
-        print_err("fopen construct_dawg");
+        raler("fopen in construct_dawg");
+
+    // reset errno var at 0
+    errno = 0;
 
     // read : file given as paramater (i.e. a dictionnary)
     while ((read = getline(&line, &len, fp)) != -1)
@@ -99,10 +113,16 @@ Dawg construct_dawg(char* dict)
         parse_word(line);
         
         // insert : word inside the Dawg structure given as paramater
-        // To complete ...
         insert_dawg(dawg, line);
+
+        // reset errno var at 0
+        errno = 0;
     }
     
+    // if : error using getline
+    if(errno != 0)
+        raler("getline in construct_dawg");
+
     // free : line
     free(line);
 
@@ -111,12 +131,11 @@ Dawg construct_dawg(char* dict)
 
     // close : file given as paramater (i.e. a dictionnary)
     if(fclose(fp) != 0)
-        print_err("fclose construct_dawg");
+        raler("fclose in construct_dawg");
 
     // print : success + time needed to load it
     if (fprintf(stdout, "Successfully loaded %s into dawg in %f s.\n", dict, (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
-        print_perr();
+        raler("fprintf in construct_dawg");
 
-    // return ...;
     return dawg;
 }

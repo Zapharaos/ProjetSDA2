@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include <errno.h>
 
 /**
  * Creates a sentence given by the user
@@ -12,12 +13,12 @@ char** get_sentence(size_t* n)
     
     // print : sentence to user
     if(fprintf(stdout, "\nYour sentence :\n") < 0)
-        print_perr();
+        raler("fprintf in get_sentence");
     
     // get : the sentence of his choice
     char s[SENTENCE_MAX_SIZE] = "";
     if(fgets(s, SENTENCE_MAX_SIZE, stdin) == NULL)
-        print_err("fgets sentence");
+        raler("fgets in get_sentence");
 
     // prepare : variables for strtok_r
     char* save; 
@@ -25,20 +26,25 @@ char** get_sentence(size_t* n)
 
     char* token;
     if((token = strtok_r(s, separators, &save)) == NULL)
-        print_err("token sentence empty");
+        raler("strtok_r in get_sentence");
 
     // init : double pointer char array
-    char** sentence = initSentence();
+    char** sentence = init_sentence();
 
     // insert : the sentence in the array
     do {
 
         to_lower(token);
         if(snprintf(sentence[(*n)++], WORD_MAX_SIZE, "%s", token) < 0)
-            print_err("snprintf create sentence");
+            raler("snprintf in get_sentence");
+        
+        errno = 0;
 
     } while ((token = strtok_r(NULL, separators, &save)) != NULL );
     
+    if(errno != 0)
+        raler("strtok_r in get_sentence");
+
     // return : sentence
     return sentence;
 }
@@ -55,19 +61,19 @@ void show_sentence(char** sentence, size_t n)
 /**
  * Allocates memory to store a sentence
  */
-char** initSentence(void)
+char** init_sentence(void)
 {
     char** sentence = malloc(sizeof(char*) * NB_WORD_MAX);
 
     if(sentence == NULL)
-        print_err("malloc initSentence");
+        raler("malloc in init_sentence");
 
     for(size_t i=0; i < NB_WORD_MAX; ++i)
     {
         sentence[i] = malloc(sizeof(char) * WORD_MAX_SIZE);
 
         if(sentence[i] == NULL)
-            print_err("malloc initSentence");
+            raler("malloc in init_sentence");
     }
 
     return sentence;
@@ -107,9 +113,10 @@ size_t ascii_to_index(char c)
 
     if (index < 97 || index > 122)
     {
-        printf("Invalid char: %d\n", c);
-        perror("ascii_to_index function can only read lowercase letter a-z.\n");
-        exit(EXIT_FAILURE);
+        if (fprintf(stdout, "Invalid char: %d\n", c) < 0)
+            raler("fprintf in ascii_to_index");
+        print_error("ascii_to_index function can only read lowercase letter a-z.\n");
+        exit(1);
     }
 
     return index - 97;
@@ -145,7 +152,7 @@ char* concat(const char* s1, const char* s2)
     char* result = malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
 
     if(result == NULL)
-        print_err("malloc concat");
+        raler("malloc in concat");
 
     strcpy(result, s1);
     strcat(result, s2);

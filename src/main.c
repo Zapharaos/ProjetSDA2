@@ -8,10 +8,6 @@
 
 int handle_args(int argc, char* argv[])
 {
-    // if : too few arguments
-    // return : failed
-	if (argc <= 1)
-		return 1;
 
     // if : help
     if (strcmp(argv[1], "-help") == 0)
@@ -23,7 +19,7 @@ int handle_args(int argc, char* argv[])
         print_msg("------------------------------------------------");
 
         // return : success
-		return 0;
+		exit(0);
     }
 
     // if : sentence
@@ -42,7 +38,7 @@ int handle_args(int argc, char* argv[])
     	    free_trie(trie);
 
             // return : success
-            return 0;
+            exit(0);
         }
 
         // if : dawg
@@ -62,21 +58,35 @@ int handle_args(int argc, char* argv[])
             free_dawg(fr);
 
             // return success
-            return 0;
+            exit(0);
         }
 
-        // return : failed
-		return 1;
+        // else : failed
+    	print_error("Arguments not found: type ./bin/ald -help to display help");
+		exit(1);
     }
 	
     // else : failed
-	print_err("Arguments not found: type ./bin/ald -help to display help");
-
-    // return : failed
-    return 1;
+	print_error("Arguments not found: type ./bin/ald -help to display help");
+    exit(1);
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
+
+    // if : too few arguments
+	if (argc == 1)
+    {
+        print_error("Too few arguments: type ./bin/ald -help to display help");
+        exit(1);
+    }
+
+    // if : too mich arguments
+	if (argc > 3)
+    {
+        print_error("Too much arguments: type ./bin/ald -help to display help");
+        exit(1);
+    }
 
     // if : checking the arguments
     if(handle_args(argc, argv) == 0)
@@ -86,6 +96,6 @@ int main(int argc, char* argv[]) {
     }
 
     // return : program failed
-    print_err("Options not found: type ./bin/ald -help to display help");
-    return 1;
+    print_error("Arguments not found: type ./bin/ald -help to display help");
+    exit(1);
 }
