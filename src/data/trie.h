@@ -73,6 +73,15 @@ Lang search_trie(Trie trie, const char* word, size_t index);
 void count_trie(Trie trie, char** sentence, const size_t n, int count[]);
 
 /**
+ * \fn      treat_trie(Trie trie, char** sentence, size_t n)
+ * \brief   Treats a sentence
+ * \param   trie trie to treat
+ * \param   sentence the sentence to treat
+ * \param   n the size of the sentence
+ */
+void treat_trie(Trie trie, char** sentence, size_t n);
+
+/**
  * \fn      start_trie(Trie trie)
  * \brief   start the langue detector using the Trie structure
  * \param   trie    the structure

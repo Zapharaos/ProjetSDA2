@@ -112,7 +112,8 @@ Lang search_trie(Trie trie, const char* word, size_t index)
 	if (word[index] == '\0')
 		return trie->lang;
 
-	if (word[index] < 97 || word[index] > 122) {
+	if (word[index] < 97 || word[index] > 122)
+	{
 		printf("Invalid char: %d\n", word[index]);
 		exit(1);
 	}
@@ -123,10 +124,14 @@ Lang search_trie(Trie trie, const char* word, size_t index)
 /**
  * Count how many times a language is used inside a sentence
  */
-void count_trie(Trie trie, char** sentence, const size_t n, int count[]) {
-	for(size_t i = 0; i < n; i++) {
+void count_trie(Trie trie, char** sentence, const size_t n, int count[])
+{
+	for(size_t i = 0; i < n; i++)
+	{
         Lang word = search_trie(trie, sentence[i], 0);
+
 		if(word == NULL) continue;
+
         if(word->fr)
             count[0]++;
         if(word->de)
@@ -136,7 +141,11 @@ void count_trie(Trie trie, char** sentence, const size_t n, int count[]) {
     }
 }
 
-void treat_trie(Trie trie, char** sentence, size_t n){
+/**
+ * Treats a sentence
+ */
+void treat_trie(Trie trie, char** sentence, size_t n)
+{
 	clock_t start = clock(); // clock start
     
     // count : how many words per language in the sentence
@@ -158,7 +167,8 @@ void treat_trie(Trie trie, char** sentence, size_t n){
 /**
  * start the langue detector using the Trie structure
  */
-void start_trie(Trie trie) {
+void start_trie(Trie trie)
+{
 
     // init : sentence entered by user
     size_t n = 0;
@@ -172,8 +182,8 @@ void start_trie(Trie trie) {
 
     print_msg("\nType y to restart (anything else will end the programm) :");
 
-    if (getchar() == 'y') {
-
+    if (getchar() == 'y')
+	{
         // issue : in fgets due to \n character after using getchar
         int c;
         while ( (c = getchar()) != EOF && c != '\n') {}
@@ -182,4 +192,8 @@ void start_trie(Trie trie) {
         print_msg("\nStarting again...");
         start_trie(trie);
     }
+	else
+	{
+		print_msg("\nEnd of program. Ending here.");
+	}
 }
