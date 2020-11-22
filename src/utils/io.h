@@ -5,7 +5,7 @@
 
 /**
  * \fn      void fill_trie(Trie trie, char* dict, enum language lang)
- * \brief   Creates a structure and stores a dictionnary
+ * \brief   Creates a trie structure and stores a dictionnary
  * \param   trie    the structure 
  * \param   dict    the path to the file 
  * \param   lang    the language
@@ -13,10 +13,18 @@
 void fill_trie(Trie trie, char* dict, enum language lang);
 
 /**
- * Loading the dictionnarys inside
+ * \fn      construct_trie(Trie trie)
+ * \brief   Loading the dictionnarys inside a trie
+ * \param   trie    the trie where to store
  */
 void construct_trie(Trie trie);
 
+/**
+ * \fn      construct_dawg(char* dict)
+ * \brief   Creates a dawg structure and stores a dictionnary
+ * \param   dict    the path to the file 
+ * \return  the dawg structure
+ */
 Dawg construct_dawg(char* dict);
 
 #endif

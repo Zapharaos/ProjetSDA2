@@ -15,7 +15,7 @@
 #include "../data/dawg.h"
 
 /**
- * Creates a structure and stores a dictionnary
+ * Creates a trie structure and stores a dictionnary
  */
 void fill_trie(Trie trie, char* dict, enum language lang)
 {
@@ -69,6 +69,9 @@ void construct_trie(Trie trie)
     fill_trie(trie, "dict/french-wordlist.txt", FR);
 }
 
+/**
+ * Creates a dawg structure and stores a dictionnary
+ */
 Dawg construct_dawg(char* dict)
 {
     char* line = NULL;
