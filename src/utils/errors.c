@@ -5,7 +5,8 @@
 /**
  * An error was encountered using frprintf
  */
-void print_perr() {
+void print_perr()
+{
     perror("fprintf failed"); //exception use of perror
     exit(1);
 }
@@ -13,7 +14,8 @@ void print_perr() {
 /**
  * An error was encountered
  */
-void print_err(char *message) {
+void print_err(char *message)
+{
     if (fprintf(stderr, "%s\n", message) < 0)
         print_perr();
     exit(EXIT_FAILURE);
