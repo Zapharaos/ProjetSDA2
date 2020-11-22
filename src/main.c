@@ -18,8 +18,9 @@ int handle_args(int argc, char* argv[])
     {
 	    print_msg("------------ Language detector help ------------");
         print_msg("Tips: type <make install> to use <ald> instead of <./ald>");
-	    print_msg("Get sentence: ./ald -sentence <-trie,-dawg>");
-	    print_msg("Test trie data structure: ./ald -trie");
+        print_msg("\t type <make list> to check out the list");
+	    print_msg("Get a sentence: ./bin/ald -sentence <-trie,-dawg>");
+        print_msg("------------------------------------------------");
 
         // return : success
 		return 0;
@@ -50,19 +51,16 @@ int handle_args(int argc, char* argv[])
             //todo :
             print_msg("\nYou chose : Dawg \n");
 
-            // Dawg en = construct_dawg("dict/english-wordlist.txt");
+            Dawg en = construct_dawg("dict/english-wordlist.txt");
+            Dawg de = construct_dawg("dict/german-wordlist.txt");
             Dawg fr = construct_dawg("dict/french-wordlist.txt");
-            // Dawg de = construct_dawg("dict/german-wordlist.txt");
-            printf("Est-ce que le mot carotte existe? %s\n", word_exists(fr->root, "carotte", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot bite existe? %s\n", word_exists(fr->root, "bite", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot vagin existe? %s\n", word_exists(fr->root, "vagin", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot penis existe? %s\n", word_exists(fr->root, "penis", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot bouche existe? %s\n", word_exists(fr->root, "bouche", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot esperluette existe? %s\n", word_exists(fr->root, "esperluette", 0) ? "Oui" : "Non");
-            // display(fr->root);
-            // free_dawg(en);
+
+            start_dawg(en, de, fr);
+
+            free_dawg(en);
+            free_dawg(de);
             free_dawg(fr);
-            // free_dawg(de);
+
             // return success
             return 0;
         }
@@ -72,7 +70,7 @@ int handle_args(int argc, char* argv[])
     }
 	
     // else : failed
-	print_err("Argument not found: type ./ald -help to display help");
+	print_err("Arguments not found: type ./bin/ald -help to display help");
 
     // return : failed
     return 1;
@@ -88,6 +86,6 @@ int main(int argc, char* argv[]) {
     }
 
     // return : program failed
-    print_err("Options not found: type ./ald -help to display help");
+    print_err("Options not found: type ./bin/ald -help to display help");
     return 1;
 }

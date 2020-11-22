@@ -116,7 +116,8 @@ void free_dawg(Dawg dawg)
 /**
  * Gets the size of the biggest common prefix of the words
  */
-size_t search_prefix_length(char* word1, char* word2){
+size_t search_prefix_length(char* word1, char* word2)
+{
 
 	// if : either one word is empty
     if(word1 == NULL || word2 == NULL)
@@ -243,6 +244,24 @@ void serialize(Node node, char* result)
 }
 
 /**
+ * Displays a Node structure inside a dawg
+ */
+void display_node(Node node)
+{
+
+	printf("Node id: %ld (%s)\n", node->id, node->is_word ? "Oui" : "Non");
+	
+	for (size_t i = 0; i < ALPHABET_SIZE; i++)
+	{
+		if(node->neighbors[i] == NULL)
+			break;
+		printf("%c : ", node->neighbors[i]->label);
+		display_node(node->neighbors[i]->to);
+	}
+
+}
+
+/**
  * Checks if a word exists inside a dawg structure
  */
 bool word_exists(Node node, const char* word, size_t index)
@@ -284,19 +303,73 @@ bool word_exists(Node node, const char* word, size_t index)
 }
 
 /**
- * Displays a Node structure inside a dawg
+ * Treats a sentence
  */
-void display_node(Node node)
+void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n)
 {
+	clock_t start = clock(); // clock start
 
-	printf("Node id: %ld (%s)\n", node->id, node->is_word ? "Oui" : "Non");
-	
-	for (size_t i = 0; i < ALPHABET_SIZE; i++)
+	// count how many times a word exists in each dictionnary
+	int count[3] = {0,0,0};
+	for(size_t i = 0; i < n; i++)
 	{
-		if(node->neighbors[i] == NULL)
-			break;
-		printf("%c : ", node->neighbors[i]->label);
-		display_node(node->neighbors[i]->to);
+		if(word_exists(fr->root, sentence[i], 0))
+			count[0]++;
+		if(word_exists(de->root, sentence[i], 0))
+			count[1]++;
+		if(word_exists(en->root, sentence[i], 0))
+			count[2]++;	
 	}
 
+	// print : how many words per language + detection result
+    char* result = sentence_lang(count);
+    fprintf(stdout,"\n%d word(s) in french.\n", count[0]);
+    fprintf(stdout,"%d word(s) in german.\n", count[1]);
+    fprintf(stdout,"%d word(s) in english.\n", count[2]);
+    fprintf(stdout,"\nMain language is : %s.\n", result);
+
+	// print : time needed to treat the sentence
+    if (fprintf(stdout, "It took %f seconds to treat this sentence\n", (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
+        print_perr();
 }
+
+/**
+ *  Starts the langue detector using the Dawg structure
+ */
+void start_dawg(Dawg en, Dawg de, Dawg fr)
+{
+	// init : sentence entered by user
+    size_t n = 0;
+    char** sentence = get_sentence(&n);
+
+	// treat : sentence	
+    treat_dawg(en, de, fr, sentence, n);
+
+	// free : sentence
+    free_sentence(sentence);
+
+	print_msg("\nType y to restart (anything else will end the programm) :");
+
+    if (getchar() == 'y')
+	{
+        // issue : in fgets due to \n character after using getchar
+        int c;
+        while ( (c = getchar()) != EOF && c != '\n') {}
+
+        // start : re starting
+        print_msg("\nStarting again...");
+        start_dawg(en, de, fr);
+    }
+	else
+	{
+		print_msg("\nEnd of program. Ending here.");
+	}
+}
+
+	// printf("Est-ce que le mot carotte existe? %s\n", word_exists(fr->root, "carotte", 0) ? "Oui" : "Non");
+	// printf("Est-ce que le mot bite existe? %s\n", word_exists(fr->root, "bite", 0) ? "Oui" : "Non");
+	// printf("Est-ce que le mot vagin existe? %s\n", word_exists(fr->root, "vagin", 0) ? "Oui" : "Non");
+	// printf("Est-ce que le mot penis existe? %s\n", word_exists(fr->root, "penis", 0) ? "Oui" : "Non");
+	// printf("Est-ce que le mot bouche existe? %s\n", word_exists(fr->root, "bouche", 0) ? "Oui" : "Non");
+	// printf("Est-ce que le mot esperluette existe? %s\n", word_exists(fr->root, "esperluette", 0) ? "Oui" : "Non");
+	// display(fr->root);

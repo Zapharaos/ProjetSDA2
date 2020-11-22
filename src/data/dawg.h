@@ -5,8 +5,10 @@
 
 #include "lang.h"
 #include "stack.h"
-#include "../utils/utils.h"
 #include "hashmap.h"
+#include "../utils/utils.h"
+#include "../utils/errors.h"
+#include <time.h>
 #include <stddef.h>
 
 typedef struct dawg* Dawg;
@@ -161,5 +163,28 @@ void display_node(Node node);
  * \return 	true if the word if found, false if not
  */
 bool word_exists(Node node, const char* word, size_t index);
+
+
+// Handle
+
+/**
+ * \fn      treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n)
+ * \brief   Treats a sentence
+ * \param   en english dictionnary
+ * \param   de german dictionnary
+ * \param   fr french dictionnary 
+ * \param   sentence the sentence to treat
+ * \param   n the size of the sentence
+ */
+void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n);
+
+/**
+ * \fn      start_dawg(Dawg en, Dawg de, Dawg fr)
+ * \brief   start the langue detector using the Dawg structure
+ * \param   en english dictionnary
+ * \param   de german dictionnary
+ * \param   fr french dictionnary 
+ */
+void start_dawg(Dawg en, Dawg de, Dawg fr);
 
 #endif // !_DAWG_H
