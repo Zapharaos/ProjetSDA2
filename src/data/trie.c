@@ -11,14 +11,20 @@
  */
 Trie empty_trie()
 {
+	// allocate memory for the structure
 	Trie trie = malloc(sizeof(struct trie));
 
+	// if : malloc failed
 	if(trie == NULL)
 		raler("malloc in empty_trie");
 
+	// init elements
 	trie->lang = 0; // unknown
+
+	// allocate memory for the structure
 	trie->data = malloc(sizeof(struct trie) * ALPHABET_SIZE);
 
+	// if : malloc failed
 	if(trie->data == NULL)
 		raler("malloc in empty_trie");
 
@@ -26,6 +32,7 @@ Trie empty_trie()
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 		trie->data[i] = NULL;
 	
+	// returns the trie
 	return trie;
 }
 
@@ -34,16 +41,22 @@ Trie empty_trie()
  */
 void free_trie(Trie trie)
 {
+	// if : trie is empty
 	if (trie == NULL)
 		return;
 
+	// free each childs
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 		free_trie(trie->data[i]);
 
+	// free : lang if not empty
 	if (trie->lang != NULL)
 		free(trie->lang);
 		
+	// free : data
 	free(trie->data);
+
+	// free : trie
 	free(trie);
 }
 
@@ -52,12 +65,15 @@ void free_trie(Trie trie)
  */
 void display_trie(Trie trie)
 {
+	// if : trie is empty
 	if (trie == NULL) return;
 
+	// from 0 to 26
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
 		if(fprintf(stdout, "[%c] %d\n", (char)i + 'a', trie->data[i] == NULL ? -1 : 0) < 0)
 			raler("fprintf in display_trie");
+		// keep displaying with recursivity
 		display_trie(trie->data[i]);
 	}
 }
@@ -67,21 +83,27 @@ void display_trie(Trie trie)
  */
 void insert_trie(Trie trie, const char* word, enum language lang, const size_t index)
 {
+	// place at position index inside word
 	const char element = word[index];
 
+	// if : end of word
 	if (element == '\0')
 		return;
 
+	// get ascii value of element
 	const size_t i = ascii_to_index(element);
 
+	// if the letter doesnt exists yet
 	if(trie->data[i] == NULL)
 		trie->data[i] = empty_trie();
 
+	// if next index is the end of the word
 	if(word[index+1] == '\0')
 	{
 		if (trie->data[i]->lang == 0)
 			trie->data[i]->lang = empty_lang();
 
+		// set language of the word
 		switch (lang)
 		{
 			case EN:
@@ -99,6 +121,7 @@ void insert_trie(Trie trie, const char* word, enum language lang, const size_t i
 		
 	}
 
+	// recursive call
 	insert_trie(trie->data[i], word, lang, index + 1);
 }
 
@@ -107,12 +130,15 @@ void insert_trie(Trie trie, const char* word, enum language lang, const size_t i
  */
 Lang search_trie(Trie trie, const char* word, size_t index)
 {
+	// if : trie is empty
 	if (trie == NULL)
 		return 0;
 
+	// if : end of the word
 	if (word[index] == '\0')
 		return trie->lang;
 
+	// else if char isnt a letter
 	if (word[index] < 97 || word[index] > 122)
 	{
 		if(fprintf(stdout, "Invalid char: %d\n", word[index]) < 0 )
@@ -120,6 +146,7 @@ Lang search_trie(Trie trie, const char* word, size_t index)
 		exit(1);
 	}
 	
+	// recursive call
 	return search_trie(trie->data[ascii_to_index(word[index])], word, index + 1);
 }
 
@@ -128,12 +155,16 @@ Lang search_trie(Trie trie, const char* word, size_t index)
  */
 void count_trie(Trie trie, char** sentence, const size_t n, int count[])
 {
+	// from 0 to number of words inside the sentence
 	for(size_t i = 0; i < n; i++)
 	{
+		// get the language of the word at position i inside the sentence
         Lang word = search_trie(trie, sentence[i], 0);
 
+		// if : unknown
 		if(word == NULL) continue;
 
+		// else : increment its value
         if(word->fr)
             count[0]++;
         if(word->de)

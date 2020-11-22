@@ -54,6 +54,7 @@ char** get_sentence(size_t* n)
  */
 void show_sentence(char** sentence, size_t n)
 {
+    // from 0 to size of the sentence
     for (size_t i = 0; i < (n); i++)
         print_msg(sentence[i]);
 }
@@ -63,19 +64,25 @@ void show_sentence(char** sentence, size_t n)
  */
 char** init_sentence(void)
 {
+    // allocate memory for the structure
     char** sentence = malloc(sizeof(char*) * NB_WORD_MAX);
 
+    // if : malloc failed
     if(sentence == NULL)
         raler("malloc in init_sentence");
 
+    // from 0 to size max of a sentence
     for(size_t i=0; i < NB_WORD_MAX; ++i)
     {
+        // allocate memory for the structure
         sentence[i] = malloc(sizeof(char) * WORD_MAX_SIZE);
 
+        // if : malloc failed
         if(sentence[i] == NULL)
             raler("malloc in init_sentence");
     }
 
+    // returns the structure
     return sentence;
 }
 
@@ -94,11 +101,14 @@ void free_sentence(char** sentence)
  */
 void to_lower(char* entry)
 {
+    // go trough the whole string
     for (size_t i = 0; entry[i] != '\0'; i++)
     {
+        // if the char isnt in caps
         if (entry[i] < 'A' || entry[i] > 'Z')
 	        continue;
     	
+        // if the car is in caps, we transform it into not caps
         entry[i] = (char) (entry[i] - ('A' - 'a'));
     }
 }
