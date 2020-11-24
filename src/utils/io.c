@@ -138,17 +138,17 @@ Dawg construct_dawg(char* dict)
 /**
  * Starts the program depending of the number and list of arguments
  */
-int handle_args(int argc, char* argv[])
+int handle_args(char* argv[])
 {
 
     // if : help
     if (strcmp(argv[1], "-help") == 0)
     {
-	    print_msg("------------ Language detector help ------------");
-        print_msg("Tips: type <make install> to use <ald> instead of <./ald>");
-        print_msg("\t type <make list> to check out the list");
-	    print_msg("Get a sentence: ./bin/ald -sentence <-trie,-dawg>");
-        print_msg("------------------------------------------------");
+	    print_msg("----------------- Language detector help -----------------");
+        print_msg("- Type <make list> to check out the list of possibilities");
+	    print_msg("- Start : ./bin/ald -sentence <-trie,-dawg>");
+        print_msg("\t Also : <make trie> or <make dawg>");
+        print_msg("----------------------------------------------------------");
 
         // return : success
 		exit(0);
