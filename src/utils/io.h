@@ -1,5 +1,6 @@
 #ifndef _IO_H
 #define _IO_H
+
 #include "../data/trie.h"
 #include "../data/dawg.h"
 
@@ -26,5 +27,14 @@ void construct_trie(Trie trie);
  * \return  the dawg structure
  */
 Dawg construct_dawg(char* dict);
+
+/**
+ * \fn      handle_args(int argc, char* argv[])
+ * \brief   Starts the program depending of the number and list of arguments
+ * \param   argc number of arguments
+ * \param   argv list of arguments
+ * \return  0 if it succeded, 1 if it failed
+ */
+int handle_args(int argc, char* argv[]);
 
 #endif

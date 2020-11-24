@@ -1,7 +1,8 @@
-#include "lang.h"
 #include <stdlib.h>
-#include "../utils/errors.h"
 #include <stdio.h>
+
+#include "lang.h"
+#include "../utils/errors.h"
 
 /**
  * Creates an empty lang structure

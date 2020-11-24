@@ -1,6 +1,7 @@
-#include "errors.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "errors.h"
 
 /**
  * An error was encountered

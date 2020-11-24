@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+
 #include "trie.h"
 #include "../utils/utils.h"
 #include "../utils/errors.h"

@@ -3,13 +3,12 @@
 
 #define SERIALIZE_MAX_SIZE 512 // 1 + 26 * 8 + 26 ; où 8 est la longueur max d'une ID
 
+#include <time.h>
+#include <stddef.h>
+
 #include "lang.h"
 #include "stack.h"
 #include "hashmap.h"
-#include "../utils/utils.h"
-#include "../utils/errors.h"
-#include <time.h>
-#include <stddef.h>
 
 typedef struct dawg* Dawg;
 typedef struct node* Node;
@@ -133,7 +132,7 @@ size_t search_prefix_length(char* word1, char* word2);
  * \param   dawg dawg to treat
  * \param	p the depth 
  */
-void minimize(Dawg dawg, size_t p);
+void minimize(Dawg dawg, int p);
 
 /**
  * \fn      insert_dawg(Dawg dawg, char* word)

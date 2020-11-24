@@ -1,5 +1,8 @@
-#include "dawg.h"
 #include <stdlib.h>
+
+#include "dawg.h"
+#include "../utils/utils.h"
+#include "../utils/errors.h"
 
 /**
  * Creates an empty vertex structure
@@ -161,7 +164,7 @@ size_t search_prefix_length(char* word1, char* word2)
 /**
  * Minimize a dawg structure to a given depth
  */
-void minimize(Dawg dawg, size_t p)
+void minimize(Dawg dawg, int p)
 {
 	// while the stack's size is bigger than the given depth
 	while(stack_size(dawg->stack) > p)

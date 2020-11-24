@@ -1,9 +1,9 @@
+#include <string.h>
+#include <stdlib.h>
+#include <errno.h>
+
 #include "utils.h"
 #include "errors.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stddef.h>
-#include <errno.h>
 
 /**
  * Creates a sentence given by the user
@@ -204,4 +204,3 @@ char* sentence_lang(int count[])
             return "unknown (empty)";
     }
 }
-

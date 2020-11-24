@@ -2,23 +2,21 @@
 #define _ERRORS_H
 
 /**
- * \fn      void print_perr()
- * \brief   An error was encountered using frprintf
- * \return  1
+ * \fn      raler(char *message)
+ * \brief   An error was encountered
  */
-void print_perr();
+void raler(char *message);
 
  /**
-  * \fn      void print_err(char *message)
-  * \brief   An error was encountered
+  * \fn      print_error(char *message)
+  * \brief   Displays a message in stderr
   * \param   message Message to display
-  * \return  EXIT_FAILURE
   */
-void print_err(char *message);
+void print_error(char *message);
 
  /**
-  * \fn      void print_msg(char* message)
-  * \brief   Displays a message
+  * \fn      print_msg(char* message)
+  * \brief   Displays a message in stdout
   * \param   message Message to display
   */
 void print_msg(char* message);
