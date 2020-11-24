@@ -142,6 +142,17 @@ void minimize(Dawg dawg, int p);
  */
 void insert_dawg(Dawg dawg, char* word);
 
+/**
+ * @fn		serialize(Node node, char* result)
+ * @brief	Serialization of a node
+ *  All arguments are separated with a semicolon
+ *  First argument is 0 or 1, if the node is a
+ *  letter or not. The next arguments are the uid
+ *  of the right node of the vertexes.
+ * 
+ * @param node Node in question
+ * @param result A serialized string separated by semicolons
+ */
 void serialize(Node node, char* result);
 
 /**
