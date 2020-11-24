@@ -7,16 +7,16 @@
 
 typedef struct lang* Lang;
 
-/** \struct lang
- *  \brief This structure creates a vertex for a node structure
+/** @struct lang
+ *  @brief This structure creates a vertex for a node structure
  */
-/** \var lang::fr
+/** @var lang::fr
  *  Member 'fr' contains a boolean if french
  */
-/** \var lang::de
+/** @var lang::de
  *  Member 'de' contains a boolean if german
  */
-/** \var lang::en
+/** @var lang::en
  *  Member 'en' contains a boolean if english
  */
 struct lang
@@ -26,19 +26,19 @@ struct lang
     bool en;
 };
 
-/** \enum language
- *  \brief This enum indicates a language
+/** @enum language
+ *  @brief This enum indicates a language
  */
-/** \var language::UNKNOWN
+/** @var language::UNKNOWN
  *  Member 'UNKNOWN' stands for an unknown language
  */
-/** \var language::EN
+/** @var language::EN
  *  Member 'EN' stands for english
  */
-/** \var language::FR
+/** @var language::FR
  *  Member 'FR' stands for french
  */
-/** \var language::DE
+/** @var language::DE
  *  Member 'DE' stands for german
  */
 enum language {
@@ -49,23 +49,23 @@ enum language {
 };
 
 /**
- * \fn      empty_lang()
- * \brief   Creates an empty lang structure
- * \return	an empty lang structure
+ * @fn      empty_lang()
+ * @brief   Creates an empty lang structure
+ * @return	an empty lang structure
  */
 Lang empty_lang();
 
 /**
- * \fn      print_lang(Lang lang)
- * \brief   Displays the language
- * \param   lang lang to treat
+ * @fn      print_lang(Lang lang)
+ * @brief   Displays the language
+ * @param   lang lang to treat
  */
 void print_lang(Lang lang);
 
 /**
- * \fn      word_lang(Lang lang)
- * \brief   Displays the language
- * \param   lang lang to treat
+ * @fn      word_lang(Lang lang)
+ * @brief   Displays the language
+ * @param   lang lang to treat
  */
 void word_lang(Lang lang);
 

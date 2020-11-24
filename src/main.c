@@ -12,14 +12,14 @@ int main(int argc, char* argv[])
 	if (argc == 1)
     {
         print_error("Too few arguments: type ./bin/ald -help to display help");
-        exit(1);
+        return 1;
     }
 
-    // if : too mich arguments
+    // if : too much arguments
 	if (argc > 3)
     {
         print_error("Too much arguments: type ./bin/ald -help to display help");
-        exit(1);
+        return 1;
     }
 
     // if : checking the arguments
@@ -31,5 +31,5 @@ int main(int argc, char* argv[])
 
     // return : program failed
     print_error("Arguments not found: type ./bin/ald -help to display help");
-    exit(1);
+    return 1;
 }
