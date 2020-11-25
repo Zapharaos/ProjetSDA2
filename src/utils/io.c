@@ -106,7 +106,7 @@ Dawg construct_dawg(char* dict)
 
         // parsing the word
         parse_word(line);
-        
+
         // insert : word inside the Dawg structure given as paramater
         insert_dawg(dawg, line);
 
@@ -129,7 +129,7 @@ Dawg construct_dawg(char* dict)
         raler("fclose in construct_dawg");
 
     // print : success + time needed to load it
-    if (fprintf(stdout, "Successfully loaded %s into dawg in %f s.\n", dict, (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
+    if (fprintf(stdout, "Successfully loaded %s into dawg in %f s.\n", dict, (double)(clock() - start) / (double)CLOCKS_PER_SEC) < 0)
         raler("fprintf in construct_dawg");
 
     return dawg;
@@ -151,13 +151,122 @@ int handle_args(int argc, char* argv[])
         print_msg("------------------------------------------------");
 
         // return : success
-		exit(0);
+		return 0;
+    }
+
+    if(strcmp(argv[1], "-test") == 0)
+    {
+
+        if(strcmp(argv[2], "-dawg") == 0)
+        {
+            Dawg fr = construct_dawg("dict/english-wordlist.txt");
+            char* line = NULL;
+            size_t len = 0;
+            ssize_t read;
+            FILE* fp;
+
+            if ((fp = fopen("dict/english-wordlist.txt", "r")) == NULL)
+                raler("fopen in construct_dawg");
+
+            // reset errno var at 0
+            errno = 0;
+
+            FILE *fpe;
+
+            fpe = fopen("listedpqsdplqspdo.txt", "w+");
+         
+            size_t words = 0;
+            size_t found = 0;
+
+            // read : file given as paramater (i.e. a dictionnary)
+            while ((read = getline(&line, &len, fp)) != -1)
+            {
+                // remove newline
+                size_t length = strlen(line);
+                if ((length > 0) && (line[length - 1] == '\n'))
+                {
+                    line[length - 1] = '\0';
+                }
+
+                if(word_exists(fr->root, line, 0))
+                {
+                    found++;
+                } else {
+                       fprintf(fpe, "%s\n", line);
+
+                }
+
+                words++;
+
+                // reset errno var at 0
+                errno = 0;
+            }
+
+                        fclose(fpe);
+
+            
+            // if : error using getline
+            if(errno != 0)
+                raler("getline in construct_dawg");
+
+            // free : line
+            free(line);
+
+            // close : file given as paramater (i.e. a dictionnary)
+            if(fclose(fp) != 0)
+                raler("fclose in construct_dawg");
+
+            printf("Word count : %ld, words found: %ld\n", words, found);
+
+            /*
+
+            printf("Est-ce que le mot carotte existe? %s\n", word_exists(fr->root, "carotte", 0) ? "Oui" : "Non");
+            printf("Est-ce que le mot pain existe? %s\n", word_exists(fr->root, "pain", 0) ? "Oui" : "Non");
+            printf("Est-ce que le mot monsieur existe? %s\n", word_exists(fr->root, "monsieur", 0) ? "Oui" : "Non");
+            printf("Est-ce que le mot voiture existe? %s\n", word_exists(fr->root, "voiture", 0) ? "Oui" : "Non");
+            printf("Est-ce que le mot tracteur existe? %s\n", word_exists(fr->root, "tracteur", 0) ? "Oui" : "Non");
+            printf("Est-ce que le mot esperluette existe? %s\n", word_exists(fr->root, "esperluette", 0) ? "Oui" : "Non");
+            
+            char words[10][16] = {
+                "a",
+                "abaissa",
+                "abaissable",
+                "abaissables",
+                "abaissai",
+                "abaissaient"
+                ,
+                "abaissais",
+                "abaissait",
+                "abaissames",
+                "abaissant"
+            };
+
+            // char words[3][16] = {
+            //     "ion",
+            //     "lotion",
+            //     "lotte"
+            // }; 
+
+            for (size_t i = 0; i < 10; i++)
+            {
+                printf("Est-ce que le mot %s existe? %s\n", words[i], word_exists(fr->root,  words[i], 0) ? "Oui" : "Non");
+            }
+            */
+
+          //  display_node(fr->root);
+
+            free_dawg(fr);
+
+            return 0;
+        }
+
+        return 1;
     }
 
     // if : sentence
 	if (strcmp(argv[1], "-sentence") == 0)
     {
-        
+
         // if : trie
 	    if (strcmp(argv[2], "-trie") == 0)
         {
@@ -170,7 +279,7 @@ int handle_args(int argc, char* argv[])
     	    free_trie(trie);
 
             // return : success
-            exit(0);
+            return 0;
         }
 
         // if : dawg
@@ -184,21 +293,21 @@ int handle_args(int argc, char* argv[])
             Dawg fr = construct_dawg("dict/french-wordlist.txt");
 
             start_dawg(en, de, fr);
-
+        
             free_dawg(en);
             free_dawg(de);
             free_dawg(fr);
 
             // return success
-            exit(0);
+            return 0;
         }
 
         // else : failed
-    	print_error("Arguments not found: type ./bin/ald -help to display help");
-		exit(1);
+    	//print_error("Arguments not found: type ./bin/ald -help to display help");
+		return 1;
     }
 	
     // else : failed
-	print_error("Arguments not found: type ./bin/ald -help to display help");
-    exit(1);
+	//print_error("Arguments not found: type ./bin/ald -help to display help");
+    return 1;
 }
