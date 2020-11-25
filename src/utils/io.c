@@ -192,8 +192,7 @@ int handle_args(int argc, char* argv[])
                 {
                     found++;
                 } else {
-                       fprintf(fpe, "%s\n", line);
-
+                    fprintf(fpe, "%s\n", line);
                 }
 
                 words++;
@@ -202,7 +201,7 @@ int handle_args(int argc, char* argv[])
                 errno = 0;
             }
 
-                        fclose(fpe);
+            fclose(fpe);
 
             
             // if : error using getline

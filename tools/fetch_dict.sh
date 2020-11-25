@@ -3,7 +3,7 @@
 dict_dir='dict'
 
 german_url='https://raw.githubusercontent.com/enz/german-wordlist/master/words'
-english_url='https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt'
+english_url='https://raw.githubusercontent.com/sindresorhus/word-list/master/words.txt'
 french_url='https://raw.githubusercontent.com/Mcas4150/french-wordlist/master/words.txt'
 
 german_filename='german-wordlist.txt'
