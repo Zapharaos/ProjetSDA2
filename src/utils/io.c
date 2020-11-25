@@ -158,7 +158,7 @@ int handle_args(char* argv[])
         print_msg("------------------------------------------------------------------");
 
         // return : success
-		exit(0);
+		return 0;
     }
 
     // if : sentence
@@ -177,7 +177,7 @@ int handle_args(char* argv[])
     	    free_trie(trie);
 
             // return : success
-            exit(0);
+            return 0;
         }
 
         // if : dawg
@@ -197,12 +197,12 @@ int handle_args(char* argv[])
             free_dawg(fr);
 
             // return success
-            exit(0);
+            return 0;
         }
 
         // else : failed
     	print_error("Arguments not found: type ./bin/ald -help to display help");
-		exit(1);
+		return 1;
     }
 
     // if : test
@@ -221,7 +221,7 @@ int handle_args(char* argv[])
         test_dawg("test/french-wordlist.txt");
 
         // return success
-        exit(0);
+        return 0;
     }
 
      // if : perf
@@ -232,33 +232,33 @@ int handle_args(char* argv[])
 	    if (strcmp(argv[2], "-trie") == 0)
         {
 
-            print_msg("\nInsert in Trie \n");
+            print_msg("\nInsert in Trie");
 
             time_insert("dict/english-wordlist.txt", "time/insert/trie-en.txt", EN, 0);
             time_insert("dict/german-wordlist.txt", "time/insert/trie-de.txt", DE, 0);
             time_insert("dict/french-wordlist.txt", "time/insert/trie-fr.txt", FR, 0);
 
-            print_msg("\nSearch in Trie \n");
+            print_msg("\nSearch in Trie");
 
             time_search("dict/english-wordlist.txt", "time/search/trie-en.txt", EN, 0);
             time_search("dict/german-wordlist.txt", "time/search/trie-de.txt", DE, 0);
             time_search("dict/french-wordlist.txt", "time/search/trie-fr.txt", FR, 0);
 
             // return : success
-            exit(0);
+            return 0;
         }
 
         // if : dawg
         if (strcmp(argv[2], "-dawg") == 0)
         {
             
-            print_msg("\nInsert in Dawg \n");
+            print_msg("\nInsert in Dawg");
 
             time_insert("dict/english-wordlist.txt", "time/insert/dawg-en.txt", EN, 1);
             time_insert("dict/german-wordlist.txt", "time/insert/dawg-de.txt", DE, 1);
             time_insert("dict/french-wordlist.txt", "time/insert/dawg-fr.txt", FR, 1);
 
-            print_msg("\nSearch in Dawg \n");
+            print_msg("\nSearch in Dawg");
 
             time_search("dict/english-wordlist.txt", "time/search/dawg-en.txt", EN, 1);
             time_search("dict/german-wordlist.txt", "time/search/dawg-de.txt", DE, 1);
@@ -266,15 +266,15 @@ int handle_args(char* argv[])
 
 
             // return success
-            exit(0);
+            return 0;
         }
 
         // else : failed
     	print_error("Arguments not found: type ./bin/ald -help to display help");
-		exit(1);
+		return 1;
     }
 	
     // else : failed
 	print_error("Arguments not found: type ./bin/ald -help to display help");
-    exit(1);
+    return 1;
 }

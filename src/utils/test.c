@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <limits.h>
+#include <errno.h>
 
 #include "test.h"
 #include "utils.h"
@@ -51,34 +52,35 @@ void test_dawg(char* path)
 void time_insert(char* dict, char* file, enum language lang, int boolean)
 {
 
-    (void) dict;
-    (void) boolean;
-
     size_t max;
 
     switch(lang)
     {
         case EN:
             max = EN_NB_WORDS;
+            print_msg("\nLanguage : english\n");
             break;
         case DE:
             max = DE_NB_WORDS;
+            print_msg("\nLanguage : german\n");
             break;
         case FR:
             max = FR_NB_WORDS;
+            print_msg("\nLanguage : french\n");
             break;
         default:
             max = 0;
             break;
     }
 
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
     FILE * fd;
-    if((fd = fopen(file, "w+")) == NULL)
-        raler("fopen time insert trie");
+    FILE * fp;
 
-    // prepare : random number generator
-    time_t t;
-    srand((unsigned) time(&t));
+    if((fd = fopen(file, "w+")) == NULL)
+        raler("fopen time_insert");
 
     double count = 0; // var to stock the amount of seconds
 
@@ -86,20 +88,74 @@ void time_insert(char* dict, char* file, enum language lang, int boolean)
     {
         for(size_t i = 0; i < 10; i++)
         {
-            clock_t start = clock(); // clock start
-            // insérer le mot
-            count += (double) (clock() -  start) / CLOCKS_PER_SEC;
+
+            Trie trie = empty_trie();
+            Dawg dawg = empty_dawg();
+
+            size_t j = 0;
+            errno = 0;
+
+            // open : file given as paramater (i.e. a dictionnary)
+            if ((fp = fopen(dict, "r")) == NULL)
+                raler("fopen in time_insert");
+
+            while(j < n && (read = getline(&line, &len, fp)) != -1)
+            {
+
+                // remove newline
+                size_t length = strlen(line);
+                if ((length > 0) && (line[length - 1] == '\n'))
+                {
+                    line[length - 1] = '\0';
+                }
+
+                // parsing the word
+                parse_word(line);
+
+                clock_t start = clock(); // clock start
+
+                if(boolean == 0)
+                {
+                    // insert : word inside the Trie structure given as paramater
+                    insert_trie(trie, line, lang, 0);
+                }
+                else
+                {
+                    // insert : word inside the Dawg structure given as paramater
+                    insert_dawg(dawg, line);
+                }
+
+                count += (double) (clock() -  start) / CLOCKS_PER_SEC;
+
+                // reset errno var at 0
+                errno = 0;
+                j++;
+            }
+
+            // if : error using getline
+            if(errno != 0)
+                raler("getline in time_insert");
+
+            free_dawg(dawg);
+            free_trie(trie);
+
+            fclose(fp);
         }
 
+        // average time in seconds
+        if(fprintf(stdout, "%zu %f\n",n,count/10) < 0)
+            raler("fprintf time_insert");
         if(fprintf(fd, "%zu %f\n",n,count/10) < 0)
-            raler("frprintf time insert trie");
+            raler("fprintf time_insert");
         
         // resetting count at 0
         count = 0;
     }
 
-    if (fclose(fd) == -1) // in case there is a mistake
-        raler("close time insert trie");
+    // free : line
+    free(line);
+
+    fclose(fd);
 }
 
 void time_search(char* dict, char* file, enum language lang, int boolean)
@@ -111,12 +167,15 @@ void time_search(char* dict, char* file, enum language lang, int boolean)
     {
         case EN:
             max = EN_NB_WORDS;
+            print_msg("\nLanguage : english\n");
             break;
         case DE:
             max = DE_NB_WORDS;
+            print_msg("\nLanguage : german\n");
             break;
         case FR:
             max = FR_NB_WORDS;
+            print_msg("\nLanguage : french\n");
             break;
         default:
             max = 0;
@@ -130,12 +189,10 @@ void time_search(char* dict, char* file, enum language lang, int boolean)
         fill_trie(trie, dict, lang);
     else
         dawg = construct_dawg(dict);
-    
-    (void) max;
 
     FILE * fd;
     if((fd = fopen(file, "w+")) == NULL)
-        raler("fopen time insert trie");
+        raler("fopen time_search");
 
     // prepare : random number generator
     time_t t;
@@ -150,10 +207,9 @@ void time_search(char* dict, char* file, enum language lang, int boolean)
 
             for(size_t j = 0; j < n; j++)
             {
-                
+                (void) max;
                 // get_rand_line(dict, max);
-                char* word = malloc(sizeof(char) * WORD_MAX_SIZE);
-                word = "";
+                char word[WORD_MAX_SIZE] = "";
 
                 clock_t start = clock(); // clock start
 
@@ -163,22 +219,22 @@ void time_search(char* dict, char* file, enum language lang, int boolean)
                     word_exists(dawg->root, word, 0);
 
                 count += (double) (clock() -  start) / CLOCKS_PER_SEC;
+                
             }
             count /= n;
         }
 
         // average time in seconds
         if(fprintf(stdout, "%zu %f\n",n,count/10) < 0)
-            raler("fprintf time insert trie");
+            raler("fprintf time_search");
         if(fprintf(fd, "%zu %f\n",n,count/10) < 0)
-            raler("fprintf time insert trie");
+            raler("fprintf time_search");
         
         // resetting count at 0
         count = 0;
     }
 
-    if (fclose(fd) == -1) // in case there is a mistake
-        raler("close time insert trie");
+    fclose(fd); // in case there is a mistake
 
     free_trie(trie);
     free_dawg(dawg);
