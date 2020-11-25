@@ -1,5 +1,9 @@
 #include "../data/lang.h"
 
+#define EN_NB_WORDS 370103
+#define FR_NB_WORDS 336528
+#define DE_NB_WORDS 685620
+
 /**
  * @fn      test_trie(char* path, enum language lang)
  * @brief   Creates a trie from a file and search from the same file
@@ -14,3 +18,7 @@ void test_trie(char* path, enum language lang);
  * @param   path the path of the file
  */
 void test_dawg(char* path);
+
+void time_insert(char* dict, char* file, enum language lang);
+
+void time_search(char* dict, char* file, enum language lang);
