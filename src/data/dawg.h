@@ -74,7 +74,13 @@ struct node
 struct vertex
 {
 	char label;
+	/**
+	 * @brief Sommet gauche
+	 */
 	Node from;
+	/**
+	 * @brief Sommet droit
+	 */
 	Node to;
 };
 
@@ -109,6 +115,8 @@ Dawg empty_dawg();
  * @param   root node to treat
  */
 void free_node(Node root);
+
+void rec_free_node(Node node, struct hashmap_s* const hashmap);
 
 /**
  * @fn      free_dawg(Dawg dawg)

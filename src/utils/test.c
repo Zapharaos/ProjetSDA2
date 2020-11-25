@@ -136,7 +136,7 @@ void time_insert(char* dict, char* file, enum language lang, int boolean)
                     insert_dawg(dawg, line);
                 }
 
-                count += (double) (clock() -  start) / CLOCKS_PER_SEC;
+                count += (double) (clock() -  start) / (double)CLOCKS_PER_SEC;
 
                 // reset errno var at 0
                 errno = 0;
@@ -222,7 +222,7 @@ void time_search(char* dict, char* file, enum language lang, int boolean)
                     word_exists(dawg->root, word, 0);
             }
 
-            count += (double) (clock() -  start) / CLOCKS_PER_SEC;
+            count += (double) (clock() -  start) / (double) CLOCKS_PER_SEC;
             free(word);
         }
 

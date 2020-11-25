@@ -91,24 +91,49 @@ void free_node(Node root)
 	// if : node is empty
 	if(root == NULL)
 		return;
+	
+	struct hashmap_s hashmap;
+	hashmap_create(2, &hashmap);
+	
+	rec_free_node(root, &hashmap);
+
+	hashmap_destroy(&hashmap);
+}
+
+void rec_free_node(Node node, struct hashmap_s* const hashmap)
+{
+		// if : node is empty
+	if(node == NULL)
+		return;
+
+	char nb_str[16]; // on suppose que l'uid + char ne sera jamais plus grand que 16
+	if(sprintf(nb_str, "%ld", node->id) < 0)
+		raler("snprintf rec_free_node");
+
+	//printf("Str: %s ; len : %ld\n", nb_str, strlen(nb_str));
+
+	if(hashmap_get(hashmap, nb_str, strlen(nb_str)) != HASHMAP_NULL)
+		return;
+
+	hashmap_put(hashmap, nb_str, strlen(nb_str), 0);
 
 	// while vertex also has vertex
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 	{
-		if(root->neighbors[i] == NULL)
+		if(node->neighbors[i] == NULL)
 			continue;
 
 		// free : vertex
-		free_node(root->neighbors[i]->from);
-		free_node(root->neighbors[i]->to);
-		free(root->neighbors[i]);
+		free_node(node->neighbors[i]->to);
+		free(node->neighbors[i]);
 	}
     
 	// free : vertex
-    free(root->neighbors);
+    free(node->neighbors);
 
 	// free : node
-	free(root);
+	free(node);
+
 }
 
 /**
@@ -154,7 +179,7 @@ size_t search_prefix_length(char* word1, char* word2)
 	// increment the size
     while((index < max) && (word1[index] == word2[index]))
 	{
-    	index++;
+		index++;
 	}
 
 	// return size
@@ -171,22 +196,22 @@ void minimize(Dawg dawg, int p)
 	{
 		// pop the top of the stack
 		Vertex a = (Vertex) stack_pop(dawg->stack);
-
+		
 		// get the peak
 		char serialized[SERIALIZE_MAX_SIZE] = "";
 		serialize(a->to, serialized);
-		Node sommet = (Node) hashmap_get(&dawg->hashmap, serialized, p);
+
+		Node sommet = (Node) hashmap_get(&dawg->hashmap, serialized, strlen(serialized));
 
 		// check if the peak is already in the hashmap
-		if(sommet == HASHMAP_NULL)
+		if(sommet != HASHMAP_NULL)
 		{
-			// then we link it to the vertex
 			a->from = sommet;
 			continue;
 		} 
 		
 		// else : we add it to the hashmap
-		hashmap_put(&dawg->hashmap, serialized, strlen(serialized), a->to);
+		hashmap_put(&dawg->hashmap, serialized, strlen(serialized), a->from);
 	}
 }
 
@@ -195,9 +220,10 @@ void minimize(Dawg dawg, int p)
  */
 void insert_dawg(Dawg dawg, char* word)
 {
+
 	// Step 1 : size of biggest prefix between the new word and the last word inserted
 	size_t n = dawg->last_word != 0 ? search_prefix_length(word, dawg->last_word) : 0;
-
+	
 	// Step 2 : minimize the dawg until depth n
 	minimize(dawg, n);
 
@@ -210,29 +236,19 @@ void insert_dawg(Dawg dawg, char* word)
 		// get ascii value of char at positon i inside the word
 		size_t index = ascii_to_index(word[i]);
 
-		// if : the letter doesnt exist yet
-		if(found->neighbors[index] == NULL)
-		{
-			// creates a node and adds the letter to the stack
-			Vertex vertex = empty_vertex(word[i], found, empty_node(dawg));
-			found->neighbors[index] = vertex;
-			found = vertex->from;
-			stack_push(dawg->stack, vertex);
-
-			continue;
-		}
-
-		// adds the letter to the stack
-		stack_push(dawg->stack, found->neighbors[index]);
-		found = found->neighbors[index]->to;
+		Vertex vertex = empty_vertex(word[i], found, empty_node(dawg));
+		found->neighbors[index] = vertex;
+		found = vertex->to;
+		stack_push(dawg->stack, vertex);
 	}
 
 	// Step 4 : the last peak is the end of the word
 	found->is_word = true;
-	
+
 	// create last word
 	if(snprintf(dawg->last_word, WORD_MAX_SIZE, "%s%s", word, "\0") < 0)
         raler("snprintf insert_dawg");
+
 }
 
 void serialize(Node node, char* result)
@@ -246,14 +262,16 @@ void serialize(Node node, char* result)
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
 		Vertex vertex = node->neighbors[i];
-		if(vertex == NULL)
-			continue;
-		if(vertex->to == NULL)
-			continue;
 		result[index++] = ';';
-				
-		char nb_str[16]; // on suppose que l'uid ne sera jamais plus grand que 16
-		if(sprintf(nb_str, "%ld", vertex->to->id) < 0)
+
+		if(vertex == NULL || vertex->to == NULL)
+		{
+			result[index++] = '0';
+			continue;
+		}	
+
+		char nb_str[16]; // on suppose que l'uid + char ne sera jamais plus grand que 16
+		if(sprintf(nb_str, "%c%ld", vertex->label, vertex->to->id) < 0)
 			raler("snprintf serialize");
 
 		for (size_t j = 0; j < 16; j++)
@@ -280,7 +298,7 @@ void display_node(Node node)
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
 		if(node->neighbors[i] == NULL)
-			break;
+			continue;
 		if(fprintf(stdout, "%c : ", node->neighbors[i]->label) < 0)
 			raler("fprintf display_node");
 		display_node(node->neighbors[i]->to);
@@ -293,40 +311,20 @@ void display_node(Node node)
  */
 bool word_exists(Node node, const char* word, size_t index)
 {
-	// printf("a");
-
 	// if : node is empty
 	if(node == NULL)
-	{
-		// printf("\n");
 		return false;
-	}
 	
-	// printf("b");
-
 	// if : at the end of the word
 	if(word[index] == '\0')
-	{
-		// printf("\n");
 		return node->is_word;
-	}
-
-	// printf("c");
 
 	// next node is at the index of the char (at word index)
 	Vertex v = node->neighbors[ascii_to_index(word[index])];
 	
 	// if : vertex is empty
-	if(v == NULL)
-	{
-		//printf("\n");
-		return false;
-	}
-
-	//printf("%c => %ld\n", v->label, v->to->id);
-
 	// recursiv call on the next node and next index
-	return word_exists(v->to, word, index+1);
+	return v == NULL ? false : word_exists(v->to, word, index+1);
 }
 
 /**
@@ -338,6 +336,7 @@ void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n)
 
 	// count how many times a word exists in each dictionnary
 	int count[3] = {0,0,0};
+
 	for(size_t i = 0; i < n; i++)
 	{
 		if(word_exists(fr->root, sentence[i], 0))
@@ -345,7 +344,7 @@ void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n)
 		if(word_exists(de->root, sentence[i], 0))
 			count[1]++;
 		if(word_exists(en->root, sentence[i], 0))
-			count[2]++;	
+			count[2]++;
 	}
 
 	// print : how many words per language + detection result
@@ -360,7 +359,7 @@ void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n)
 		raler("fprintf treat_trie");
 
 	// print : time needed to treat the sentence
-    if (fprintf(stdout, "It took %f seconds to treat this sentence\n", (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
+    if (fprintf(stdout, "It took %f seconds to treat this sentence\n", (double)(clock() - start) / (double)CLOCKS_PER_SEC) < 0)
         raler("fprintf treat_trie");
 }
 
@@ -396,11 +395,3 @@ void start_dawg(Dawg en, Dawg de, Dawg fr)
 		print_msg("\nEnd of program. Ending here.");
 	}
 }
-
-	// printf("Est-ce que le mot carotte existe? %s\n", word_exists(fr->root, "carotte", 0) ? "Oui" : "Non");
-	// printf("Est-ce que le mot bite existe? %s\n", word_exists(fr->root, "bite", 0) ? "Oui" : "Non");
-	// printf("Est-ce que le mot vagin existe? %s\n", word_exists(fr->root, "vagin", 0) ? "Oui" : "Non");
-	// printf("Est-ce que le mot penis existe? %s\n", word_exists(fr->root, "penis", 0) ? "Oui" : "Non");
-	// printf("Est-ce que le mot bouche existe? %s\n", word_exists(fr->root, "bouche", 0) ? "Oui" : "Non");
-	// printf("Est-ce que le mot esperluette existe? %s\n", word_exists(fr->root, "esperluette", 0) ? "Oui" : "Non");
-	// display(fr->root);
