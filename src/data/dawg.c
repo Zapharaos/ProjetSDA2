@@ -191,9 +191,6 @@ size_t search_prefix_length(char* word1, char* word2)
  */
 void minimize(Dawg dawg, int p)
 {
-	// printf("-------------------\n");
-	// printf("Minimize: %d, %d\n", p, stack_size(dawg->stack));
-
 	// while the stack's size is bigger than the given depth
 	while(stack_size(dawg->stack) > p)
 	{
@@ -209,10 +206,6 @@ void minimize(Dawg dawg, int p)
 		// check if the peak is already in the hashmap
 		if(sommet != HASHMAP_NULL)
 		{
-			// then we link it to the vertex
-			// if(a->to != NULL)
-			// 	free(a->to);
-
 			a->from = sommet;
 			continue;
 		} 
@@ -220,7 +213,6 @@ void minimize(Dawg dawg, int p)
 		// else : we add it to the hashmap
 		hashmap_put(&dawg->hashmap, serialized, strlen(serialized), a->from);
 	}
-
 }
 
 /**
@@ -319,35 +311,20 @@ void display_node(Node node)
  */
 bool word_exists(Node node, const char* word, size_t index)
 {
-	// printf("a");
-
 	// if : node is empty
 	if(node == NULL)
-	{
 		return false;
-	}
 	
-	// printf("b");
-
 	// if : at the end of the word
 	if(word[index] == '\0')
-	{
 		return node->is_word;
-	}
-
-	// printf("c");
 
 	// next node is at the index of the char (at word index)
 	Vertex v = node->neighbors[ascii_to_index(word[index])];
 	
 	// if : vertex is empty
-	if(v == NULL)
-	{
-		return false;
-	}
-
 	// recursiv call on the next node and next index
-	return word_exists(v->to, word, index+1);
+	return v == NULL ? false : word_exists(v->to, word, index+1);
 }
 
 /**
@@ -359,25 +336,15 @@ void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n)
 
 	// count how many times a word exists in each dictionnary
 	int count[3] = {0,0,0};
+
 	for(size_t i = 0; i < n; i++)
 	{
-		printf("Word: %s matches: ", sentence[i]);
 		if(word_exists(fr->root, sentence[i], 0))
-		{
-			printf("FR, ");
 			count[0]++;
-		}
 		if(word_exists(de->root, sentence[i], 0))
-		{
-			printf("DE, ");
 			count[1]++;
-		}
 		if(word_exists(en->root, sentence[i], 0))
-		{
-			printf("EN, ");
 			count[2]++;
-		}	
-		printf("\n");
 	}
 
 	// print : how many words per language + detection result
