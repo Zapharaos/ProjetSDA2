@@ -107,7 +107,7 @@ Dawg construct_dawg(char* dict)
 
         // parsing the word
         parse_word(line);
-        
+
         // insert : word inside the Dawg structure given as paramater
         insert_dawg(dawg, line);
 
@@ -130,7 +130,7 @@ Dawg construct_dawg(char* dict)
         raler("fclose in construct_dawg");
 
     // print : success + time needed to load it
-    if (fprintf(stdout, "Successfully loaded %s into dawg in %f s.\n", dict, (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
+    if (fprintf(stdout, "Successfully loaded %s into dawg in %f s.\n", dict, (double)(clock() - start) / (double)CLOCKS_PER_SEC) < 0)
         raler("fprintf in construct_dawg");
 
     return dawg;
@@ -159,12 +159,13 @@ int handle_args(char* argv[])
 
         // return : success
 		return 0;
+      
     }
 
     // if : sentence
 	if (strcmp(argv[1], "-sentence") == 0)
     {
-        
+
         // if : trie
 	    if (strcmp(argv[2], "-trie") == 0)
         {
@@ -191,7 +192,7 @@ int handle_args(char* argv[])
             Dawg fr = construct_dawg("dict/french-wordlist.txt");
 
             start_dawg(en, de, fr);
-
+        
             free_dawg(en);
             free_dawg(de);
             free_dawg(fr);
@@ -201,8 +202,7 @@ int handle_args(char* argv[])
         }
 
         // else : failed
-    	print_error("Arguments not found: type ./bin/ald -help to display help");
-		return 1;
+		  return 1;
     }
 
     // if : test
@@ -272,8 +272,5 @@ int handle_args(char* argv[])
     	print_error("Arguments not found: type ./bin/ald -help to display help");
 		return 1;
     }
-	
-    // else : failed
-	print_error("Arguments not found: type ./bin/ald -help to display help");
     return 1;
 }
