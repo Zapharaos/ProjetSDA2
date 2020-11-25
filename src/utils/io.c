@@ -7,6 +7,7 @@
 
 #include "utils.h"
 #include "errors.h"
+#include "test.h"
 #include "../data/trie.h"
 #include "../data/dawg.h"
 
@@ -138,128 +139,27 @@ Dawg construct_dawg(char* dict)
 /**
  * Starts the program depending of the number and list of arguments
  */
-int handle_args(int argc, char* argv[])
+int handle_args(char* argv[])
 {
 
     // if : help
     if (strcmp(argv[1], "-help") == 0)
     {
-	    print_msg("------------ Language detector help ------------");
-        print_msg("Tips: type <make install> to use <ald> instead of <./ald>");
-        print_msg("\t type <make list> to check out the list");
-	    print_msg("Get a sentence: ./bin/ald -sentence <-trie,-dawg>");
-        print_msg("------------------------------------------------");
+	    print_msg("--------------------- Language detector help ---------------------");
+        print_msg("- Type <make list> to check out the list of possibilities");
+	    print_msg("- Start : ./bin/ald -sentence <-trie,-dawg>");
+        print_msg("\t Also : <make trie> or <make dawg>");
+        print_msg("- Run the test : ./bin/ald -test");
+        print_msg("\t Also : <make test>");
+        print_msg("- Run the perf test for insert : ./bin/ald -insert <-trie,-dawg>");
+        print_msg("\t Also : <make insert>");
+        print_msg("- Run the perf test for search : ./bin/ald -search <-trie,-dawg>");
+        print_msg("\t Also : <make search>");
+        print_msg("------------------------------------------------------------------");
 
         // return : success
 		return 0;
-    }
-
-    if(strcmp(argv[1], "-test") == 0)
-    {
-
-        if(strcmp(argv[2], "-dawg") == 0)
-        {
-            Dawg fr = construct_dawg("dict/english-wordlist.txt");
-            char* line = NULL;
-            size_t len = 0;
-            ssize_t read;
-            FILE* fp;
-
-            if ((fp = fopen("dict/english-wordlist.txt", "r")) == NULL)
-                raler("fopen in construct_dawg");
-
-            // reset errno var at 0
-            errno = 0;
-
-            FILE *fpe;
-
-            fpe = fopen("listedpqsdplqspdo.txt", "w+");
-         
-            size_t words = 0;
-            size_t found = 0;
-
-            // read : file given as paramater (i.e. a dictionnary)
-            while ((read = getline(&line, &len, fp)) != -1)
-            {
-                // remove newline
-                size_t length = strlen(line);
-                if ((length > 0) && (line[length - 1] == '\n'))
-                {
-                    line[length - 1] = '\0';
-                }
-
-                if(word_exists(fr->root, line, 0))
-                {
-                    found++;
-                } else {
-                    fprintf(fpe, "%s\n", line);
-                }
-
-                words++;
-
-                // reset errno var at 0
-                errno = 0;
-            }
-
-            fclose(fpe);
-
-            
-            // if : error using getline
-            if(errno != 0)
-                raler("getline in construct_dawg");
-
-            // free : line
-            free(line);
-
-            // close : file given as paramater (i.e. a dictionnary)
-            if(fclose(fp) != 0)
-                raler("fclose in construct_dawg");
-
-            printf("Word count : %ld, words found: %ld\n", words, found);
-
-            /*
-
-            printf("Est-ce que le mot carotte existe? %s\n", word_exists(fr->root, "carotte", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot pain existe? %s\n", word_exists(fr->root, "pain", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot monsieur existe? %s\n", word_exists(fr->root, "monsieur", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot voiture existe? %s\n", word_exists(fr->root, "voiture", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot tracteur existe? %s\n", word_exists(fr->root, "tracteur", 0) ? "Oui" : "Non");
-            printf("Est-ce que le mot esperluette existe? %s\n", word_exists(fr->root, "esperluette", 0) ? "Oui" : "Non");
-            
-            char words[10][16] = {
-                "a",
-                "abaissa",
-                "abaissable",
-                "abaissables",
-                "abaissai",
-                "abaissaient"
-                ,
-                "abaissais",
-                "abaissait",
-                "abaissames",
-                "abaissant"
-            };
-
-            // char words[3][16] = {
-            //     "ion",
-            //     "lotion",
-            //     "lotte"
-            // }; 
-
-            for (size_t i = 0; i < 10; i++)
-            {
-                printf("Est-ce que le mot %s existe? %s\n", words[i], word_exists(fr->root,  words[i], 0) ? "Oui" : "Non");
-            }
-            */
-
-          //  display_node(fr->root);
-
-            free_dawg(fr);
-
-            return 0;
-        }
-
-        return 1;
+      
     }
 
     // if : sentence
@@ -284,7 +184,7 @@ int handle_args(int argc, char* argv[])
         // if : dawg
         if (strcmp(argv[2], "-dawg") == 0)
         {
-            //todo :
+            
             print_msg("\nYou chose : Dawg \n");
 
             Dawg en = construct_dawg("dict/english-wordlist.txt");
@@ -302,11 +202,75 @@ int handle_args(int argc, char* argv[])
         }
 
         // else : failed
-    	//print_error("Arguments not found: type ./bin/ald -help to display help");
+		  return 1;
+    }
+
+    // if : test
+	if (strcmp(argv[1], "-test") == 0)
+    {
+        print_msg("\nYou chose : Test \n");
+
+        // Trie
+        test_trie("tests/english-wordlist.txt", EN);
+        test_trie("tests/german-wordlist.txt", DE);
+        test_trie("tests/french-wordlist.txt", FR);
+
+        // Dawg
+        test_dawg("tests/english-wordlist.txt");
+        test_dawg("tests/german-wordlist.txt");
+        test_dawg("tests/french-wordlist.txt");
+
+        // return success
+        return 0;
+    }
+
+     // if : perf
+	if (strcmp(argv[1], "-perf") == 0)
+    {
+        
+        // if : trie
+	    if (strcmp(argv[2], "-trie") == 0)
+        {
+
+            print_msg("\nInsert in Trie");
+
+            time_insert("dict/english-wordlist.txt", "tests/times/insert/trie-en.txt", EN, 0);
+            time_insert("dict/german-wordlist.txt", "tests/times/insert/trie-de.txt", DE, 0);
+            time_insert("dict/french-wordlist.txt", "tests/times/insert/trie-fr.txt", FR, 0);
+
+            print_msg("\nSearch in Trie");
+
+            time_search("dict/english-wordlist.txt", "tests/times/search/trie-en.txt", EN, 0);
+            time_search("dict/german-wordlist.txt", "tests/times/search/trie-de.txt", DE, 0);
+            time_search("dict/french-wordlist.txt", "tests/times/search/trie-fr.txt", FR, 0);
+
+            // return : success
+            return 0;
+        }
+
+        // if : dawg
+        if (strcmp(argv[2], "-dawg") == 0)
+        {
+            
+            print_msg("\nInsert in Dawg");
+
+            time_insert("dict/english-wordlist.txt", "tests/times/insert/dawg-en.txt", EN, 1);
+            time_insert("dict/german-wordlist.txt", "tests/times/insert/dawg-de.txt", DE, 1);
+            time_insert("dict/french-wordlist.txt", "tests/times/insert/dawg-fr.txt", FR, 1);
+
+            print_msg("\nSearch in Dawg");
+
+            time_search("dict/english-wordlist.txt", "tests/times/search/dawg-en.txt", EN, 1);
+            time_search("dict/german-wordlist.txt", "tests/times/search/dawg-de.txt", DE, 1);
+            time_search("dict/french-wordlist.txt", "tests/times/search/dawg-fr.txt", FR, 1);
+
+            // return success
+            return 0;
+        }
+
+        // else : failed
+    	print_error("Arguments not found: type ./bin/ald -help to display help");
 		return 1;
     }
-	
-    // else : failed
-	//print_error("Arguments not found: type ./bin/ald -help to display help");
     return 1;
 }

@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <time.h>
 
 #include "utils.h"
 #include "errors.h"
@@ -44,6 +45,66 @@ char** get_sentence(size_t* n)
     
     if(errno != 0)
         raler("strtok_r in get_sentence");
+
+    // return : sentence
+    return sentence;
+}
+
+/**
+ * Creates a sentence from a file
+ */
+char** get_sentence_from_file(char* path, size_t* n)
+{
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    FILE* fp;
+
+    // init : double pointer char array
+    char** sentence = init_sentence();
+    
+    // open : file given as paramater (i.e. a dictionnary)
+    if ((fp = fopen(path, "r")) == NULL)
+        raler("fopen in fill_trie");
+
+    // reset errno var at 0
+    errno = 0;
+
+    // read : file given as paramater (i.e. a dictionnary)
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
+        // remove newline
+        size_t length = strlen(line);
+        if ((length > 0) && (line[length - 1] == '\n'))
+        {
+            line[length - 1] = '\0';
+        }
+
+        // parsing the word
+        parse_word(line);
+        if(snprintf(sentence[(*n)++], WORD_MAX_SIZE, "%s", line) < 0)
+            raler("snprintf in get_sentence");
+
+        // reset errno var at 0
+        errno = 0;
+    }
+
+    // if : error using getline
+    if(errno != 0)
+        raler("getline in fill_trie");
+
+    // free : line
+    free(line);
+    
+    // close : file given as paramater (i.e. a dictionnary)
+    if(fclose(fp) != 0)
+        raler("fclose in fill_trie");
+
+    // print : sentence to user
+    if(fprintf(stdout, "\nThe sentence is :\n") < 0)
+        raler("fprintf in get_sentence_from_file");
+
+    show_sentence(sentence, (*n));
 
     // return : sentence
     return sentence;
@@ -94,6 +155,44 @@ void free_sentence(char** sentence)
     for (int i = 0; i < NB_WORD_MAX; i++ )
         free(sentence[i]);
     free(sentence);
+}
+
+char* get_random_line(char* path, size_t max)
+{
+    // prepare : random number generator
+    time_t t;
+    srand((unsigned) time(&t));
+
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    size_t i = 0;
+    size_t index = rand() % max;
+
+    FILE* fd = fopen(path, "r");
+
+    while ((read = getline(&line, &len, fd)) != -1)
+    {
+        if(i == index)
+            break;
+        i++;
+    }
+    
+    fclose(fd);
+
+    size_t length = strlen(line);
+    if ((length > 0) && (line[length - 1] == '\n'))
+    {
+        line[length - 1] = '\0';
+    }
+
+    // parsing the word
+    parse_word(line);
+
+    
+
+    return line;
 }
 
 /**

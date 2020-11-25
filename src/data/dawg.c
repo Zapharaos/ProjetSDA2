@@ -324,7 +324,6 @@ bool word_exists(Node node, const char* word, size_t index)
 	// if : node is empty
 	if(node == NULL)
 	{
-		//printf("\n");
 		return false;
 	}
 	
@@ -333,7 +332,6 @@ bool word_exists(Node node, const char* word, size_t index)
 	// if : at the end of the word
 	if(word[index] == '\0')
 	{
-		//printf("= %s\n", node->is_word ? "Oui" : "Non");
 		return node->is_word;
 	}
 
@@ -345,11 +343,8 @@ bool word_exists(Node node, const char* word, size_t index)
 	// if : vertex is empty
 	if(v == NULL)
 	{
-		// printf("\n");
 		return false;
 	}
-
-	// printf(" %c => %ld\n", v->label, v->to->id);
 
 	// recursiv call on the next node and next index
 	return word_exists(v->to, word, index+1);

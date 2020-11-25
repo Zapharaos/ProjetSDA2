@@ -30,11 +30,10 @@ Dawg construct_dawg(char* dict);
 
 /**
  * @fn      handle_args(int argc, char* argv[])
- * @brief   Starts the program depending of the number and list of arguments
- * @param   argc number of arguments
+ * @brief   Starts the program depending on the list of arguments
  * @param   argv list of arguments
  * @return  0 if it succeded, 1 if it failed
  */
-int handle_args(int argc, char* argv[]);
+int handle_args(char* argv[]);
 
 #endif

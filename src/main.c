@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     }
 
     // if : checking the arguments
-    if(handle_args(argc, argv) == 0)
+    if(handle_args(argv) == 0)
     {
         // return : program success
         return 0;

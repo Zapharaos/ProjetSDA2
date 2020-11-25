@@ -17,6 +17,15 @@
 char** get_sentence(size_t* n);
 
 /**
+ * @fn      get_sentence_from_file(char* path, size_t* n)
+ * @brief   Creates a sentence from a file
+ * @param   path the path of the file
+ * @param   n pointer with the number of words inside a sentence
+ * @return  Double char array
+ */
+char** get_sentence_from_file(char* path, size_t* n);
+
+/**
  * @fn      show_sentence(char** sentence, size_t n)
  * @brief   Displays every words inside a given sentence
  * @param   sentence the array containg a sentence
@@ -37,6 +46,15 @@ char** init_sentence(void);
  * @param   sentence the array containg a sentence
 */
 void free_sentence(char** sentence);
+
+/**
+ * @fn      get_random_line(char* path, size_t max)
+ * @brief   Returns the word at a random line inside a file
+ * @param   path the path to read from
+ * @param   max the max index of a line
+ * @returns a string at a random line
+*/
+char* get_random_line(char* path, size_t max);
 
 /**
  * @fn      to_lower(char* entry)
