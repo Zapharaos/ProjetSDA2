@@ -6,6 +6,8 @@ BIN_DIR = bin
 ARCH_DIR = dist
 TOOL_DIR = tools
 DICT_DIR = dict
+TIME_DIR = time
+TEST_DIR = test
 
 # Program
 
@@ -70,7 +72,7 @@ dict:
 dist: clean
 	@mkdir -p $(ARCH_DIR)
 	@echo "> Archiving :"
-	tar -czvf $(ARCH_DIR)/SDA2_Projet.tar.gz Makefile README.md $(TOOL_DIR) $(SRC_DIR)
+	tar -czvf $(ARCH_DIR)/SDA2_Projet.tar.gz Makefile README.md $(TOOL_DIR) $(SRC_DIR) $(TIME_DIR) $(TEST_DIR)
 
 # Functions
 

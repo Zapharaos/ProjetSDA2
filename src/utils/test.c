@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <time.h>
+#include <limits.h>
 
 #include "test.h"
 #include "utils.h"
@@ -46,10 +48,11 @@ void test_dawg(char* path)
     free_dawg(dawg);
 }
 
-void time_insert(char* dict, char* file, enum language lang)
+void time_insert(char* dict, char* file, enum language lang, int boolean)
 {
 
     (void) dict;
+    (void) boolean;
 
     size_t max;
 
@@ -99,10 +102,8 @@ void time_insert(char* dict, char* file, enum language lang)
         raler("close time insert trie");
 }
 
-void time_search(char* dict, char* file, enum language lang)
+void time_search(char* dict, char* file, enum language lang, int boolean)
 {
-
-    (void) dict;
     
     size_t max;
 
@@ -122,6 +123,16 @@ void time_search(char* dict, char* file, enum language lang)
             break;
     }
 
+    Trie trie = empty_trie();
+    Dawg dawg = empty_dawg();
+
+    if(boolean == 0)
+        fill_trie(trie, dict, lang);
+    else
+        dawg = construct_dawg(dict);
+    
+    (void) max;
+
     FILE * fd;
     if((fd = fopen(file, "w+")) == NULL)
         raler("fopen time insert trie");
@@ -132,18 +143,35 @@ void time_search(char* dict, char* file, enum language lang)
 
     double count = 0; // var to stock the amount of seconds
 
-    for(size_t n = 10; n <= max; n*=2)
+    for(size_t n = 10; n <= 81920; n*=2)
     {
         for(size_t i = 0; i < 10; i++)
         {
-            clock_t start = clock(); // clock start
-            // x = random number entre 1 et max
-            // search word at line x in dict
-            count += (double) (clock() -  start) / CLOCKS_PER_SEC;
+
+            for(size_t j = 0; j < n; j++)
+            {
+                
+                // get_rand_line(dict, max);
+                char* word = malloc(sizeof(char) * WORD_MAX_SIZE);
+                word = "";
+
+                clock_t start = clock(); // clock start
+
+                if(boolean == 0) // Trie
+                    search_trie(trie, word, 0);
+                else // Dawg
+                    word_exists(dawg->root, word, 0);
+
+                count += (double) (clock() -  start) / CLOCKS_PER_SEC;
+            }
+            count /= n;
         }
 
+        // average time in seconds
+        if(fprintf(stdout, "%zu %f\n",n,count/10) < 0)
+            raler("fprintf time insert trie");
         if(fprintf(fd, "%zu %f\n",n,count/10) < 0)
-            raler("frprintf time insert trie");
+            raler("fprintf time insert trie");
         
         // resetting count at 0
         count = 0;
@@ -151,4 +179,7 @@ void time_search(char* dict, char* file, enum language lang)
 
     if (fclose(fd) == -1) // in case there is a mistake
         raler("close time insert trie");
+
+    free_trie(trie);
+    free_dawg(dawg);
 }

@@ -232,17 +232,17 @@ int handle_args(char* argv[])
 	    if (strcmp(argv[2], "-trie") == 0)
         {
 
-            print_msg("\nYou chose : Perf test for Insert in Trie \n");
+            print_msg("\nInsert in Trie \n");
 
-            time_insert("dict/english-wordlist.txt", "time/insert/trie-en.txt", EN);
-            time_insert("dict/german-wordlist.txt", "time/insert/trie-de.txt", DE);
-            time_insert("dict/french-wordlist.txt", "time/insert/trie-fr.txt", FR);
+            time_insert("dict/english-wordlist.txt", "time/insert/trie-en.txt", EN, 0);
+            time_insert("dict/german-wordlist.txt", "time/insert/trie-de.txt", DE, 0);
+            time_insert("dict/french-wordlist.txt", "time/insert/trie-fr.txt", FR, 0);
 
-            print_msg("\nYou chose : Perf test for Search in Trie \n");
+            print_msg("\nSearch in Trie \n");
 
-            time_search("dict/english-wordlist.txt", "time/search/trie-en.txt", EN);
-            time_search("dict/german-wordlist.txt", "time/search/trie-de.txt", DE);
-            time_search("dict/french-wordlist.txt", "time/search/trie-fr.txt", FR);
+            time_search("dict/english-wordlist.txt", "time/search/trie-en.txt", EN, 0);
+            time_search("dict/german-wordlist.txt", "time/search/trie-de.txt", DE, 0);
+            time_search("dict/french-wordlist.txt", "time/search/trie-fr.txt", FR, 0);
 
             // return : success
             exit(0);
@@ -252,17 +252,17 @@ int handle_args(char* argv[])
         if (strcmp(argv[2], "-dawg") == 0)
         {
             
-            print_msg("\nYou chose : Perf test for Insert in Dawg \n");
+            print_msg("\nInsert in Dawg \n");
 
-            time_insert("dict/english-wordlist.txt", "time/insert/dawg-en.txt", EN);
-            time_insert("dict/german-wordlist.txt", "time/insert/dawg-de.txt", DE);
-            time_insert("dict/french-wordlist.txt", "time/insert/dawg-fr.txt", FR);
+            time_insert("dict/english-wordlist.txt", "time/insert/dawg-en.txt", EN, 1);
+            time_insert("dict/german-wordlist.txt", "time/insert/dawg-de.txt", DE, 1);
+            time_insert("dict/french-wordlist.txt", "time/insert/dawg-fr.txt", FR, 1);
 
-            print_msg("\nYou chose : Perf test for Search in Dawg \n");
+            print_msg("\nSearch in Dawg \n");
 
-            time_search("dict/english-wordlist.txt", "time/search/dawg-en.txt", EN);
-            time_search("dict/german-wordlist.txt", "time/search/dawg-de.txt", DE);
-            time_search("dict/french-wordlist.txt", "time/search/dawg-fr.txt", FR);
+            time_search("dict/english-wordlist.txt", "time/search/dawg-en.txt", EN, 1);
+            time_search("dict/german-wordlist.txt", "time/search/dawg-de.txt", DE, 1);
+            time_search("dict/french-wordlist.txt", "time/search/dawg-fr.txt", FR, 1);
 
 
             // return success

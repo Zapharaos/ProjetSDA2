@@ -293,25 +293,25 @@ void display_node(Node node)
  */
 bool word_exists(Node node, const char* word, size_t index)
 {
-	printf("a");
+	// printf("a");
 
 	// if : node is empty
 	if(node == NULL)
 	{
-		printf("\n");
+		// printf("\n");
 		return false;
 	}
 	
-	printf("b");
+	// printf("b");
 
 	// if : at the end of the word
 	if(word[index] == '\0')
 	{
-		printf("\n");
+		// printf("\n");
 		return node->is_word;
 	}
 
-	printf("c");
+	// printf("c");
 
 	// next node is at the index of the char (at word index)
 	Vertex v = node->neighbors[ascii_to_index(word[index])];
@@ -319,11 +319,11 @@ bool word_exists(Node node, const char* word, size_t index)
 	// if : vertex is empty
 	if(v == NULL)
 	{
-		printf("\n");
+		//printf("\n");
 		return false;
 	}
 
-	printf("%c => %ld\n", v->label, v->to->id);
+	//printf("%c => %ld\n", v->label, v->to->id);
 
 	// recursiv call on the next node and next index
 	return word_exists(v->to, word, index+1);

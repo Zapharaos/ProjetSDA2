@@ -19,6 +19,6 @@ void test_trie(char* path, enum language lang);
  */
 void test_dawg(char* path);
 
-void time_insert(char* dict, char* file, enum language lang);
+void time_insert(char* dict, char* file, enum language lang, int boolean);
 
-void time_search(char* dict, char* file, enum language lang);
+void time_search(char* dict, char* file, enum language lang, int boolean);
