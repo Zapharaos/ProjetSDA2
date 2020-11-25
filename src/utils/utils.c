@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <time.h>
 
 #include "utils.h"
 #include "errors.h"
@@ -154,6 +155,44 @@ void free_sentence(char** sentence)
     for (int i = 0; i < NB_WORD_MAX; i++ )
         free(sentence[i]);
     free(sentence);
+}
+
+char* get_random_line(char* path, size_t max)
+{
+    // prepare : random number generator
+    time_t t;
+    srand((unsigned) time(&t));
+
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    size_t i = 0;
+    size_t index = rand() % max;
+
+    FILE* fd = fopen(path, "r");
+
+    while ((read = getline(&line, &len, fd)) != -1)
+    {
+        if(i == index)
+            break;
+        i++;
+    }
+    
+    fclose(fd);
+
+    size_t length = strlen(line);
+    if ((length > 0) && (line[length - 1] == '\n'))
+    {
+        line[length - 1] = '\0';
+    }
+
+    // parsing the word
+    parse_word(line);
+
+    
+
+    return line;
 }
 
 /**

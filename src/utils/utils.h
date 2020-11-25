@@ -48,6 +48,15 @@ char** init_sentence(void);
 void free_sentence(char** sentence);
 
 /**
+ * @fn      get_random_line(char* path, size_t max)
+ * @brief   Returns the word at a random line inside a file
+ * @param   path the path to read from
+ * @param   max the max index of a line
+ * @returns a string at a random line
+*/
+char* get_random_line(char* path, size_t max);
+
+/**
  * @fn      to_lower(char* entry)
  * @brief   Transform every char in a string into lower cases
  * @param   entry the word to transform

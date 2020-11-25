@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <time.h>
-#include <limits.h>
 #include <errno.h>
 
 #include "test.h"
@@ -194,34 +192,25 @@ void time_search(char* dict, char* file, enum language lang, int boolean)
     if((fd = fopen(file, "w+")) == NULL)
         raler("fopen time_search");
 
-    // prepare : random number generator
-    time_t t;
-    srand((unsigned) time(&t));
-
     double count = 0; // var to stock the amount of seconds
 
-    for(size_t n = 10; n <= 81920; n*=2)
+    for(size_t n = 10; n <= 20971520; n*=2)
     {
         for(size_t i = 0; i < 10; i++)
         {
+            char* word = get_random_line(dict, max);
+            clock_t start = clock();
 
             for(size_t j = 0; j < n; j++)
             {
-                (void) max;
-                // get_rand_line(dict, max);
-                char word[WORD_MAX_SIZE] = "";
-
-                clock_t start = clock(); // clock start
-
                 if(boolean == 0) // Trie
                     search_trie(trie, word, 0);
                 else // Dawg
                     word_exists(dawg->root, word, 0);
-
-                count += (double) (clock() -  start) / CLOCKS_PER_SEC;
-                
             }
-            count /= n;
+
+            count += (double) (clock() -  start) / CLOCKS_PER_SEC;
+            free(word);
         }
 
         // average time in seconds
@@ -234,7 +223,7 @@ void time_search(char* dict, char* file, enum language lang, int boolean)
         count = 0;
     }
 
-    fclose(fd); // in case there is a mistake
+    fclose(fd);
 
     free_trie(trie);
     free_dawg(dawg);

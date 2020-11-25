@@ -211,14 +211,14 @@ int handle_args(char* argv[])
         print_msg("\nYou chose : Test \n");
 
         // Trie
-        test_trie("test/english-wordlist.txt", EN);
-        test_trie("test/german-wordlist.txt", DE);
-        test_trie("test/french-wordlist.txt", FR);
+        test_trie("tests/english-wordlist.txt", EN);
+        test_trie("tests/german-wordlist.txt", DE);
+        test_trie("tests/french-wordlist.txt", FR);
 
         // Dawg
-        test_dawg("test/english-wordlist.txt");
-        test_dawg("test/german-wordlist.txt");
-        test_dawg("test/french-wordlist.txt");
+        test_dawg("tests/english-wordlist.txt");
+        test_dawg("tests/german-wordlist.txt");
+        test_dawg("tests/french-wordlist.txt");
 
         // return success
         return 0;
@@ -234,15 +234,15 @@ int handle_args(char* argv[])
 
             print_msg("\nInsert in Trie");
 
-            time_insert("dict/english-wordlist.txt", "time/insert/trie-en.txt", EN, 0);
-            time_insert("dict/german-wordlist.txt", "time/insert/trie-de.txt", DE, 0);
-            time_insert("dict/french-wordlist.txt", "time/insert/trie-fr.txt", FR, 0);
+            // time_insert("dict/english-wordlist.txt", "times/insert/trie-en.txt", EN, 0);
+            // time_insert("dict/german-wordlist.txt", "times/insert/trie-de.txt", DE, 0);
+            // time_insert("dict/french-wordlist.txt", "times/insert/trie-fr.txt", FR, 0);
 
             print_msg("\nSearch in Trie");
 
-            time_search("dict/english-wordlist.txt", "time/search/trie-en.txt", EN, 0);
-            time_search("dict/german-wordlist.txt", "time/search/trie-de.txt", DE, 0);
-            time_search("dict/french-wordlist.txt", "time/search/trie-fr.txt", FR, 0);
+            time_search("dict/english-wordlist.txt", "times/search/trie-en.txt", EN, 0);
+            time_search("dict/german-wordlist.txt", "times/search/trie-de.txt", DE, 0);
+            time_search("dict/french-wordlist.txt", "times/search/trie-fr.txt", FR, 0);
 
             // return : success
             return 0;
@@ -254,16 +254,15 @@ int handle_args(char* argv[])
             
             print_msg("\nInsert in Dawg");
 
-            time_insert("dict/english-wordlist.txt", "time/insert/dawg-en.txt", EN, 1);
-            time_insert("dict/german-wordlist.txt", "time/insert/dawg-de.txt", DE, 1);
-            time_insert("dict/french-wordlist.txt", "time/insert/dawg-fr.txt", FR, 1);
+            // time_insert("dict/english-wordlist.txt", "times/insert/dawg-en.txt", EN, 1);
+            // time_insert("dict/german-wordlist.txt", "times/insert/dawg-de.txt", DE, 1);
+            // time_insert("dict/french-wordlist.txt", "times/insert/dawg-fr.txt", FR, 1);
 
             print_msg("\nSearch in Dawg");
 
-            time_search("dict/english-wordlist.txt", "time/search/dawg-en.txt", EN, 1);
-            time_search("dict/german-wordlist.txt", "time/search/dawg-de.txt", DE, 1);
-            time_search("dict/french-wordlist.txt", "time/search/dawg-fr.txt", FR, 1);
-
+            time_search("dict/english-wordlist.txt", "times/search/dawg-en.txt", EN, 1);
+            time_search("dict/german-wordlist.txt", "times/search/dawg-de.txt", DE, 1);
+            time_search("dict/french-wordlist.txt", "times/search/dawg-fr.txt", FR, 1);
 
             // return success
             return 0;
