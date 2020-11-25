@@ -208,17 +208,28 @@ int handle_args(char* argv[])
     // if : test
 	if (strcmp(argv[1], "-test") == 0)
     {
-        print_msg("\nYou chose : Test \n");
 
         // Trie
+        print_msg("\nLanguage : english - Trie");
         test_trie("tests/english-wordlist.txt", EN);
+
+        print_msg("\nLanguage : german - Trie");
         test_trie("tests/german-wordlist.txt", DE);
+
+        print_msg("\nLanguage : french - Trie");
         test_trie("tests/french-wordlist.txt", FR);
 
         // Dawg
-        test_dawg("tests/english-wordlist.txt");
-        test_dawg("tests/german-wordlist.txt");
-        test_dawg("tests/french-wordlist.txt");
+        print_msg("\nInsert & Search in Dawg");
+
+        print_msg("\nLanguage : english - Dawg");
+        test_dawg("tests/english-wordlist.txt", EN);
+
+        print_msg("\nLanguage : german - Dawg");
+        test_dawg("tests/german-wordlist.txt", DE);
+
+        print_msg("\nLanguage : french - Dawg");
+        test_dawg("tests/french-wordlist.txt", FR);
 
         // return success
         return 0;

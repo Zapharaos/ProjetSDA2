@@ -26,7 +26,7 @@ void test_trie(char* path, enum language lang)
     free_trie(trie);
 }
 
-void test_dawg(char* path)
+void test_dawg(char* path, enum language lang)
 {
     // init : main dawg
     Dawg dawg = construct_dawg(path);
@@ -38,8 +38,21 @@ void test_dawg(char* path)
     size_t n = 0;
     char** sentence = get_sentence_from_file(path, &n);
 
-	// treat : sentence	
-    treat_dawg(dawg, empty, empty, sentence, n);
+	// treat : sentence
+    switch(lang){
+        case EN:
+            treat_dawg(dawg, empty, empty, sentence, n);
+            break;
+        case DE:
+            treat_dawg(empty, dawg, empty, sentence, n);
+            break;
+        case FR:
+            treat_dawg(empty, empty, dawg, sentence, n);
+            break;
+        default:
+            treat_dawg(empty, empty, empty, sentence, n);
+            break;
+    }
 
 	// free : sentence and dawg
     free_sentence(sentence);
