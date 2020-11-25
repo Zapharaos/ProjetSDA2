@@ -7,6 +7,7 @@
 
 #include "utils.h"
 #include "errors.h"
+#include "test.h"
 #include "../data/trie.h"
 #include "../data/dawg.h"
 
@@ -144,11 +145,17 @@ int handle_args(char* argv[])
     // if : help
     if (strcmp(argv[1], "-help") == 0)
     {
-	    print_msg("----------------- Language detector help -----------------");
+	    print_msg("--------------------- Language detector help ---------------------");
         print_msg("- Type <make list> to check out the list of possibilities");
 	    print_msg("- Start : ./bin/ald -sentence <-trie,-dawg>");
         print_msg("\t Also : <make trie> or <make dawg>");
-        print_msg("----------------------------------------------------------");
+        print_msg("- Run the test : ./bin/ald -test");
+        print_msg("\t Also : <make test>");
+        print_msg("- Run the perf test for insert : ./bin/ald -insert <-trie,-dawg>");
+        print_msg("\t Also : <make insert>");
+        print_msg("- Run the perf test for search : ./bin/ald -search <-trie,-dawg>");
+        print_msg("\t Also : <make search>");
+        print_msg("------------------------------------------------------------------");
 
         // return : success
 		exit(0);
@@ -176,7 +183,7 @@ int handle_args(char* argv[])
         // if : dawg
         if (strcmp(argv[2], "-dawg") == 0)
         {
-            //todo :
+            
             print_msg("\nYou chose : Dawg \n");
 
             Dawg en = construct_dawg("dict/english-wordlist.txt");
@@ -188,6 +195,54 @@ int handle_args(char* argv[])
             free_dawg(en);
             free_dawg(de);
             free_dawg(fr);
+
+            // return success
+            exit(0);
+        }
+
+        // else : failed
+    	print_error("Arguments not found: type ./bin/ald -help to display help");
+		exit(1);
+    }
+
+    // if : test
+	if (strcmp(argv[1], "-test") == 0)
+    {
+        print_msg("\nYou chose : Test \n");
+
+        // Trie
+        test_trie("test/english-wordlist.txt", EN);
+        test_trie("test/german-wordlist.txt", DE);
+        test_trie("test/french-wordlist.txt", FR);
+
+        // Dawg
+        test_dawg("test/english-wordlist.txt");
+        test_dawg("test/german-wordlist.txt");
+        test_dawg("test/french-wordlist.txt");
+
+        // return success
+        exit(0);
+    }
+
+     // if : perf
+	if (strcmp(argv[1], "-perf") == 0)
+    {
+        
+        // if : trie
+	    if (strcmp(argv[2], "-trie") == 0)
+        {
+
+            print_msg("\nYou chose : Perf test for Trie \n");
+
+            // return : success
+            exit(0);
+        }
+
+        // if : dawg
+        if (strcmp(argv[2], "-dawg") == 0)
+        {
+            
+            print_msg("\nYou chose : Perf test for Dawg \n");
 
             // return success
             exit(0);

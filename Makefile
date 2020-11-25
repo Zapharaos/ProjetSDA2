@@ -35,14 +35,21 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 # Run
 
+help: tips
+	@./bin/ald -help
+
 trie: title tips
 	@./bin/ald -sentence -trie
 
 dawg: title tips
 	@./bin/ald -sentence -dawg
 
-help: tips
-	@./bin/ald -help
+test: title tips
+	@./bin/ald -test
+
+perf: title tips
+	@./bin/ald -perf -trie
+	@./bin/ald -perf -dawg
 
 # Utils
 
@@ -84,9 +91,11 @@ list:
 	@echo "make dict -> creates the dictionnary files"
 	@echo "make trie -> runs the program using a trie"
 	@echo "make dawg -> runs the program using a dawg"
+	@echo "make test -> tests the program with presinserted values"
+	@echo "make perf -> tests the programs performances"
 	@echo "make clean -> clears the directory"
 	@echo "make dist -> creates an archive"
-	@echo "make help -> to have all informations"
+	@echo "make help -> to display all informations"
 
 title:
 	@echo '   __   ___   _  _________  _____  _________  ___  _________________________________  _  __'
