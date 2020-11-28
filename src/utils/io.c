@@ -66,7 +66,7 @@ void fill_trie(Trie trie, char* dict, enum language lang)
 }
 
 /**
- * Loading the dictionnarys inside
+ * Loading the dictionnaries inside
  */
 void construct_trie(Trie trie)
 {

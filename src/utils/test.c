@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <errno.h>
+#include <stdbool.h>
 
 #include "test.h"
 #include "utils.h"
@@ -60,7 +61,7 @@ void test_dawg(char* path, enum language lang)
     free_dawg(dawg);
 }
 
-void time_insert(char* dict, char* file, enum language lang, int boolean)
+void time_insert(char* dict, char* file, enum language lang, bool boolean)
 {
 
     size_t max;
@@ -125,7 +126,7 @@ void time_insert(char* dict, char* file, enum language lang, int boolean)
 
                 clock_t start = clock(); // clock start
 
-                if(boolean == 0)
+                if(boolean == false)
                 {
                     // insert : word inside the Trie structure given as paramater
                     insert_trie(trie, line, lang, 0);
@@ -169,7 +170,7 @@ void time_insert(char* dict, char* file, enum language lang, int boolean)
     fclose(fd);
 }
 
-void time_search(char* dict, char* file, enum language lang, int boolean)
+void time_search(char* dict, char* file, enum language lang, bool boolean)
 {
     
     size_t max;
@@ -196,7 +197,7 @@ void time_search(char* dict, char* file, enum language lang, int boolean)
     Trie trie = empty_trie();
     Dawg dawg = empty_dawg();
 
-    if(boolean == 0)
+    if(boolean == false)
         fill_trie(trie, dict, lang);
     else
         dawg = construct_dawg(dict);
@@ -216,7 +217,7 @@ void time_search(char* dict, char* file, enum language lang, int boolean)
 
             for(size_t j = 0; j < n; j++)
             {
-                if(boolean == 0) // Trie
+                if(boolean == false) // Trie
                     search_trie(trie, word, 0);
                 else // Dawg
                     word_exists(dawg->root, word, 0);

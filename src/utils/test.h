@@ -10,6 +10,8 @@
  * @brief   Creates a trie from a file and search from the same file
  * @param   path the path of the file
  * @param   lang the language of the trie
+ * @pre     @p path a dictionnary must exist at the path
+ * @pre     @p lang must not be UNKNOWN
  */
 void test_trie(char* path, enum language lang);
 
@@ -18,6 +20,8 @@ void test_trie(char* path, enum language lang);
  * @brief   Creates a dawg from a file and search from the same file
  * @param   path the path of the file
  * @param   lang the language of the trie
+ * @pre     @p path a dictionnary must exist at the path
+ * @pre     @p lang must not be UNKNOWN
  */
 void test_dawg(char* path, enum language lang);
 
@@ -28,8 +32,11 @@ void test_dawg(char* path, enum language lang);
  * @param   file the path to file where to store the time
  * @param   lang the language of the dictionnary and the words
  * @param   boolean 0 if trie, 1 if dawg
+ * @pre     @p dict a dictionnary must exist at the path
+ * @pre     @p file the path must exist
+ * @pre     @p lang must not be UNKNOWN
  */
-void time_insert(char* dict, char* file, enum language lang, int boolean);
+void time_insert(char* dict, char* file, enum language lang, bool boolean);
 
 /**
  * @fn      time_search(char* dict, char* file, enum language lang, int boolean)
@@ -37,6 +44,9 @@ void time_insert(char* dict, char* file, enum language lang, int boolean);
  * @param   dict the path to the dictionnary file
  * @param   file the path to file where to store the time
  * @param   lang the language of the dictionnary and the words
- * @param   boolean 0 if trie, 1 if dawg
+ * @param   boolean false if trie, true if dawg
+ * @pre     @p dict a dictionnary must exist at the path
+ * @pre     @p file the path must exist
+ * @pre     @p lang must not be UNKNOWN
  */
-void time_search(char* dict, char* file, enum language lang, int boolean);
+void time_search(char* dict, char* file, enum language lang, bool boolean);
