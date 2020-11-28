@@ -23,7 +23,7 @@ Trie empty_trie()
 	trie->lang = 0; // unknown
 
 	// allocate memory for the structure
-	trie->data = malloc(sizeof(struct trie) * ALPHABET_SIZE);
+	//trie->data = malloc(sizeof(struct trie) * ALPHABET_SIZE);
 
 	// if : malloc failed
 	if(trie->data == NULL)

@@ -17,7 +17,7 @@ typedef struct trie* Trie;
  */
 struct trie
 {
-    Trie* data;
+    Trie data[ALPHABET_SIZE];
     Lang lang;
 };
 
