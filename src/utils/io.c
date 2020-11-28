@@ -72,8 +72,12 @@ void construct_trie(Trie trie)
 {
     // loading : dictionnary
     fill_trie(trie, "dict/german-wordlist.txt", DE);
-    fill_trie(trie, "dict/english-wordlist.txt", EN);
-    fill_trie(trie, "dict/french-wordlist.txt", FR);
+    
+    Trie en = empty_trie();
+    fill_trie(en, "dict/english-wordlist.txt", EN);
+
+    Trie fr = empty_trie();
+    fill_trie(fr, "dict/french-wordlist.txt", FR);
 }
 
 /**

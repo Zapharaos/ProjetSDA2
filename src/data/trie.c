@@ -20,7 +20,7 @@ Trie empty_trie()
 		raler("malloc in empty_trie");
 
 	// init elements
-	trie->lang = 0; // unknown
+	//trie->lang = 0; // unknown
 
 	// allocate memory for the structure
 	trie->data = malloc(sizeof(struct trie) * ALPHABET_SIZE);
@@ -51,8 +51,8 @@ void free_trie(Trie trie)
 		free_trie(trie->data[i]);
 
 	// free : lang if not empty
-	if (trie->lang != NULL)
-		free(trie->lang);
+//	if (trie->lang != NULL)
+//		free(trie->lang);
 		
 	// free : data
 	free(trie->data);
@@ -101,20 +101,20 @@ void insert_trie(Trie trie, const char* word, enum language lang, const size_t i
 	// if next index is the end of the word
 	if(word[index+1] == '\0')
 	{
-		if (trie->data[i]->lang == 0)
-			trie->data[i]->lang = empty_lang();
+		//if (trie->data[i]->lang == '0')
+		//	trie->data[i]->lang = empty_lang();
 
 		// set language of the word
 		switch (lang)
 		{
 			case EN:
-				trie->data[i]->lang->en = true;
+				trie->data[i]->en = 1;
 				break;
 			case FR:
-				trie->data[i]->lang->fr = true;
+				trie->data[i]->fr = 1;
 				break;
 			case DE:
-				trie->data[i]->lang->de = true;
+				trie->data[i]->de = 1;
 				break;
 			default:
 				break;
@@ -129,7 +129,7 @@ void insert_trie(Trie trie, const char* word, enum language lang, const size_t i
 /**
  * Searchs the language of a word
  */
-Lang search_trie(Trie trie, const char* word, size_t index)
+Trie search_trie(Trie trie, const char* word, size_t index)
 {
 	// if : trie is empty
 	if (trie == NULL)
@@ -137,7 +137,7 @@ Lang search_trie(Trie trie, const char* word, size_t index)
 
 	// if : end of the word
 	if (word[index] == '\0')
-		return trie->lang;
+		return trie;
 
 	// else if char isnt a letter
 	if (word[index] < 97 || word[index] > 122)
@@ -160,17 +160,17 @@ void count_trie(Trie trie, char** sentence, const size_t n, int count[])
 	for(size_t i = 0; i < n; i++)
 	{
 		// get the language of the word at position i inside the sentence
-        Lang word = search_trie(trie, sentence[i], 0);
+        Trie t = search_trie(trie, sentence[i], 0);
 
 		// if : unknown
-		if(word == NULL) continue;
+		if(t == NULL) continue;
 
 		// else : increment its value
-        if(word->fr)
+        if(t->fr == 1)
             count[0]++;
-        if(word->de)
+        if(t->de == 1)
             count[1]++;
-        if(word->en)
+        if(t->en == 1)
             count[2]++;
     }
 }

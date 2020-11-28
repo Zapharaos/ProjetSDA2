@@ -18,7 +18,10 @@ typedef struct trie* Trie;
 struct trie
 {
     Trie* data;
-    Lang lang;
+    //Lang lang;
+    char fr;
+    char de;
+    char en;
 };
 
 /**
@@ -60,7 +63,7 @@ void insert_trie(Trie trie, const char* word, enum language lang, size_t index);
  * @param   index iterator
  * @return  lang of the word
  */
-Lang search_trie(Trie trie, const char* word, size_t index);
+Trie search_trie(Trie trie, const char* word, size_t index);
 
 /**
  * @fn      search_trie(Trie trie, const char* word, size_t index)
