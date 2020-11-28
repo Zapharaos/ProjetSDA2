@@ -40,11 +40,11 @@ Node empty_node(Dawg dawg)
 	// init elements
 	root->id = dawg->current_node_index++;
 	root->is_word = false;
-	root->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
+	//root->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
 
 	// if : malloc failed
-	if(root->neighbors == NULL)
-		raler("malloc empty_node");
+	//if(root->neighbors == NULL)
+	//	raler("malloc empty_node");
 
 	// init the tab with null pointers (valgrind issue)
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
@@ -129,7 +129,7 @@ void rec_free_node(Node node, struct hashmap_s* const hashmap)
 	}
     
 	// free : vertex
-    free(node->neighbors);
+    //free(node->neighbors);
 
 	// free : node
 	free(node);

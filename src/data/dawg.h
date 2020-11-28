@@ -56,7 +56,7 @@ struct node
 {
 	size_t id;
 	bool is_word;
-	Vertex* neighbors;
+	Vertex neighbors[ALPHABET_SIZE];
 };
 
 /** @struct vertex
