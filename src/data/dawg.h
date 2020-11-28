@@ -85,7 +85,7 @@ struct vertex
 };
 
 /**
- * @fn      empty_vertex(char label, Node from, Node to)
+ * @fn      Vertex empty_vertex(char label, Node from, Node to)
  * @brief   Creates an empty vertex structure
  * @param   label value to set in the structure
  * @param   from value to set in the structure
@@ -95,7 +95,7 @@ struct vertex
 Vertex empty_vertex(char label, Node from, Node to);
 
 /**
- * @fn      empty_dawg()
+ * @fn      Node empty_dawg()
  * @brief   Creates an empty node structure
  * @param   dawg dawg to treat
  * @return	an empty node structure
@@ -103,30 +103,35 @@ Vertex empty_vertex(char label, Node from, Node to);
 Node empty_node(Dawg dawg);
 
 /**
- * @fn      empty_dawg()
+ * @fn      Dawg empty_dawg()
  * @brief   Creates an empty dawg structure
  * @return	an empty dawg structure
  */
 Dawg empty_dawg();
 
 /**
- * @fn      free_node(Node root)
- * @brief   Free a node structure
+ * @fn      void free_node(Node root)
+ * @brief   Free a node structure using rec_free_node
  * @param   root node to treat
  */
 void free_node(Node root);
 
+/**
+ * @fn      void rec_free_node(Node root)
+ * @brief   Recursively free nodes
+ * @param   root node to treat
+ */
 void rec_free_node(Node node, struct hashmap_s* const hashmap);
 
 /**
- * @fn      free_dawg(Dawg dawg)
+ * @fn      void free_dawg(Dawg dawg)
  * @brief   Free a dawg structure
  * @param   dawg dawg to treat
  */
 void free_dawg(Dawg dawg);
 
 /**
- * @fn      search_prefix_length(char* word1, char* word2)
+ * @fn      size_t search_prefix_length(char* word1, char* word2)
  * @brief   Gets the size of the biggest common prefix of the words
  * @param   word1 first word to compare
  * @param	word2 second word to compare
@@ -135,7 +140,7 @@ void free_dawg(Dawg dawg);
 size_t search_prefix_length(char* word1, char* word2);
 
 /**
- * @fn      minimize(Dawg dawg, size_t p)
+ * @fn      void minimize(Dawg dawg, size_t p)
  * @brief   Minimize a dawg structure to a given depth
  * @param   dawg dawg to treat
  * @param	p the depth 
@@ -143,7 +148,7 @@ size_t search_prefix_length(char* word1, char* word2);
 void minimize(Dawg dawg, int p);
 
 /**
- * @fn      insert_dawg(Dawg dawg, char* word)
+ * @fn      void insert_dawg(Dawg dawg, char* word)
  * @brief   Inserts a word inside a dawg
  * @param   dawg dawg to treat
  * @param	word word to insert
@@ -151,7 +156,7 @@ void minimize(Dawg dawg, int p);
 void insert_dawg(Dawg dawg, char* word);
 
 /**
- * @fn		serialize(Node node, char* result)
+ * @fn		void serialize(Node node, char* result)
  * @brief	Serialization of a node
  *  All arguments are separated with a semicolon
  *  First argument is 0 or 1, if the node is a
@@ -164,7 +169,7 @@ void insert_dawg(Dawg dawg, char* word);
 void serialize(Node node, char* result);
 
 /**
- * @fn      display_node(Node node)
+ * @fn      void display_node(Node node)
  * @brief   Displays a Node structure inside a dawg
  * @param   Node node to display
  */
@@ -173,7 +178,7 @@ void display_node(Node node);
 // Lang
 
 /**
- * @fn      word_exists(Node node, const char* word, size_t index)
+ * @fn      bool word_exists(Node node, const char* word, size_t index)
  * @brief   Checks if a word exists inside a dawg structure
  * @param   Node node to treat
  * @param	word word to search
@@ -186,7 +191,7 @@ bool word_exists(Node node, const char* word, size_t index);
 // Handle
 
 /**
- * @fn      treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n)
+ * @fn      void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n)
  * @brief   Treats a sentence
  * @param   en english dictionnary
  * @param   de german dictionnary
@@ -197,7 +202,7 @@ bool word_exists(Node node, const char* word, size_t index);
 void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n);
 
 /**
- * @fn      start_dawg(Dawg en, Dawg de, Dawg fr)
+ * @fn      void start_dawg(Dawg en, Dawg de, Dawg fr)
  * @brief   start the langue detector using the Dawg structure
  * @param   en english dictionnary
  * @param   de german dictionnary
