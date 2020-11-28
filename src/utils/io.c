@@ -61,7 +61,7 @@ void fill_trie(Trie trie, char* dict, enum language lang)
         raler("fclose in fill_trie");
 
     // print : success + time needed to load it
-    if (fprintf(stdout, "Successfully loaded %s into trie in %f s.\n", dict, (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
+    if (fprintf(stdout, "Successfully loaded %s into trie in %f s.\n", dict, (double)(clock() - start) / (double)CLOCKS_PER_SEC) < 0)
         raler("fprintf in fill_trie");
 }
 
@@ -130,7 +130,7 @@ Dawg construct_dawg(char* dict)
         raler("fclose in construct_dawg");
 
     // print : success + time needed to load it
-    if (fprintf(stdout, "Successfully loaded %s into dawg in %f s.\n", dict, (double)(clock() - start) / CLOCKS_PER_SEC) < 0)
+    if (fprintf(stdout, "Successfully loaded %s into dawg in %f s.\n", dict, (double)(clock() - start) /(double) CLOCKS_PER_SEC) < 0)
         raler("fprintf in construct_dawg");
 
     return dawg;
@@ -151,10 +151,8 @@ int handle_args(char* argv[])
         print_msg("\t Also : <make trie> or <make dawg>");
         print_msg("- Run the test : ./bin/ald -test");
         print_msg("\t Also : <make test>");
-        print_msg("- Run the perf test for insert : ./bin/ald -insert <-trie,-dawg>");
-        print_msg("\t Also : <make insert>");
-        print_msg("- Run the perf test for search : ./bin/ald -search <-trie,-dawg>");
-        print_msg("\t Also : <make search>");
+        print_msg("- Run the perf test : <make perf>");
+        print_msg("\t Also : ./bin/ald -perf <-trie,-dawg>");
         print_msg("------------------------------------------------------------------");
 
         // return : success
