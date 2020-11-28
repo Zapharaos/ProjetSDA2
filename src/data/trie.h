@@ -22,28 +22,28 @@ struct trie
 };
 
 /**
- * @fn      empty_trie()
+ * @fn      Trie empty_trie()
  * @brief   Creates an empty Trie structure
  * @return  Trie structure
  */
 Trie empty_trie();
 
 /**
- * @fn      free_trie(Trie trie)
+ * @fn      void free_trie(Trie trie)
  * @brief   Free a Trie structure
  * @param   trie trie to free
  */
 void free_trie(Trie trie);
 
 /**
- * @fn      display_trie(Trie trie)
+ * @fn      void display_trie(Trie trie)
  * @brief   Displays a Trie structure
  * @param   trie trie to display
  */
 void display_trie(Trie trie);
 
 /**
- * @fn      insert_trie(Trie trie, const char* word, enum language lang, size_t index)
+ * @fn      void insert_trie(Trie trie, const char* word, enum language lang, size_t index)
  * @brief   Inserts a word inside a Trie structure
  * @param   trie trie where to insert
  * @param   word word to insert
@@ -53,7 +53,7 @@ void display_trie(Trie trie);
 void insert_trie(Trie trie, const char* word, enum language lang, size_t index);
 
 /**
- * @fn      search_trie(Trie trie, const char* word, size_t index)
+ * @fn      Lang search_trie(Trie trie, const char* word, size_t index)
  * @brief   Searchs the language of a word
  * @param   trie trie where to search
  * @param   word word to search
@@ -63,7 +63,7 @@ void insert_trie(Trie trie, const char* word, enum language lang, size_t index);
 Lang search_trie(Trie trie, const char* word, size_t index);
 
 /**
- * @fn      search_trie(Trie trie, const char* word, size_t index)
+ * @fn      void count_trie(Trie trie, char** sentence, const size_t n, int count[])
  * @brief   Count how many times a language is used inside a sentence
  * @param   trie trie where to search
  * @param   sentence the sentence to treat
@@ -73,7 +73,7 @@ Lang search_trie(Trie trie, const char* word, size_t index);
 void count_trie(Trie trie, char** sentence, const size_t n, int count[]);
 
 /**
- * @fn      treat_trie(Trie trie, char** sentence, size_t n)
+ * @fn      void treat_trie(Trie trie, char** sentence, size_t n)
  * @brief   Treats a sentence
  * @param   trie trie to treat
  * @param   sentence the sentence to treat
@@ -82,7 +82,7 @@ void count_trie(Trie trie, char** sentence, const size_t n, int count[]);
 void treat_trie(Trie trie, char** sentence, size_t n);
 
 /**
- * @fn      start_trie(Trie trie)
+ * @fn      void start_trie(Trie trie)
  * @brief   start the langue detector using the Trie structure
  * @param   trie    the structure
  */
