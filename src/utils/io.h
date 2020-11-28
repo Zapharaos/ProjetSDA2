@@ -5,7 +5,7 @@
 #include "../data/dawg.h"
 
 /**
- * @fn      fill_trie(Trie trie, char* dict, enum language lang)
+ * @fn      void fill_trie(Trie trie, char* dict, enum language lang)
  * @brief   Creates a trie structure and stores a dictionnary
  * @param   trie    the structure 
  * @param   dict    the path to the file 
@@ -16,14 +16,14 @@
 void fill_trie(Trie trie, char* dict, enum language lang);
 
 /**
- * @fn      construct_trie(Trie trie)
+ * @fn      void construct_trie(Trie trie)
  * @brief   Loading the dictionnaries inside a trie
  * @param   trie    the trie where to store
  */
 void construct_trie(Trie trie);
 
 /**
- * @fn      construct_dawg(char* dict)
+ * @fn      Dawg construct_dawg(char* dict)
  * @brief   Creates a dawg structure and stores a dictionnary
  * @param   dict    the path to the file 
  * @return  the dawg structure
@@ -32,7 +32,7 @@ void construct_trie(Trie trie);
 Dawg construct_dawg(char* dict);
 
 /**
- * @fn      handle_args(int argc, char* argv[])
+ * @fn      int handle_args(int argc, char* argv[])
  * @brief   Starts the program depending on the list of arguments
  * @param   argv list of arguments
  * @return  0 if it succeded, 1 if it failed

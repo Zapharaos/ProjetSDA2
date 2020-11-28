@@ -49,21 +49,21 @@ enum language {
 };
 
 /**
- * @fn      empty_lang()
+ * @fn      Lang empty_lang()
  * @brief   Creates an empty lang structure
  * @return	an empty lang structure
  */
 Lang empty_lang();
 
 /**
- * @fn      print_lang(Lang lang)
+ * @fn      void print_lang(Lang lang)
  * @brief   Displays the language
  * @param   lang lang to treat
  */
 void print_lang(Lang lang);
 
 /**
- * @fn      word_lang(Lang lang)
+ * @fn      void word_lang(Lang lang)
  * @brief   Displays the language
  * @param   lang lang to treat
  */
