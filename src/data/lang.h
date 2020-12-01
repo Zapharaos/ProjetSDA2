@@ -8,7 +8,7 @@
 typedef struct lang* Lang;
 
 /** @struct lang
- *  @brief This structure creates a vertex for a node structure
+ *  @brief This structure creates a edge for a node structure
  */
 /** @var lang::fr
  *  Member 'fr' contains a boolean if french

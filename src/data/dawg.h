@@ -12,7 +12,7 @@
 
 typedef struct dawg* Dawg;
 typedef struct node* Node;
-typedef struct vertex* Vertex;
+typedef struct edge* Edge;
 
 /** @struct dawg
  *  @brief This structure creates a dictionnary
@@ -50,28 +50,28 @@ struct dawg {
  *  Member 'is_word' contains a boolean (wether it contains a word or not)
  */
 /** @var node::neighbors
- *  Member 'neighbors' contains a vertex structure
+ *  Member 'neighbors' contains a edge structure
  */
 struct node
 {
 	size_t id;
 	bool is_word;
-	Vertex neighbors[ALPHABET_SIZE];
+	Edge neighbors[ALPHABET_SIZE];
 };
 
-/** @struct vertex
- *  @brief This structure creates a vertex for a node structure
+/** @struct edge
+ *  @brief This structure creates a edge for a node structure
  */
-/** @var vertex::label
- *  Member 'label' contains the vertex's label
+/** @var edge::label
+ *  Member 'label' contains the edge's label
  */
-/** @var vertex::from
+/** @var edge::from
  *  Member 'from' contains the current node
  */
-/** @var vertex::to
+/** @var edge::to
  *  Member 'to' contains the next node
  */
-struct vertex
+struct edge
 {
 	char label;
 	/**
@@ -86,13 +86,13 @@ struct vertex
 
 /**
  * @fn      Vertex empty_vertex(char label, Node from, Node to)
- * @brief   Creates an empty vertex structure
+ * @brief   Creates an empty edge structure
  * @param   label value to set in the structure
  * @param   from value to set in the structure
  * @param   to value to set in the structure
- * @return	an empty vertex structure
+ * @return	an empty edge structure
  */
-Vertex empty_vertex(char label, Node from, Node to);
+Edge empty_vertex(char label, Node from, Node to);
 
 /**
  * @fn      Node empty_dawg()

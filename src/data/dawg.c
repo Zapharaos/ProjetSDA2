@@ -5,24 +5,24 @@
 #include "../utils/errors.h"
 
 /**
- * Creates an empty vertex structure
+ * Creates an empty edge structure
  */
-Vertex empty_vertex(char label, Node from, Node to)
+Edge empty_vertex(char label, Node from, Node to)
 {
 	// allocate memory for the structure
-	Vertex vertex = malloc(sizeof(struct vertex));
+	Edge edge = malloc(sizeof(struct edge));
 
 	// if : malloc failed
-	if(vertex == NULL)
+	if(edge == NULL)
 		raler("malloc empty_vertex");
 
 	// init elements
-	vertex->label = label;
-	vertex->from = from;
-	vertex->to = to;
+	edge->label = label;
+	edge->from = from;
+	edge->to = to;
 	
-	// returns the vertex
-	return vertex;
+	// returns the edge
+	return edge;
 }
 
 /**
@@ -40,7 +40,7 @@ Node empty_node(Dawg dawg)
 	// init elements
 	root->id = dawg->current_node_index++;
 	root->is_word = false;
-	//root->neighbors = malloc(sizeof(struct vertex) * ALPHABET_SIZE);
+	//root->neighbors = malloc(sizeof(struct edge) * ALPHABET_SIZE);
 
 	// if : malloc failed
 	//if(root->neighbors == NULL)
@@ -117,18 +117,18 @@ void rec_free_node(Node node, struct hashmap_s* const hashmap)
 
 	hashmap_put(hashmap, nb_str, strlen(nb_str), 0);
 
-	// while vertex also has vertex
+	// while edge also has edge
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 	{
 		if(node->neighbors[i] == NULL)
 			continue;
 
-		// free : vertex
+		// free : edge
 		free_node(node->neighbors[i]->to);
 		free(node->neighbors[i]);
 	}
     
-	// free : vertex
+	// free : edge
     //free(node->neighbors);
 
 	// free : node
@@ -148,7 +148,7 @@ void free_dawg(Dawg dawg)
 	// free : char*
 	free(dawg->last_word);
 
-	// free : vertex (node)
+	// free : edge (node)
 	free_node(dawg->root);
 
 	// free : hashmap
@@ -195,7 +195,7 @@ void minimize(Dawg dawg, int p)
 	while(stack_size(dawg->stack) > p)
 	{
 		// pop the top of the stack
-		Vertex a = (Vertex) stack_pop(dawg->stack);
+		Edge a = (Edge) stack_pop(dawg->stack);
 		
 		// get the peak
 		char serialized[SERIALIZE_MAX_SIZE] = "";
@@ -228,7 +228,7 @@ void insert_dawg(Dawg dawg, char* word)
 	minimize(dawg, n);
 
 	// Step 3 : add the suffix to the dawg, from root or from the last inserted
-	Node found = stack_size(dawg->stack) == 0 ? dawg->root : ((Vertex)stack_peek(dawg->stack))->to;
+	Node found = stack_size(dawg->stack) == 0 ? dawg->root : ((Edge)stack_peek(dawg->stack))->to;
 	
 	// from end of prefix : to end of word
 	for (size_t i = n; i < strlen(word); i++)
@@ -236,10 +236,10 @@ void insert_dawg(Dawg dawg, char* word)
 		// get ascii value of char at positon i inside the word
 		size_t index = ascii_to_index(word[i]);
 
-		Vertex vertex = empty_vertex(word[i], found, empty_node(dawg));
-		found->neighbors[index] = vertex;
-		found = vertex->to;
-		stack_push(dawg->stack, vertex);
+		Edge edge = empty_vertex(word[i], found, empty_node(dawg));
+		found->neighbors[index] = edge;
+		found = edge->to;
+		stack_push(dawg->stack, edge);
 	}
 
 	// Step 4 : the last peak is the end of the word
@@ -261,17 +261,17 @@ void serialize(Node node, char* result)
 
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
-		Vertex vertex = node->neighbors[i];
+		Edge edge = node->neighbors[i];
 		result[index++] = ';';
 
-		if(vertex == NULL || vertex->to == NULL)
+		if(edge == NULL || edge->to == NULL)
 		{
 			result[index++] = '0';
 			continue;
 		}	
 
 		char nb_str[16]; // on suppose que l'uid + char ne sera jamais plus grand que 16
-		if(sprintf(nb_str, "%c%ld", vertex->label, vertex->to->id) < 0)
+		if(sprintf(nb_str, "%c%ld", edge->label, edge->to->id) < 0)
 			raler("snprintf serialize");
 
 		for (size_t j = 0; j < 16; j++)
@@ -320,9 +320,9 @@ bool word_exists(Node node, const char* word, size_t index)
 		return node->is_word;
 
 	// next node is at the index of the char (at word index)
-	Vertex v = node->neighbors[ascii_to_index(word[index])];
+	Edge v = node->neighbors[ascii_to_index(word[index])];
 	
-	// if : vertex is empty
+	// if : edge is empty
 	// recursiv call on the next node and next index
 	return v == NULL ? false : word_exists(v->to, word, index+1);
 }
