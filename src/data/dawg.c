@@ -40,11 +40,6 @@ Node empty_node(Dawg dawg)
 	// init elements
 	root->id = dawg->current_node_index++;
 	root->is_word = false;
-	//root->neighbors = malloc(sizeof(struct edge) * ALPHABET_SIZE);
-
-	// if : malloc failed
-	//if(root->neighbors == NULL)
-	//	raler("malloc empty_node");
 
 	// init the tab with null pointers (valgrind issue)
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
@@ -128,9 +123,6 @@ void rec_free_node(Node node, struct hashmap_s* const hashmap)
 		free(node->neighbors[i]);
 	}
     
-	// free : edge
-    //free(node->neighbors);
-
 	// free : node
 	free(node);
 

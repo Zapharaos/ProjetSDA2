@@ -22,13 +22,6 @@ Trie empty_trie()
 	// init elements
 	trie->lang = 0; // unknown
 
-	// allocate memory for the structure
-	//trie->data = malloc(sizeof(struct trie) * ALPHABET_SIZE);
-
-	// if : malloc failed
-	//if(trie->data == NULL)
-	//	raler("malloc in empty_trie");
-
 	// init : array with null pointer
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 		trie->data[i] = NULL;
@@ -53,9 +46,6 @@ void free_trie(Trie trie)
 	// free : lang if not empty
 	if (trie->lang != NULL)
 		free(trie->lang);
-		
-	// free : data
-	//	free(trie->data);
 
 	// free : trie
 	free(trie);
