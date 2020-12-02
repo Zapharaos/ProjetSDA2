@@ -208,26 +208,26 @@ int handle_args(char* argv[])
     {
 
         // Trie
-        print_msg("\nLanguage : english - Trie");
-        test_trie("tests/english-wordlist.txt", EN);
 
-        print_msg("\nLanguage : german - Trie");
-        test_trie("tests/german-wordlist.txt", DE);
+        print_msg("\nLanguage : english - Trie : 274411");
+        test_trie("dict/english-wordlist.txt", EN);
 
-        print_msg("\nLanguage : french - Trie");
-        test_trie("tests/french-wordlist.txt", FR);
+        print_msg("\nLanguage : german - Trie : 685620");
+        test_trie("dict/german-wordlist.txt", DE);
+
+        print_msg("\nLanguage : french - Trie : 336528");
+        test_trie("dict/french-wordlist.txt", FR);
 
         // Dawg
-        print_msg("\nInsert & Search in Dawg");
 
-        print_msg("\nLanguage : english - Dawg");
-        test_dawg("tests/english-wordlist.txt", EN);
+        print_msg("\nLanguage : english - Dawg : 274411");
+        test_dawg("dict/english-wordlist.txt");
 
-        print_msg("\nLanguage : german - Dawg");
-        test_dawg("tests/german-wordlist.txt", DE);
+        print_msg("\nLanguage : german - Dawg : 685620");
+        test_dawg("dict/german-wordlist.txt");
 
-        print_msg("\nLanguage : french - Dawg");
-        test_dawg("tests/french-wordlist.txt", FR);
+        print_msg("\nLanguage : french - Dawg : 336528");
+        test_dawg("dict/french-wordlist.txt");
 
         // return success
         return 0;

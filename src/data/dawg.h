@@ -210,4 +210,12 @@ void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n);
  */
 void start_dawg(Dawg en, Dawg de, Dawg fr);
 
+/**
+ * @fn      void search_dawg_from_file(Dawg dawg, char* path)
+ * @brief   searchs all words from a file inside a dawg
+ * @param   dawg dawg to treat
+ * @param   path file to read from
+ */
+void search_dawg_from_file(Dawg dawg, char* path);
+
 #endif // !_DAWG_H

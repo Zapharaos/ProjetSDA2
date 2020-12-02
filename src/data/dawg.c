@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <errno.h>
 
 #include "dawg.h"
 #include "../utils/utils.h"
@@ -386,4 +387,54 @@ void start_dawg(Dawg en, Dawg de, Dawg fr)
 	{
 		print_msg("\nEnd of program. Ending here.");
 	}
+}
+
+void search_dawg_from_file(Dawg dawg, char* path)
+{
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    FILE* fp;
+
+    int count = 0;
+
+    // open : file given as paramater (i.e. a dictionnary)
+    if ((fp = fopen(path, "r")) == NULL)
+        raler("fopen search_dawg_from_file");
+
+    // reset errno var at 0
+    errno = 0;
+
+    // read : file given as paramater (i.e. a dictionnary)
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
+        // remove newline
+        size_t length = strlen(line);
+        if ((length > 0) && (line[length - 1] == '\n'))
+        {
+            line[length - 1] = '\0';
+        }
+
+		// checks if the word exists
+        if(word_exists(dawg->root, line, 0))
+			count++;
+
+        // reset errno var at 0
+        errno = 0;
+    }
+
+    // if : error using getline
+    if(errno != 0)
+        raler("getline in search_dawg_from_file");
+
+    // free : line
+    free(line);
+
+    // close : file given as paramater (i.e. a dictionnary)
+    if(fclose(fp) != 0)
+        raler("fclose in search_dawg_from_file");
+
+    // print : how many words per language + detection result
+    if(fprintf(stdout,"\n%d word(s) in the dawg.\n", count) < 0)
+		raler("fprintf search_dawg_from_file");
 }
