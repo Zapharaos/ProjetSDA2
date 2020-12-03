@@ -166,7 +166,7 @@ void insert_dawg(Dawg dawg, char* word);
  * @param node Node in question
  * @param result A serialized string separated by semicolons
  */
-void serialize(Node node, char* result);
+size_t serialize(Node node, char* result);
 
 /**
  * @fn      void display_node(Node node)
