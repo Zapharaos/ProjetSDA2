@@ -56,7 +56,7 @@ struct node
 {
 	size_t id;
 	bool is_word;
-	Edge neighbors[ALPHABET_SIZE];
+	Edge edges[ALPHABET_SIZE];
 };
 
 /** @struct edge
@@ -92,7 +92,7 @@ struct edge
  * @param   to value to set in the structure
  * @return	an empty edge structure
  */
-Edge empty_vertex(char label, Node from, Node to);
+Edge empty_edge(char label, Node from, Node to);
 
 /**
  * @fn      Node empty_dawg()

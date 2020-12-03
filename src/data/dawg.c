@@ -7,7 +7,7 @@
 /**
  * Creates an empty edge structure
  */
-Edge empty_vertex(char label, Node from, Node to)
+Edge empty_edge(char label, Node from, Node to)
 {
 	// allocate memory for the structure
 	Edge edge = malloc(sizeof(struct edge));
@@ -42,8 +42,8 @@ Node empty_node(Dawg dawg)
 	root->is_word = false;
 
 	// init the tab with null pointers (valgrind issue)
-	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
-		root->neighbors[i] = NULL;
+	for (size_t i = 0; i < ALPHABET_SIZE; i++)
+		root->edges[i] = NULL;
 
 	// returns the node
 	return root;
@@ -115,12 +115,12 @@ void rec_free_node(Node node, struct hashmap_s* const hashmap)
 	// while edge also has edge
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 	{
-		if(node->neighbors[i] == NULL)
+		if(node->edges[i] == NULL)
 			continue;
 
 		// free : edge
-		free_node(node->neighbors[i]->to);
-		free(node->neighbors[i]);
+		free_node(node->edges[i]->to);
+		free(node->edges[i]);
 	}
     
 	// free : node
@@ -183,6 +183,8 @@ size_t search_prefix_length(char* word1, char* word2)
  */
 void minimize(Dawg dawg, int p)
 {
+
+	printf("Minimize to %d\n", p);
 	// while the stack's size is bigger than the given depth
 	while(stack_size(dawg->stack) > p)
 	{
@@ -193,17 +195,51 @@ void minimize(Dawg dawg, int p)
 		char serialized[SERIALIZE_MAX_SIZE] = "";
 		serialize(a->to, serialized);
 
+		printf("Searching ('%c'->to) %s (%ld) in hashmap... ", a->label, serialized, strlen(serialized));
+
 		Node sommet = (Node) hashmap_get(&dawg->hashmap, serialized, strlen(serialized));
+		
+		printf("%s!\n", sommet != HASHMAP_NULL ? "Found" : "Not found");
+
+		//printf("==> 1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;s4;0;0;0;0;0;0;0 >> %s\n", HASHMAP_NULL != hashmap_get(&dawg->hashmap, "1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;s4;0;0;0;0;0;0;0", strlen("1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;s4;0;0;0;0;0;0;0")) ? "Found" :"Not found");
+		//printf("==> 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;t3;0;0;0;0;0;0 >> %s\n", HASHMAP_NULL != hashmap_get(&dawg->hashmap, "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;t3;0;0;0;0;0;0", strlen("0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;t3;0;0;0;0;0;0")) ? "Found" :"Not found");
 
 		// check if the peak is already in the hashmap
 		if(sommet != HASHMAP_NULL)
 		{
-			a->from = sommet;
+			/**
+			 *  FREE NODE TO
+			 */
+				/**/
+				/*
+			for (size_t i = 0; i < ALPHABET_SIZE; i++)
+			{
+				if(a->to->edges[i] == NULL)
+					continue;
+
+				// free : edge
+				//free_node(a->to->edges[i]->to);
+				free(a->to->edges[i]);
+			}
+			
+			// free : node
+			free(a->to);  */
+
+			char sss[SERIALIZE_MAX_SIZE] = "";
+			serialize(sommet, sss);
+
+			printf("%s (%ld), matches with %s (%ld)\n", serialized, strlen(serialized), sss, strlen(sss));
+
+			printf("(%c) Connecting %ld to %ld (%s)\n", a->label, a->from->id, sommet->id, serialized);
+
+			a->to = sommet;
 			continue;
-		} 
+		}
+
+		printf("ADDING %s\n", serialized);
 		
 		// else : we add it to the hashmap
-		hashmap_put(&dawg->hashmap, serialized, strlen(serialized), a->from);
+		hashmap_put(&dawg->hashmap, serialized, strlen(serialized), a->to);
 	}
 }
 
@@ -213,11 +249,25 @@ void minimize(Dawg dawg, int p)
 void insert_dawg(Dawg dawg, char* word)
 {
 
+	printf("Inserting %s: ", word);
+
+	for (size_t i = 0; i < (size_t)stack_size(dawg->stack); i++)
+		printf("%c ", ((Edge)dawg->stack->items[i])->label);
+
+	printf("\n");
+
 	// Step 1 : size of biggest prefix between the new word and the last word inserted
 	size_t n = dawg->last_word != 0 ? search_prefix_length(word, dawg->last_word) : 0;
 	
 	// Step 2 : minimize the dawg until depth n
 	minimize(dawg, n);
+
+	printf("After min: ");
+
+	for (size_t i = 0; i < (size_t)stack_size(dawg->stack); i++)
+		printf("%c ", ((Edge)dawg->stack->items[i])->label);
+
+	printf("\n\n");
 
 	// Step 3 : add the suffix to the dawg, from root or from the last inserted
 	Node found = stack_size(dawg->stack) == 0 ? dawg->root : ((Edge)stack_peek(dawg->stack))->to;
@@ -228,8 +278,8 @@ void insert_dawg(Dawg dawg, char* word)
 		// get ascii value of char at positon i inside the word
 		size_t index = ascii_to_index(word[i]);
 
-		Edge edge = empty_vertex(word[i], found, empty_node(dawg));
-		found->neighbors[index] = edge;
+		Edge edge = empty_edge(word[i], found, empty_node(dawg));
+		found->edges[index] = edge;
 		found = edge->to;
 		stack_push(dawg->stack, edge);
 	}
@@ -253,12 +303,12 @@ void serialize(Node node, char* result)
 
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
-		Edge edge = node->neighbors[i];
-		result[index++] = ';';
+		Edge edge = node->edges[i];
+		result[index++] = ';;';
 
 		if(edge == NULL || edge->to == NULL)
 		{
-			result[index++] = '0';
+			//result[index++] = '0';
 			continue;
 		}	
 
@@ -286,14 +336,24 @@ void display_node(Node node)
 
 	if(fprintf(stdout, "Node id: %ld (%s)\n", node->id, node->is_word ? "Oui" : "Non") < 0)
 		raler("fprintf display_node");
+
+	for (size_t i = 0; i < ALPHABET_SIZE; i++)
+	{
+		if(node->edges[i] == NULL)
+			continue;
+		if(fprintf(stdout, "Edge: %c\n", node->edges[i]->label) < 0)
+			raler("fprintf display_node");
+	}
+
+	printf("\n");
 	
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
-		if(node->neighbors[i] == NULL)
+		if(node->edges[i] == NULL)
 			continue;
-		if(fprintf(stdout, "%c : ", node->neighbors[i]->label) < 0)
-			raler("fprintf display_node");
-		display_node(node->neighbors[i]->to);
+	//	if(fprintf(stdout, "%c : ", node->edges[i]->label) < 0)
+	//		raler("fprintf display_node");
+		display_node(node->edges[i]->to);
 	}
 
 }
@@ -312,7 +372,7 @@ bool word_exists(Node node, const char* word, size_t index)
 		return node->is_word;
 
 	// next node is at the index of the char (at word index)
-	Edge v = node->neighbors[ascii_to_index(word[index])];
+	Edge v = node->edges[ascii_to_index(word[index])];
 	
 	// if : edge is empty
 	// recursiv call on the next node and next index

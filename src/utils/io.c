@@ -104,7 +104,7 @@ Dawg construct_dawg(char* dict)
         {
             line[length - 1] = '\0';
         }
-
+        
         // parsing the word
         parse_word(line);
         
@@ -157,6 +157,17 @@ int handle_args(char* argv[])
 
         // return : success
 		return 0;
+    }
+
+    if(strcmp(argv[1], "-t") == 0)
+    {
+        Dawg t = construct_dawg("dict/testlist.txt");
+
+        display_node(t->root);
+
+        free_dawg(t);
+
+        return 0;
     }
 
     // if : sentence
