@@ -73,6 +73,14 @@ Dawg empty_dawg()
 	dawg->stack = new_stack(1000000); // à voir plus tard
 	hashmap_create(2, &dawg->hashmap);
 	dawg->root = empty_node(dawg);
+	dawg->serialized = malloc(NODE_STR_MAX_SIZE * sizeof(char*));
+
+	for (size_t i = 0; i < NODE_STR_MAX_SIZE; i++)
+	{
+		dawg->serialized[i] = NULL;
+		/* code */
+	}
+	
 
 	// returns the dawg
 	return dawg;
@@ -86,31 +94,28 @@ void free_node(Node root)
 	// if : node is empty
 	if(root == NULL)
 		return;
-	
-	struct hashmap_s hashmap;
-	hashmap_create(2, &hashmap);
-	
-	rec_free_node(root, &hashmap);
 
-	hashmap_destroy(&hashmap);
+	bool visited[NODE_STR_MAX_SIZE];
+
+	for (size_t i = 0; i < NODE_STR_MAX_SIZE; i++)
+		visited[i] = false;
+	
+	rec_free_node(root, visited);
+
 }
 
-void rec_free_node(Node node, struct hashmap_s* const hashmap)
+void rec_free_node(Node node, bool* visited)
 {
 		// if : node is empty
 	if(node == NULL)
 		return;
 
-	char nb_str[16]; // on suppose que l'uid + char ne sera jamais plus grand que 16
-	if(sprintf(nb_str, "%ld", node->id) < 0)
-		raler("snprintf rec_free_node");
+	printf("Trying to free %ld\n", node->id);
 
-	//printf("Str: %s ; len : %ld\n", nb_str, strlen(nb_str));
-
-	if(hashmap_get(hashmap, nb_str, strlen(nb_str)) != HASHMAP_NULL)
+	if(visited[node->id])
 		return;
 
-	hashmap_put(hashmap, nb_str, strlen(nb_str), 0);
+	visited[node->id] = true;
 
 	// while edge also has edge
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
@@ -119,12 +124,31 @@ void rec_free_node(Node node, struct hashmap_s* const hashmap)
 			continue;
 
 		// free : edge
-		rec_free_node(node->edges[i]->to, hashmap);
+		printf("Node > %c\n", node->edges[i]->label);
+		rec_free_node(node->edges[i]->to, visited);
 		free(node->edges[i]);
 	}
-    
+
+	printf("Free %ld\n", node->id);
+
 	// free : node
 	free(node);
+
+}
+
+void free_test(Dawg dawg)
+{
+	if(dawg->serialized == NULL)
+		return;
+
+	for (size_t i = 0; i < 5000000; i++)
+	{
+		if(dawg->serialized[i] == NULL)
+			continue;
+		free(dawg->serialized[i]);
+	}
+	
+	free(dawg->serialized);
 
 }
 
@@ -149,7 +173,7 @@ void free_dawg(Dawg dawg)
 	// free : stack
 	free(dawg->stack->items);
 	free(dawg->stack);
-
+	free(dawg->serialized);
 	// free : dawg
 	free(dawg);
 }
@@ -192,44 +216,51 @@ void minimize(Dawg dawg, int p)
 		Edge a = (Edge) stack_pop(dawg->stack);
 		
 		// get the peak
-		//char serialized[] = "";
+		//char* serialized = malloc(SERIALIZE_MAX_SIZE);
 		
-		//size_t tt = strlen(serialized) + 1;
-		char* test = malloc(SERIALIZE_MAX_SIZE);
-		serialize(a->to, test);
+		if(dawg->serialized[a->to->id] == NULL)
+		{
+			//char serialized[SERIALIZE_MAX_SIZE] = "";
+			dawg->serialized[a->to->id] = malloc(SERIALIZE_MAX_SIZE);
+		}
 
-		//snprintf(test, tt, "%s", serialized);
+		char* pointer = dawg->serialized[a->to->id];
 
-		Node sommet = (Node) hashmap_get(&dawg->hashmap, test, strlen(test));
+		serialize(a->to, pointer);
 
+		Node sommet = (Node) hashmap_get(&dawg->hashmap, pointer, strlen(pointer));
+		
 		// check if the peak is already in the hashmap
 		if(sommet != HASHMAP_NULL)
 		{
 			/**
 			 *  FREE NODE TO
-			 */
-			/*
+			
 			// free : node
-			free(a->to); 
+			*/
 
-			char sss[SERIALIZE_MAX_SIZE] = "";
-			serialize(sommet, sss);
+			for (size_t i = 0; i < ALPHABET_SIZE; i++)
+			{
+				if(a->to->edges[i] == NULL)
+					continue;
+				free(a->to->edges[i]);
+			}
+			
 
-			printf("%s (%ld), matches with %s (%ld)\n", serialized, strlen(serialized), sss, strlen(sss));
+			free(a->to);
 
-			printf("(%c) Connecting %ld to %ld (%s)\n", a->label, a->from->id, sommet->id, serialized);
- 			*/
 			a->to = sommet;
 			continue;
 		}
 
-		// printf("ADDING %s\n", test);
-		
-		// else : we add it to the hashmap
-		hashmap_put(&dawg->hashmap, test, strlen(test), a->to);
+		//printf("Ajout dans hashmap: %c, nb avant: %d\n", a->label, hashmap_num_entries(&dawg->hashmap));
 
-		//free(test);
+		// else : we add it to the hashmap
+		hashmap_put(&dawg->hashmap, pointer, strlen(pointer), a->to);
+
+//		printf("Nombre dans hashmap après: %d\n", hashmap_num_entries(&dawg->hashmap));
 	}
+
 }
 
 /**
@@ -438,4 +469,24 @@ void start_dawg(Dawg en, Dawg de, Dawg fr)
 	{
 		print_msg("\nEnd of program. Ending here.");
 	}
+}
+
+int log_and_free_all(void * const context, struct hashmap_element_s * const e) {
+	(void) context;
+	unsigned counter;
+	printf("Clé: ");
+	for (counter=0; counter < e->key_len; counter++) {
+		char c = e->key[counter];
+		if(c == 0)
+		{
+			printf("TERM");
+			continue;
+		}
+			
+		printf("%c", c);
+	}
+	printf("\n");
+
+//	free(e->key);
+	return -1;
 }

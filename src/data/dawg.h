@@ -1,7 +1,8 @@
 #ifndef _DAWG_H
 #define _DAWG_H
 
-#define SERIALIZE_MAX_SIZE 512 // 1 + 26 * 8 + 26 ; où 8 est la longueur max d'une ID
+#define SERIALIZE_MAX_SIZE 256 // 1 + 26 * 8 + 26 ; où 8 est la longueur max d'une ID
+#define NODE_STR_MAX_SIZE 5000000
 
 #include <time.h>
 #include <stddef.h>
@@ -37,6 +38,7 @@ struct dawg {
 	char* last_word;
 	struct stack *stack;
 	struct hashmap_s hashmap;
+	char** serialized;
 	Node root;
 };
 
@@ -120,8 +122,9 @@ void free_node(Node root);
  * @fn      void rec_free_node(Node root)
  * @brief   Recursively free nodes
  * @param   root node to treat
+ * @param	visited Table to check if node was already cleared
  */
-void rec_free_node(Node node, struct hashmap_s* const hashmap);
+void rec_free_node(Node node, bool* visited);
 
 /**
  * @fn      void free_dawg(Dawg dawg)
@@ -209,5 +212,9 @@ void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n);
  * @param   fr french dictionnary 
  */
 void start_dawg(Dawg en, Dawg de, Dawg fr);
+
+int log_and_free_all(void* const context, struct hashmap_element_s* const e);
+
+void free_test(Dawg dawg);
 
 #endif // !_DAWG_H
