@@ -192,24 +192,15 @@ void minimize(Dawg dawg, int p)
 		Edge a = (Edge) stack_pop(dawg->stack);
 		
 		// get the peak
-		char serialized[SERIALIZE_MAX_SIZE] = "";
-		serialize(a->to, serialized);
-
-		size_t tt = strlen(serialized) + 1;
-		char* test = malloc(tt);
-
-		snprintf(test, tt, "%s", serialized);
-
-		//strncpy(test, serialized, strlen(serialized) + 1);
-
-	//	printf("Searching ('%c'->to) %s (%ld) in hashmap... ", a->label, test, tt);
+		//char serialized[] = "";
 		
-		Node sommet = (Node) hashmap_get(&dawg->hashmap, test, tt);
-		
-	//	printf("%s!\n", sommet != HASHMAP_NULL ? "Found" : "Not found");
-	//	printf("==> 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 >> %s\n", HASHMAP_NULL != hashmap_get(&dawg->hashmap, "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0", strlen("1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")) ? "Found" :"Not found");
-	//	printf("==> 1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;s4;0;0;0;0;0;0;0 >> %s\n", HASHMAP_NULL != hashmap_get(&dawg->hashmap, "1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;s4;0;0;0;0;0;0;0", strlen("1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;s4;0;0;0;0;0;0;0")) ? "Found" :"Not found");
-	//	printf("==> 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;t3;0;0;0;0;0;0 >> %s\n", HASHMAP_NULL != hashmap_get(&dawg->hashmap, "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;t3;0;0;0;0;0;0", strlen("0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;t3;0;0;0;0;0;0")) ? "Found" :"Not found");
+		//size_t tt = strlen(serialized) + 1;
+		char* test = malloc(SERIALIZE_MAX_SIZE);
+		serialize(a->to, test);
+
+		//snprintf(test, tt, "%s", serialized);
+
+		Node sommet = (Node) hashmap_get(&dawg->hashmap, test, strlen(test));
 
 		// check if the peak is already in the hashmap
 		if(sommet != HASHMAP_NULL)
@@ -217,28 +208,17 @@ void minimize(Dawg dawg, int p)
 			/**
 			 *  FREE NODE TO
 			 */
-				/**/
-				/*
-			for (size_t i = 0; i < ALPHABET_SIZE; i++)
-			{
-				if(a->to->edges[i] == NULL)
-					continue;
-
-				// free : edge
-				//free_node(a->to->edges[i]->to);
-				free(a->to->edges[i]);
-			}
-			
+			/*
 			// free : node
-			free(a->to);  */
+			free(a->to); 
 
 			char sss[SERIALIZE_MAX_SIZE] = "";
 			serialize(sommet, sss);
 
-	//		printf("%s (%ld), matches with %s (%ld)\n", serialized, strlen(serialized), sss, strlen(sss));
+			printf("%s (%ld), matches with %s (%ld)\n", serialized, strlen(serialized), sss, strlen(sss));
 
-	//		printf("(%c) Connecting %ld to %ld (%s)\n", a->label, a->from->id, sommet->id, serialized);
-
+			printf("(%c) Connecting %ld to %ld (%s)\n", a->label, a->from->id, sommet->id, serialized);
+ 			*/
 			a->to = sommet;
 			continue;
 		}
@@ -246,9 +226,9 @@ void minimize(Dawg dawg, int p)
 		// printf("ADDING %s\n", test);
 		
 		// else : we add it to the hashmap
-		hashmap_put(&dawg->hashmap, test, tt, a->to);
+		hashmap_put(&dawg->hashmap, test, strlen(test), a->to);
 
-		free(test);
+		//free(test);
 	}
 }
 
