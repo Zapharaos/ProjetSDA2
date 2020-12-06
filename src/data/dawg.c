@@ -100,39 +100,38 @@ void free_node(Node root)
 	for (size_t i = 0; i < NODE_STR_MAX_SIZE; i++)
 		visited[i] = false;
 	
-	rec_free_node(root, visited);
+	rec_free_node(&root, visited);
 
 }
 
-void rec_free_node(Node node, bool* visited)
+void rec_free_node(Node* node, bool* visited)
 {
-		// if : node is empty
-	if(node == NULL)
+	if(*node == NULL)
 		return;
 
-	printf("Trying to free %ld\n", node->id);
+	printf("Trying to free %ld\n", (*node)->id);
 
-	if(visited[node->id])
+	if(visited[(*node)->id])
 		return;
 
-	visited[node->id] = true;
+	visited[(*node)->id] = true;
 
 	// while edge also has edge
 	for (size_t i = 0; i < ALPHABET_SIZE; ++i)
 	{
-		if(node->edges[i] == NULL)
+		if((*node)->edges[i] == NULL)
 			continue;
+	
+		printf("Node > %c (%p)\n", (*node)->edges[i]->label, (*node)->edges[i]->to);
 
-		// free : edge
-		printf("Node > %c\n", node->edges[i]->label);
-		rec_free_node(node->edges[i]->to, visited);
-		free(node->edges[i]);
+		rec_free_node(&((*node)->edges[i]->to), visited);
+		free((*node)->edges[i]);
 	}
 
-	printf("Free %ld\n", node->id);
+	printf("Free %ld\n", (*node)->id);
 
-	// free : node
-	free(node);
+	free(*node);
+	*node = NULL;
 
 }
 
@@ -165,8 +164,9 @@ void free_dawg(Dawg dawg)
 	free(dawg->last_word);
 
 	// free : edge (node)
-	free_node(dawg->root);
-
+	//free_node(dawg->root);
+	// Free all nodes.
+	hashmap_iterate_pairs(&dawg->hashmap, log_and_free_all, NULL);
 	// free : hashmap
 	hashmap_destroy(&dawg->hashmap);
 
@@ -246,7 +246,7 @@ void minimize(Dawg dawg, int p)
 				free(a->to->edges[i]);
 			}
 			
-
+			free(a->to->edges);
 			free(a->to);
 
 			a->to = sommet;
@@ -269,25 +269,11 @@ void minimize(Dawg dawg, int p)
 void insert_dawg(Dawg dawg, char* word)
 {
 
-//	printf("Inserting %s: ", word);
-
-//	for (size_t i = 0; i < (size_t)stack_size(dawg->stack); i++)
-//		printf("%c ", ((Edge)dawg->stack->items[i])->label);
-
-//	printf("\n");
-
 	// Step 1 : size of biggest prefix between the new word and the last word inserted
 	size_t n = dawg->last_word != 0 ? search_prefix_length(word, dawg->last_word) : 0;
 	
 	// Step 2 : minimize the dawg until depth n
 	minimize(dawg, n);
-
-	// printf("After min: ");
-
-	// for (size_t i = 0; i < (size_t)stack_size(dawg->stack); i++)
-	// 	printf("%c ", ((Edge)dawg->stack->items[i])->label);
-
-	//printf("\n\n");
 
 	// Step 3 : add the suffix to the dawg, from root or from the last inserted
 	Node found = stack_size(dawg->stack) == 0 ? dawg->root : ((Edge)stack_peek(dawg->stack))->to;
@@ -369,7 +355,7 @@ void display_node(Node node)
 	}
 
 	printf("\n");
-	
+
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
 		if(node->edges[i] == NULL)
@@ -473,20 +459,59 @@ void start_dawg(Dawg en, Dawg de, Dawg fr)
 
 int log_and_free_all(void * const context, struct hashmap_element_s * const e) {
 	(void) context;
-	unsigned counter;
-	printf("Clé: ");
-	for (counter=0; counter < e->key_len; counter++) {
-		char c = e->key[counter];
-		if(c == 0)
-		{
-			printf("TERM");
-			continue;
-		}
-			
-		printf("%c", c);
-	}
-	printf("\n");
 
-//	free(e->key);
+	printf("Pouet\n");
+
+	if(e->data == NULL)
+		return -1;
+
+	printf("Node %p : %ld\n", e->data, ((Node)e->data)->id);
+
+	Node node = (Node)e->data;
+
+	if(node->edges != NULL)
+	{
+		for (size_t i = 0; i < ALPHABET_SIZE; ++i)
+		{
+			if(node->edges[i] == NULL)
+				continue;
+			free(node->edges[i]);
+		}
+	}	
+	
+	free(e->data);
 	return -1;
+}
+
+
+size_t profondeur(Dawg dawg)
+{
+	bool visited[NODE_STR_MAX_SIZE];
+
+	for (size_t i = 0; i < NODE_STR_MAX_SIZE; i++)
+		visited[i] = false;
+
+	return calc_profondeur(dawg->root, visited);
+}
+
+size_t calc_profondeur(Node node, bool* visited)
+{
+	if(node == NULL || visited[node->id])
+		return 0;
+
+	visited[node->id] = true;
+
+	size_t total = 1;
+
+	for (size_t i = 0; i < ALPHABET_SIZE; i++)
+	{
+		Edge item = node->edges[i];
+
+		if(item == NULL)
+			continue;
+
+		total += calc_profondeur(item->to, visited);
+	}
+
+	return total;
 }

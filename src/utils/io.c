@@ -163,13 +163,14 @@ int handle_args(char* argv[])
 
     if(strcmp(argv[1], "-t") == 0)
     {
+
         Dawg t = construct_dawg("dict/testlist.txt");
 
-        	printf("Display hashmap: \n");
-
+        printf("Display hashmap: \n");
+        /*
         if (0 != hashmap_iterate_pairs(&t->hashmap, log_and_free_all, NULL)) {
             fprintf(stderr, "failed to deallocate hashmap entries\n");
-        }
+        } */
 
         display_node(t->root);
 
@@ -210,6 +211,10 @@ int handle_args(char* argv[])
             if (0 != hashmap_iterate_pairs(&fr->hashmap, log_and_free_all, NULL)) {
                 fprintf(stderr, "failed to deallocate hashmap entries\n");
             } */
+
+            printf("Taille dawg_en : %ld\n", profondeur(en));
+            printf("Taille dawg_de : %ld\n", profondeur(de));
+            printf("Taille dawg_fr : %ld\n", profondeur(fr));
 
             start_dawg(en, de, fr);
 

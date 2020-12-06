@@ -88,4 +88,6 @@ void treat_trie(Trie trie, char** sentence, size_t n);
  */
 void start_trie(Trie trie);
 
+size_t count(Trie trie);
+
 #endif // !_TRIE_H

@@ -124,7 +124,7 @@ void free_node(Node root);
  * @param   root node to treat
  * @param	visited Table to check if node was already cleared
  */
-void rec_free_node(Node node, bool* visited);
+void rec_free_node(Node* node, bool* visited);
 
 /**
  * @fn      void free_dawg(Dawg dawg)
@@ -216,5 +216,9 @@ void start_dawg(Dawg en, Dawg de, Dawg fr);
 int log_and_free_all(void* const context, struct hashmap_element_s* const e);
 
 void free_test(Dawg dawg);
+
+size_t profondeur(Dawg dawg);
+
+size_t calc_profondeur(Node node, bool* visited);
 
 #endif // !_DAWG_H
