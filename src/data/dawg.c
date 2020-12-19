@@ -125,12 +125,7 @@ void free_node(Node root)
 
 void rec_free_node(struct stack* stack, Node node, bool* visited)
 {
-	if(node == NULL)
-		return;
-
-	printf("Trying to free %ld\n", node->id);
-
-	if(visited[node->id])
+	if(node == NULL || visited[node->id])
 		return;
 
 	visited[node->id] = true;
