@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <errno.h>
+#include <string.h>
 
 #include "trie.h"
 #include "../utils/utils.h"
@@ -224,6 +226,71 @@ void start_trie(Trie trie)
 	{
 		print_msg("\nEnd of program. Ending here.");
 	}
+}
+
+void search_trie_from_file(Trie trie, char* path)
+{
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    FILE* fp;
+
+    int count[3] = {0,0,0};
+
+    // open : file given as paramater (i.e. a dictionnary)
+    if ((fp = fopen(path, "r")) == NULL)
+        raler("fopen read from dictionnary");
+
+    // reset errno var at 0
+    errno = 0;
+
+    // read : file given as paramater (i.e. a dictionnary)
+    while ((read = getline(&line, &len, fp)) != -1)
+    {
+        // remove newline
+        size_t length = strlen(line);
+        if ((length > 0) && (line[length - 1] == '\n'))
+        {
+            line[length - 1] = '\0';
+        }
+
+        // get the language of the word at position i inside the sentence
+        Lang word = search_trie(trie, line, 0);
+
+		// if : unknown
+		if(word == NULL) continue;
+
+		// else : increment its value
+        if(word->fr)
+            count[0]++;
+        if(word->de)
+            count[1]++;
+        if(word->en)
+            count[2]++;
+
+        // reset errno var at 0
+        errno = 0;
+    }
+
+    // if : error using getline
+    if(errno != 0)
+        raler("getline in fill_trie");
+
+    // free : line
+    free(line);
+
+    // close : file given as paramater (i.e. a dictionnary)
+    if(fclose(fp) != 0)
+        raler("fclose in fill_trie");
+
+    // print : how many words per language + detection result
+    if(fprintf(stdout,"\n%d word(s) in french.\n", count[0]) < 0)
+		raler("fprintf treat_trie");
+    if(fprintf(stdout,"%d word(s) in german.\n", count[1]) < 0)
+		raler("fprintf treat_trie");
+    if(fprintf(stdout,"%d word(s) in english.\n", count[2]) < 0)
+		raler("fprintf treat_trie");
+
 }
 
 size_t count(Trie trie)

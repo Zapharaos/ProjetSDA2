@@ -19,11 +19,9 @@ void test_trie(char* path, enum language lang);
  * @fn      void test_dawg(char* path)
  * @brief   Creates a dawg from a file and search from the same file
  * @param   path the path of the file
- * @param   lang the language of the trie
  * @pre     @p path a dictionnary must exist at the path
- * @pre     @p lang must not be UNKNOWN
  */
-void test_dawg(char* path, enum language lang);
+void test_dawg(char* path);
 
 /**
  * @fn      void time_insert(char* dict, char* file, enum language lang, int boolean)

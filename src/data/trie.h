@@ -88,6 +88,14 @@ void treat_trie(Trie trie, char** sentence, size_t n);
  */
 void start_trie(Trie trie);
 
+/**
+ * @fn      void search_trie_from_file(Trie trie, char* path)
+ * @brief   searchs all words from a file inside a trie
+ * @param   trie dawg to treat
+ * @param   path file to read from
+ */
+void search_trie_from_file(Trie trie, char* path);
+
 size_t count(Trie trie);
 
 #endif // !_TRIE_H

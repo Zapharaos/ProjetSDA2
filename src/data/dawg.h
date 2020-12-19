@@ -213,12 +213,18 @@ void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n);
  */
 void start_dawg(Dawg en, Dawg de, Dawg fr);
 
-int log_and_free_all(void* const context, struct hashmap_element_s* const e);
-
 void free_test(Dawg dawg);
 
 size_t profondeur(Dawg dawg);
 
 size_t calc_profondeur(Node node, bool* visited);
+
+/**
+ * @fn      void search_dawg_from_file(Dawg dawg, char* path)
+ * @brief   searchs all words from a file inside a dawg
+ * @param   dawg dawg to treat
+ * @param   path file to read from
+ */
+void search_dawg_from_file(Dawg dawg, char* path);
 
 #endif // !_DAWG_H
