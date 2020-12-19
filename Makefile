@@ -17,7 +17,7 @@ EXECUTABLE = $(BIN_DIR)/./$(EXECUTABLE_NAME)
 # Compiler
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Wvla -Werror
+CFLAGS = -Wall -Wextra -Wvla -Werror -g
 
 # Files and folders
 

@@ -104,7 +104,7 @@ Dawg construct_dawg(char* dict)
         {
             line[length - 1] = '\0';
         }
-
+        
         // parsing the word
         parse_word(line);
         
@@ -124,6 +124,8 @@ Dawg construct_dawg(char* dict)
 
     // minimiser to depth 0
     minimize(dawg, 0);
+
+    free_test(dawg);
 
     // close : file given as paramater (i.e. a dictionnary)
     if(fclose(fp) != 0)
@@ -161,6 +163,24 @@ int handle_args(char* argv[])
 		return 0;
     }
 
+    if(strcmp(argv[1], "-t") == 0)
+    {
+
+        Dawg t = construct_dawg("dict/french-wordlist.txt");
+
+        printf("Display hashmap: \n");
+        /*
+        if (0 != hashmap_iterate_pairs(&t->hashmap, log_and_free_all, NULL)) {
+            fprintf(stderr, "failed to deallocate hashmap entries\n");
+        } */
+
+        //display_node(t->root);
+
+        free_dawg(t);
+
+        return 0;
+    }
+
     // if : sentence
 	if (strcmp(argv[1], "-sentence") == 0)
     {
@@ -189,6 +209,14 @@ int handle_args(char* argv[])
             Dawg en = construct_dawg("dict/english-wordlist.txt");
             Dawg de = construct_dawg("dict/german-wordlist.txt");
             Dawg fr = construct_dawg("dict/french-wordlist.txt");
+            /*
+            if (0 != hashmap_iterate_pairs(&fr->hashmap, log_and_free_all, NULL)) {
+                fprintf(stderr, "failed to deallocate hashmap entries\n");
+            } */
+
+            printf("Taille dawg_en : %ld\n", profondeur(en));
+            printf("Taille dawg_de : %ld\n", profondeur(de));
+            printf("Taille dawg_fr : %ld\n", profondeur(fr));
 
             start_dawg(en, de, fr);
 
