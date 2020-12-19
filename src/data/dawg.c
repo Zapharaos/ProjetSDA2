@@ -103,6 +103,7 @@ void free_node(Node root)
 	
 	rec_free_node(stack, root, visited);
 
+	// free all nodes and there edges that are in the stack
 	while(stack_size(stack) > 0)
 	{
 		Node node = stack_pop(stack);
@@ -146,12 +147,12 @@ void rec_free_node(struct stack* stack, Node node, bool* visited)
 
 }
 
-void free_test(Dawg dawg)
+void free_hashmap_keys(Dawg dawg)
 {
 	if(dawg->serialized == NULL)
 		return;
 
-	for (size_t i = 0; i < 5000000; i++)
+	for (size_t i = 0; i < NODE_STR_MAX_SIZE; i++)
 	{
 		if(dawg->serialized[i] == NULL)
 			continue;
@@ -217,7 +218,6 @@ size_t search_prefix_length(char* word1, char* word2)
 void minimize(Dawg dawg, int p)
 {
 
-	// printf("Minimize to %d\n", p);
 	// while the stack's size is bigger than the given depth
 	while(stack_size(dawg->stack) > p)
 	{
@@ -240,7 +240,6 @@ void minimize(Dawg dawg, int p)
 			/**
 			 *  FREE NODE TO
 			 */
-
 			for (size_t i = 0; i < ALPHABET_SIZE; i++)
 			{
 				if(a->to->edges[i] == NULL)
@@ -253,12 +252,9 @@ void minimize(Dawg dawg, int p)
 			a->to = sommet;
 		}
 
-		//printf("Ajout dans hashmap: %c, nb avant: %d\n", a->label, hashmap_num_entries(&dawg->hashmap));
-
 		// else : we add it to the hashmap
 		hashmap_put(&dawg->hashmap, pointer, strlen(pointer), a->to);
 
-//		printf("Nombre dans hashmap après: %d\n", hashmap_num_entries(&dawg->hashmap));
 	}
 
 }
@@ -306,6 +302,7 @@ size_t serialize(Node node, char* result)
 	size_t index = 0;
 	result[index++] = node->is_word ? '1' : '0';
 
+	// loop trough all edges of the node
 	for (size_t i = 0; i < ALPHABET_SIZE; i++)
 	{
 		Edge edge = node->edges[i];
@@ -317,7 +314,7 @@ size_t serialize(Node node, char* result)
 			continue;
 		}	
 
-		char nb_str[16]; // on suppose que l'uid + char ne sera jamais plus grand que 16
+		char nb_str[16]; // we supposing that the uid + char will never be greather than 16 chars
 		if(sprintf(nb_str, "%c%ld", edge->label, edge->to->id) < 0)
 			raler("snprintf serialize");
 
@@ -360,8 +357,6 @@ void display_node(Node node)
 	{
 		if(node->edges[i] == NULL)
 			continue;
-	//	if(fprintf(stdout, "%c : ", node->edges[i]->label) < 0)
-	//		raler("fprintf display_node");
 		display_node(node->edges[i]->to);
 	}
 
@@ -457,17 +452,17 @@ void start_dawg(Dawg en, Dawg de, Dawg fr)
 	}
 }
 
-size_t profondeur(Dawg dawg)
+size_t dfs(Dawg dawg)
 {
 	bool visited[NODE_STR_MAX_SIZE];
 
 	for (size_t i = 0; i < NODE_STR_MAX_SIZE; i++)
 		visited[i] = false;
 
-	return calc_profondeur(dawg->root, visited);
+	return rec_dfs(dawg->root, visited);
 }
 
-size_t calc_profondeur(Node node, bool* visited)
+size_t rec_dfs(Node node, bool* visited)
 {
 	if(node == NULL || visited[node->id])
 		return 0;
@@ -483,7 +478,7 @@ size_t calc_profondeur(Node node, bool* visited)
 		if(item == NULL)
 			continue;
 
-		total += calc_profondeur(item->to, visited);
+		total += rec_dfs(item->to, visited);
 	}
 
 	return total;

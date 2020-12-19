@@ -120,15 +120,18 @@ void free_node(Node root);
 
 /**
  * @fn      void rec_free_node(Node root)
- * @brief   Recursively free nodes
+ * @brief   DFS to get all nodes, that are all added to stack without duplicates
  * @param   root node to treat
+ * @param	stack Stack of nodes that are in dawg
  * @param	visited Table to check if node was already cleared
  */
 void rec_free_node(struct stack* stack, Node node, bool* visited);
 
 /**
  * @fn      void free_dawg(Dawg dawg)
- * @brief   Free a dawg structure
+ * @brief   Free a dawg structure using resursive function rec_free_node,
+ * 	initialize a stack, then fill it with rec_free_node, then free's all
+ *  the nodes and edges.
  * @param   dawg dawg to treat
  */
 void free_dawg(Dawg dawg);
@@ -190,7 +193,6 @@ void display_node(Node node);
  */
 bool word_exists(Node node, const char* word, size_t index);
 
-
 // Handle
 
 /**
@@ -213,11 +215,32 @@ void treat_dawg(Dawg en, Dawg de, Dawg fr, char** sentence, size_t n);
  */
 void start_dawg(Dawg en, Dawg de, Dawg fr);
 
-void free_test(Dawg dawg);
+/**
+ * @fn	  void free_hashmap_keys(Dawg dawg)
+ * @brief Free all the keys that have been allocated in the hashmap
+ * 
+ * @param dawg Dawg containing the hashmap
+ */
+void free_hashmap_keys(Dawg dawg);
 
-size_t profondeur(Dawg dawg);
+/**
+ * @fn	  size_t dfs(Dawg dawg)
+ * @brief Depth browsing using the recursive function calc_profondeur to find the dawg size.
+ * 
+ * @param dawgDawg you wish to treat
+ * @return size_t Dawg size (number of nodes in the dawg)
+ */
+size_t dfs(Dawg dawg);
 
-size_t calc_profondeur(Node node, bool* visited);
+/**
+ * @fn	  size_t rec_dfs(Node node, bool* visited)
+ * @brief Recursive DFS function calculates dawg size.
+ * 
+ * @param node Node you wish to browse
+ * @param visited Table of nodes already visited
+ * @return size_t Dawg size (number of nodes in the dawg)
+ */
+size_t rec_dfs(Node node, bool* visited);
 
 /**
  * @fn      void search_dawg_from_file(Dawg dawg, char* path)

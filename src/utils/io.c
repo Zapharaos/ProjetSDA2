@@ -214,9 +214,9 @@ int handle_args(char* argv[])
                 fprintf(stderr, "failed to deallocate hashmap entries\n");
             } */
 
-            printf("Taille dawg_en : %ld\n", profondeur(en));
-            printf("Taille dawg_de : %ld\n", profondeur(de));
-            printf("Taille dawg_fr : %ld\n", profondeur(fr));
+            printf("Taille dawg_en : %ld\n", dfs(en));
+            printf("Taille dawg_de : %ld\n", dfs(de));
+            printf("Taille dawg_fr : %ld\n", dfs(fr));
 
             start_dawg(en, de, fr);
 
