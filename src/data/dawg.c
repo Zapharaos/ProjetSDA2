@@ -487,6 +487,7 @@ size_t calc_profondeur(Node node, bool* visited)
 	}
 
 	return total;
+}
 
 void search_dawg_from_file(Dawg dawg, char* path)
 {
