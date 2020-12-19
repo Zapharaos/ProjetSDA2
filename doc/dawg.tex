@@ -1,0 +1,18 @@
+\chapter{Directed Acyclic Word Graph : DAWG}
+
+Note : les fonctions d'insertion et de minimisation figurant dans le sujet, nous avons décidé de ne pas les expliquer dans notre rapport.
+
+\section{Les structures de données}
+
+Pour le dawg, nous avons implementé trois structures de données :
+
+Une structure dawg qui contient une structure hashmap, une structure stack et une structure node (i.e la racine). De plus, elle contient le dernier mot inséré et l'ID de sa dernière lettre (i.e. son dernier noeud). 
+
+Une structure node qui contient un ID, un booléen permettant d'indiquer si la lettre est finale et un tableau de 26 edges.
+
+Une structure edge qui contient une lettre ainsi que des pointeurs vers le noeud actuel et le noeud suivant.
+
+\section{Recherche}
+
+De la même manière que dans le Trie, pour rechercher un mot dans un Dawg, on va parcourir un mot récursivement, lettre après lettre, tout en avançant dans le Dawg. Si il est impossible de continuer le parcours et que le mot n’a pas été traité totalement, alors on retourne false. Sinon, on retourne true.
+

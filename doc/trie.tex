@@ -1,0 +1,17 @@
+\chapter{Arbre préfixe : Trie}
+
+\section{Structure de données}
+
+On se servira d'un tableau de Trie de taille 26 et d'une structure Lang qui stocke trois booléens permettant d'indiquer les langues d'un mot. \bigskip \newline Chaque lettre aura un tableau de 26 successeurs de type Trie avec des booléens permettant d'indiquer si c'est un mot ainsi que ses langues.
+
+Ceci nous permet de réduire la place mémoire en insérant les dictionnaires dans une unique structure Trie. Notamment dans le cas des doublons, on évite de stocker le même mot et on se sert de la structure Lang pour indiquer qu'il existe dans plusieurs langues. Démonstration dans la partie 4 : "Tests".
+
+\section{Insertion}
+
+Pour insérer dans un Trie, on va parcourir un mot récursivement, lettre après lettre. Pour chaque lettre, on regarde si elle est déjà existante dans le tableau, le cas échéant on alloue une case, puis on poursuit l'insertion.
+\bigskip \newline L étant la longueur du mot, alors on peut dire qu'en pire cas, il faudra allouer L lettres. Ce qui donne O(L*log(n)) pour un ensemble n de mots.
+
+\section{Recherche}
+
+De la même manière, pour rechercher un mot dans un Trie, on va parcourir un mot récursivement, lettre après lettre, tout en avançant dans le Trie. Si il est impossible de continuer le parcours et que le mot n'a pas été traité totalement, alors on retourne "inconnu". Sinon, on retourne les langues correspondantes.
+ \bigskip \newline L étant la longueur du mot, il faudra donc chercher L lettres dans le tableau. Ce qui donne O(L).

@@ -1,0 +1,34 @@
+\chapter{Mise en application}
+
+Note : Avant de lancer le programme pour la première fois il est nécessaire d'entrer la commande suivante :
+\begin{lstlisting}[language=bash]
+    $ make && make dict
+\end{lstlisting}
+
+\section{Le mode utilisateur}
+
+Pour lancer le programme en mode utilisateur :
+\begin{lstlisting}[language=bash]
+    $ ./bin/ald -sentence -trie/dawg
+\end{lstlisting}
+
+Le programme chargera les dictionnaires dans le mode demandé puis vous demandera d'entrer une phrase. Il la traitera et vous affichera le résultat. 
+\newline Et si vous le souhaitez, vous pouvez entrer une nouvelle phrase.
+
+\section{Les modes tests}
+
+D'autres options existent et permettent d'effectuer des tests :
+\begin{lstlisting}[language=bash]
+    $ ./bin/ald -test
+    $ ./bin/ald -perf -trie/dawg
+\end{lstlisting}
+
+Elles seront détaillées dans la section suivante.
+
+\section{Autres}
+
+Si vous avez besoin d'aide, ces commandes peuvent vous guider :
+\begin{lstlisting}[language=bash]
+    $ ./bin/ald -help
+    $ make list
+\end{lstlisting}

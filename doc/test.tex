@@ -1,0 +1,64 @@
+\chapter{Tests}
+
+Note : Nous utiliserons une structure Trie par langue afin de pouvoir comparer le Trie et le Dawg de manière équitable.
+
+\section{Vérification de l'insertion}
+
+On va compter le nombre de noeuds dans chaque structure Trie et Dawg via un DFS et comparer les valeurs avec celles données dans le sujet. Si elles sont égales, alors les insertions devraient être fonctionnelles.
+
+Voici comment lancer le test :
+\begin{lstlisting}[language=bash]
+    $ ./bin/ald -count -trie/dawg
+\end{lstlisting}
+
+Objectifs dans un Trie
+\begin{itemize}
+\item Français : 623 994
+\item Allemand : 1 229 117
+\item Anglais : 606 879
+\end{itemize}
+
+Objectifs dans un Dawg
+\begin{itemize}
+\item Français : 34 202
+\item Allemand : 146 205
+\item Anglais : 80 075
+\end{itemize}
+
+En lançant le programme on remarque que les valeurs sont égales.
+
+De plus, on lance le test avec un Trie contenant les trois dictionnaires et on obtient le nombre de noeud suivant : 2 296 705. \newline Or, le nombre de noeuds de chaque dictionnaire additionné nous donne 2 459 990. On en déduit que notre méthode est plus efficace.
+
+\section{Vérification de la recherche}
+
+Nous utilisons une structure par langue et recherchons le dictionnaire complet de cette langue dans la structure. On comptera le nombre de mots trouvés et il devra correspondre au nombre de mots insérés.
+
+Voici comment lancer le test :
+\begin{lstlisting}[language=bash]
+    $ ./bin/ald -test
+\end{lstlisting}
+
+Objectifs dans un Trie
+\begin{itemize}
+\item Français : 336 528
+\item Allemand : 685 620
+\item Anglais : 274 411
+\end{itemize}
+
+En lançant le programme on remarque que les valeurs sont égales.
+
+\section{Évaluation des performances}
+
+Commande pour lancer le test de performance :
+\begin{lstlisting}[language=bash]
+    $ ./bin/ald -perf -trie/dawg
+\end{lstlisting}
+
+Pour l'insertion :
+\smallskip \newline Nous allons insérer n mots, avec n débutant à 10. Le compteur sera multiplié par 2 après chaque tour et ceci jusqu'à ce qu'il n'y ai plus de mots dans le fichier. Nous effectuerons le test 10 fois pour chaque n.
+
+Pour la recherche :
+\smallskip \newline Nous allons lire une ligne aléatoire dans le fichier et rechercher le mot qui s'y trouve.
+Cette étape sera effectuée 10 fois pour chaque n, avec n allant de 10 à 20 971 520 (n sera multiplié par 2 après chaque tour).
+
+Nous obtenons des graphiques qui seront étudiés dans la section suivante.

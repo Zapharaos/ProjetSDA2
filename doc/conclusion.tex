@@ -1,0 +1,13 @@
+\chapter{Conclusion}
+
+L'inconvénient de la structure Dawg est la difficulté de son implémentation.
+On peut également ajouter le temps d'insertion comme étant un point faible de cette structure, notamment car il est nécessaire de minimiser après chaque insertion de mot.
+\smallskip \newline Pourtant, c'est cette procédure de minimisation qui permet de réduire fortement le coût en mémoire et qui en fait le principal atout du Dawg.
+
+Le point positif d'une structure Trie est qu'elle est relativement simple à implémenter et ne nécessite pas de minimisation ce qui rend l'insertion plus rapide que dans un Dawg.
+\smallskip \newline Par contre, c'est aussi ce qui rend la structure Trie plus lourde.
+
+Globalement, on préféra une structure Dawg si l'objectif est de réduire le plus possible le coût en mémoire. Bien que l'insertion soit plus lente que dans un Trie, la recherche nécessite autant de temps.
+\smallskip \newline On rajoute qu'il est primordial de fournir une liste de mots déjà triés par ordre alphabétique lors de l'insertion, sinon la procédure de minimisation ne sera pas efficace, voir même inutile.
+
+Contrairement au Dawg, on préféra le Trie si on cherche une implémentation simple ou des temps d'insertions plus courts. De plus, on peut s'en servir bien que les mots fourni ne soit pas forcément triés au préalable. Et comme dit précédemment, la recherche nécessite autant de temps que dans le Dawg.

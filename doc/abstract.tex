@@ -1,0 +1,21 @@
+\pdfbookmark[0]{Abstract}{Abstract}
+\chapter*{Problème}
+\label{sec:abstract}
+\vspace*{-10mm}
+
+On se propose d’étudier dans ce projet une méthode de détection automatique d’une langue.
+Pour simplifier cette étude, seuls l’allemand, l’anglais ainsi que le français seront considérés. Les
+accents et la ponctuation que l’on peut retrouver dans la langue française et allemande ne seront
+quant à eux pas utilisés.
+
+\section*{\color{black}Approche proposée}
+\begin{enumerate}
+\item Analyse des dictionnaires allemand, anglais et français.
+\item Lecture du texte à identifier.
+\item Pour chaque mot du texte à identifier, tester la correspondance du mot par rapport à
+chacun des dictionnaires
+\item La langue du texte est celle avec le plus grand nombre de correspondances positives.
+\end{enumerate}
+
+\newline Pour ce faire, on nous propose deux structures de données que nous allons devoir implémenter : le trie et le dawg.\newline Ces structures vont contenir les dictionnaires allemand, anglais et français.
+
