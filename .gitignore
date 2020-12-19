@@ -65,3 +65,6 @@ bin/
 
 # img rep
 img/
+
+# tests rep
+tests/

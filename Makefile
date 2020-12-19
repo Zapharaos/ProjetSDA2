@@ -67,7 +67,6 @@ clean:
 	rm -rf $(OBJ_DIR)
 	rm -rf $(BIN_DIR)
 	rm -rf $(ARCH_DIR)
-	rm -rf $(DICT_DIR)
 
 dict:
 	@echo "> Loading dictionnary : "
