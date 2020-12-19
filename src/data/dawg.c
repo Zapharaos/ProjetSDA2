@@ -72,7 +72,7 @@ Dawg empty_dawg()
 
 	dawg->last_word[0] = '\0';
 	// on crée un stack assez grand pour accueilir toutes les valeurs
-	dawg->stack = new_stack(1000000); // à voir plus tard
+	dawg->stack = new_stack(MAX_STACK_SIZE); // à voir plus tard
 	hashmap_create(2, &dawg->hashmap);
 	dawg->root = empty_node(dawg);
 	dawg->serialized = malloc(NODE_STR_MAX_SIZE * sizeof(char*));
@@ -99,7 +99,7 @@ void free_node(Node root)
 	for (size_t i = 0; i < NODE_STR_MAX_SIZE; i++)
 		visited[i] = false;
 
-	struct stack* stack = new_stack(1000000);
+	struct stack* stack = new_stack(MAX_STACK_SIZE);
 	
 	rec_free_node(stack, root, visited);
 
