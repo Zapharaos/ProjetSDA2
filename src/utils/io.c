@@ -125,7 +125,8 @@ Dawg construct_dawg(char* dict)
     // minimiser to depth 0
     minimize(dawg, 0);
 
-    free_test(dawg);
+    // free keys
+    free_hashmap_keys(dawg);
 
     // close : file given as paramater (i.e. a dictionnary)
     if(fclose(fp) != 0)
