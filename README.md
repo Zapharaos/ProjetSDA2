@@ -37,9 +37,23 @@ make dawg
 This mode is only used in order to check if the program works properly in each languages and structures.
 
 Type either one of the following commands :
+
+Check if the insertion and search works using both structures :
 ```
 make test
 ./bin/ald -test
+```
+
+Check if we have the correct number of nodes using the Trie structure :
+```
+make test
+./bin/ald -count -trie
+```
+
+Check if we have the correct number of nodes using the Dawg structure :
+```
+make test
+./bin/ald -count -dawg
 ```
 
 ## Performances
