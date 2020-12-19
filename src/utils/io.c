@@ -151,6 +151,8 @@ int handle_args(char* argv[])
         print_msg("\t Also : <make trie> or <make dawg>");
         print_msg("- Run the test : ./bin/ald -test");
         print_msg("\t Also : <make test>");
+        print_msg("- Run the counting test : <make count>");
+        print_msg("\t Also : ./bin/ald count <-trie,-dawg>");
         print_msg("- Run the perf test : <make perf>");
         print_msg("\t Also : ./bin/ald -perf <-trie,-dawg>");
         print_msg("------------------------------------------------------------------");
@@ -231,6 +233,90 @@ int handle_args(char* argv[])
 
         // return success
         return 0;
+    }
+
+    // if : count
+    if (strcmp(argv[1], "-count") == 0)
+    {
+
+        // if : trie
+	    if (strcmp(argv[2], "-trie") == 0)
+        { 
+            print_msg("How many nodes in Trie : \n");
+
+            Trie trie = empty_trie();
+
+            fill_trie(trie, "dict/french-wordlist.txt", FR);
+            print_msg("French should have : 623994");
+            if (fprintf(stdout, "\tit has : %zu\n\n", count(trie)) < 0)
+                raler("fprintf");
+
+            free_trie(trie);
+            trie = empty_trie();
+
+            fill_trie(trie, "dict/german-wordlist.txt", DE);
+            print_msg("German should have : 1229117");
+            if (fprintf(stdout, "\tit has : %zu\n\n", count(trie)) < 0)
+                raler("fprintf");
+
+            free_trie(trie);
+            trie = empty_trie();
+
+            fill_trie(trie, "dict/english-wordlist.txt", EN);
+            print_msg("English should have : 606879");
+            if (fprintf(stdout, "\tit has : %zu\n\n", count(trie)) < 0)
+                raler("fprintf");
+
+            free_trie(trie);
+            trie = empty_trie();
+            construct_trie(trie);
+
+            print_msg("All Trie together makes : 2 459 990");
+            if (fprintf(stdout, "All Trie into a single Trie has : %zu\n", count(trie)) < 0)
+                raler("fprintf");
+
+            free_trie(trie);
+
+            // return success
+            return 0;
+        }
+
+        // if : dawg
+        if (strcmp(argv[2], "-dawg") == 0)
+        {
+
+            print_msg("\nHow many nodes in Dawg : \n");
+
+            // Dawg dawg = empty_dawg();
+            // dawg = construct_dawg("dict/french-wordlist.txt");
+            // print_msg("French should have : 34202");
+            // if (fprintf(stdout, "\tit has : %zu\n\n", profondeur(dawg)) < 0)
+            //     raler("fprintf");
+            // free_dawg(dawg);
+
+            // dawg = construct_dawg("dict/german-wordlist.txt");
+
+            // print_msg("German should have : 146205");
+            // if (fprintf(stdout, "\tit has : %zu\n\n", profondeur(dawg)) < 0)
+            //     raler("fprintf");
+
+            // free_dawg(dawg);
+            // dawg = construct_dawg("dict/english-wordlist.txt");
+
+            // print_msg("English should have : 80075");
+            // if (fprintf(stdout, "\tit has : %zu\n\n", profondeur(dawg)) < 0)
+            //     raler("fprintf");
+
+            // free_dawg(dawg);
+
+            // return success
+            return 0;
+        }
+
+        // else : failed
+    	print_error("Arguments not found: type ./bin/ald -help to display help");
+		return 1;
+
     }
 
      // if : perf

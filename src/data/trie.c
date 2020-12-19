@@ -292,3 +292,16 @@ void search_trie_from_file(Trie trie, char* path)
 		raler("fprintf treat_trie");
 
 }
+
+size_t count(Trie trie)
+{
+	if(trie == NULL)
+		return 0;
+	
+	size_t total = 1;
+
+	for (size_t i = 0; i < ALPHABET_SIZE; i++)
+		total += count(trie->data[i]);
+
+	return total;
+}

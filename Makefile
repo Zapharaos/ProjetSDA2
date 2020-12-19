@@ -49,6 +49,10 @@ dawg: title tips
 test: title tips
 	@./bin/ald -test
 
+count: title tips
+	@./bin/ald -count -trie
+	@./bin/ald -count -dawg
+
 perf: title tips
 	@./bin/ald -perf -trie
 	@./bin/ald -perf -dawg
@@ -94,6 +98,7 @@ list:
 	@echo "make trie -> runs the program using a trie"
 	@echo "make dawg -> runs the program using a dawg"
 	@echo "make test -> tests the program with presinserted values"
+	@echo "make count -> counts the number of nodes in each structures"
 	@echo "make perf -> tests the programs performances"
 	@echo "make clean -> clears the directory"
 	@echo "make dist -> creates an archive"

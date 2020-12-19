@@ -96,4 +96,6 @@ void start_trie(Trie trie);
  */
 void search_trie_from_file(Trie trie, char* path);
 
+size_t count(Trie trie);
+
 #endif // !_TRIE_H
