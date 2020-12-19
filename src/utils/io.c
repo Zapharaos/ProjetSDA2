@@ -298,29 +298,30 @@ int handle_args(char* argv[])
 
             print_msg("\nHow many nodes in Dawg : \n");
 
-            // Dawg dawg = empty_dawg();
-            // dawg = construct_dawg("dict/french-wordlist.txt");
-            // print_msg("French should have : 34202");
-            // if (fprintf(stdout, "\tit has : %zu\n\n", profondeur(dawg)) < 0)
-            //     raler("fprintf");
-            // free_dawg(dawg);
+            Dawg dawg = empty_dawg();
+            dawg = construct_dawg("dict/french-wordlist.txt");
 
-            // dawg = construct_dawg("dict/german-wordlist.txt");
+            print_msg("French should have : 34202");
+            if (fprintf(stdout, "\tit has : %zu\n\n", dfs(dawg)) < 0)
+                raler("fprintf");
 
-            // print_msg("German should have : 146205");
-            // if (fprintf(stdout, "\tit has : %zu\n\n", profondeur(dawg)) < 0)
-            //     raler("fprintf");
+            free_dawg(dawg);
+            dawg = construct_dawg("dict/german-wordlist.txt");
 
-            // free_dawg(dawg);
-            // dawg = construct_dawg("dict/english-wordlist.txt");
+            print_msg("German should have : 146205");
+            if (fprintf(stdout, "\tit has : %zu\n\n", dfs(dawg)) < 0)
+                raler("fprintf");
 
-            // print_msg("English should have : 80075");
-            // if (fprintf(stdout, "\tit has : %zu\n\n", profondeur(dawg)) < 0)
-            //     raler("fprintf");
+            free_dawg(dawg);
+            dawg = construct_dawg("dict/english-wordlist.txt");
 
-            // free_dawg(dawg);
+            print_msg("English should have : 80075");
+            if (fprintf(stdout, "\tit has : %zu\n\n", dfs(dawg)) < 0)
+                raler("fprintf");
 
-            // return success
+            free_dawg(dawg);
+
+            //return success
             return 0;
         }
 
