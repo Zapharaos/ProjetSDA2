@@ -164,24 +164,6 @@ int handle_args(char* argv[])
 		return 0;
     }
 
-    if(strcmp(argv[1], "-t") == 0)
-    {
-
-        Dawg t = construct_dawg("dict/french-wordlist.txt");
-
-        printf("Display hashmap: \n");
-        /*
-        if (0 != hashmap_iterate_pairs(&t->hashmap, log_and_free_all, NULL)) {
-            fprintf(stderr, "failed to deallocate hashmap entries\n");
-        } */
-
-        //display_node(t->root);
-
-        free_dawg(t);
-
-        return 0;
-    }
-
     // if : sentence
 	if (strcmp(argv[1], "-sentence") == 0)
     {
