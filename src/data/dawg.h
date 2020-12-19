@@ -1,8 +1,9 @@
 #ifndef _DAWG_H
 #define _DAWG_H
 
-#define SERIALIZE_MAX_SIZE 256 // 1 + 26 * 8 + 26 ; où 8 est la longueur max d'une ID
+#define SERIALIZE_MAX_SIZE 256 // 1 + 26 * 8 + 26 ; where 8 is the ID max length
 #define NODE_STR_MAX_SIZE 5000000
+#define MAX_STACK_SIZE 1000000
 
 #include <time.h>
 #include <stddef.h>
