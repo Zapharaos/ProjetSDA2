@@ -164,7 +164,7 @@ int handle_args(char* argv[])
     if(strcmp(argv[1], "-t") == 0)
     {
 
-        Dawg t = construct_dawg("dict/testlist.txt");
+        Dawg t = construct_dawg("dict/french-wordlist.txt");
 
         printf("Display hashmap: \n");
         /*
@@ -172,7 +172,7 @@ int handle_args(char* argv[])
             fprintf(stderr, "failed to deallocate hashmap entries\n");
         } */
 
-        display_node(t->root);
+        //display_node(t->root);
 
         free_dawg(t);
 

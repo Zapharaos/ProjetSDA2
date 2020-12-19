@@ -124,7 +124,7 @@ void free_node(Node root);
  * @param   root node to treat
  * @param	visited Table to check if node was already cleared
  */
-void rec_free_node(Node* node, bool* visited);
+void rec_free_node(struct stack* stack, Node node, bool* visited);
 
 /**
  * @fn      void free_dawg(Dawg dawg)
